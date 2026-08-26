@@ -1,18 +1,74 @@
 aid: pixiebrix
 name: PixieBrix
-description: 'PixieBrix is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'PixieBrix is a browser-based platform for customer care and enterprise
+  operations teams that layers automation, AI assistance, integrations and real-time
+  policy enforcement onto the web applications a team already uses, deployed as a
+  lightweight browser extension and companion web app rather than an endpoint agent.
+  Teams build "mods" from a library of prebuilt "bricks" — DOM readers, UI components,
+  HTTP request bricks, AI/LLM bricks and data connectors — and administrators govern
+  them centrally through activity policies, deployments, groups and audit trails. The
+  public PixieBrix Developer API is a token-authenticated REST surface at
+  https://app.pixiebrix.com/api/ covering team management, package/registry
+  publishing, deployments, databases, activity policy and health checks, described by
+  a published OpenAPI 3.0.2 specification.'
+image: https://cdn.prod.website-files.com/627def74bc73d85070c65929/697cf1b5cee0b7370cdc763a_pixiebrixog.png
 url: https://raw.githubusercontent.com/api-evangelist/pixiebrix/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-26'
 modified: '2026-08-26'
 tags:
 - Company
-apis: []
+- Browser Extensions
+- Low-Code
+- Automation
+- Artificial Intelligence
+- Customer Support
+- Enterprise Operations
+- Workflow Automation
+- Agent Governance
+- Robotic Process Automation
+apis:
+- aid: pixiebrix-developer-api
+  name: PixieBrix Developer API
+  description: 'The PixieBrix Developer API is the token-authenticated REST admin and
+    package-registry API for PixieBrix teams. It covers organization and group
+    management, memberships and invitations, service accounts, mod/package publishing
+    to the registry, deployments to end users, PixieBrix databases and records,
+    activity and security policies, audit events, campaigns, support copilot
+    configuration and a public health check. Requests authenticate with a service
+    account token, are versioned through the Accept header, and paginate via RFC 8288
+    Link headers.'
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - Developer API
+  - Administration
+  - Package Registry
+  - Deployments
+  - Databases
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+  - type: Overlay
+    url: overlays/pixiebrix-developer-api-overlay.yaml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -20,4 +76,67 @@ maintainers:
   email: info@apis.io
 common:
 - type: Website
-  url: https://www.nasdaqprivatemarket.com/
+  url: https://www.pixiebrix.com/
+- type: DeveloperPortal
+  url: https://docs.pixiebrix.com/developer-api
+- type: Documentation
+  url: https://docs.pixiebrix.com/
+- type: APIReference
+  url: https://app.pixiebrix.com/api/docs/
+- type: GettingStarted
+  url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+- type: SignUp
+  url: https://app.pixiebrix.com/login/
+- type: Login
+  url: https://app.pixiebrix.com/login/
+- type: Support
+  url: https://www.pixiebrix.com/contact-us
+- type: Blog
+  url: https://www.pixiebrix.com/blog
+- type: Pricing
+  url: https://www.pixiebrix.com/pricing
+- type: TermsOfService
+  url: https://www.pixiebrix.com/terms
+- type: PrivacyPolicy
+  url: https://www.pixiebrix.com/privacy
+- type: GitHubOrganization
+  url: https://github.com/pixiebrix
+- type: StatusPage
+  url: https://pixiebrix.statuspage.io/
+- type: TrustCenter
+  url: https://trust.pixiebrix.com/
+- type: Compliance
+  url: https://www.pixiebrix.com/security
+- type: Security
+  url: security/pixiebrix-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/pixiebrix-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/pixiebrix-domain-security.yml
+- type: Marketplace
+  url: https://www.pixiebrix.com/marketplace
+- type: LLMsTxt
+  url: llms/pixiebrix-llms.txt
+- type: ChangeLog
+  url: changelog/pixiebrix-changelog.yml
+- type: Lifecycle
+  url: lifecycle/pixiebrix-lifecycle.yml
+- type: Deprecation
+  url: https://docs.pixiebrix.com/developer-api/deprecated-resources
+- type: Packages
+  url: packages/pixiebrix-packages.yml
+- type: Conformance
+  url: conformance/pixiebrix-conformance.yml
+- type: Plans
+  url: plans/pixiebrix-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/pixiebrix-rate-limits.yml
+- type: Sandbox
+  url: sandbox/pixiebrix-sandbox.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment:
+  date: '2026-08-26'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1

@@ -1,0 +1,71 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/release-notes
+url: https://docs.pixiebrix.com/release-notes
+scheme: semver
+current_version: 3.3.0
+scope: >-
+  These are PixieBrix BROWSER EXTENSION / platform release notes, published per
+  version with the Chrome Web Store publication date. They are not a changelog for
+  the Developer API - no dated changelog exists for the REST API surface; API
+  change communication is limited to the Accept-header version bump and the
+  deprecated-resources list (see lifecycle/pixiebrix-lifecycle.yml).
+cadence: roughly every two weeks, tracking Chrome Web Store publication
+archive: https://docs.pixiebrix.com/release-notes/release-notes-archive
+entries:
+  - version: 3.3.0
+    date: null
+    status: current
+    url: https://docs.pixiebrix.com/release-notes/release-3.3.0
+    breaking: false
+    highlights:
+      - 'Enhancement: Security Policies (AI Prompt, Prohibited Language, Clipboard,
+        Page-Pattern rules) now enforce inside iframed editable fields, including
+        the Salesforce email composer (CKEditor4)'
+      - 'Fix: HTTP Requests re-read credentials before sending, so background
+        requests are no longer sent unauthenticated after a cold start'
+      - 'Fix: triggers configured without a selector now report a configuration
+        error instead of a generic failure'
+      - 'Fix: Admin Console Activity Policies table search box now filters the list'
+  - version: 3.2.10
+    date: '2026-08-11'
+    url: https://docs.pixiebrix.com/release-notes/release-3.2.10
+    breaking: false
+    highlights:
+      - 'Hardened built-in brick input schemas: reject non-finite, negative or zero
+        values driving loops, polling deadlines and cache expiry, and reject blank
+        values interpolated into registration ids'
+      - 'Page Editor advisory warning when a mod uses an extension-only brick that
+        would hard-fail on the Web App'
+      - 'Audio Capture: distinct reporting of tab close / navigation / native "Stop
+        sharing" vs a deliberate stop, and full media-track release on abnormal end'
+      - 'Reliability: background maintenance tasks moved to chrome.alarms so
+        schedules survive browser restarts and service-worker teardown'
+  - version: 3.2.9
+    date: '2026-07-29'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.9
+  - version: 3.2.8
+    date: '2026-07-13'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.8
+  - version: 3.2.7
+    date: '2026-06-29'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.7
+  - version: 3.2.6
+    date: null
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.6
+    note: Not published to the Chrome Web Store; changes shipped in 3.2.7
+  - version: 3.2.4
+    date: '2026-05-26'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.4
+  - version: 3.2.3
+    date: '2026-05-11'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.3
+  - version: 3.2.2
+    date: '2026-04-27'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.2
+  - version: 3.2.1
+    date: '2026-04-14'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.1
+  - version: 3.2.0
+    date: '2026-04-06'
+    url: https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.0

@@ -1,0 +1,119 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/developer-api/making-an-api-request + live probes of https://app.pixiebrix.com/api/ 2026-08-26
+derived_from: openapi/pixiebrix-openapi.yml
+format: ad-hoc-json
+rfc9457: false
+envelope: '{"detail": "<human readable message>"}'
+error_code_field: none
+note: >-
+  MAJOR CONTRACT GAP, RECORDED HONESTLY. The published OpenAPI specification
+  declares 291 operations and 291 sets of responses - and every single one of them
+  is a 2xx (195x 200, 61x 201, 34x 204, 1x 202). NOT ONE 4xx OR 5xx RESPONSE IS
+  DECLARED ANYWHERE IN THE CONTRACT, and components.responses is absent. A client
+  generated from this spec has no error type at all. PixieBrix also publishes no
+  error-code reference page. The entries below are therefore NOT derived from the
+  spec (there was nothing to derive); they are the statuses the provider documents
+  in prose plus the ones observed on live probes, and the semantics are Django REST
+  Framework defaults. Application-level error codes do not exist - the only
+  machine-readable signal is the HTTP status.
+spec_declares_error_responses: false
+declared_response_codes:
+  '200': 195
+  '201': 61
+  '204': 34
+  '202': 1
+problem_types:
+  - status: 401
+    title: Authentication credentials were not provided
+    envelope_field: detail
+    cause: Missing or malformed Authorization header.
+    remediation: >-
+      Send `Authorization: Token <token>` using a Service Account token from the
+      Admin Console. Note PixieBrix re-reads credentials per request; a rotated or
+      deleted service account invalidates the token immediately.
+    evidence: documented auth requirement
+    source: https://docs.pixiebrix.com/developer-api/making-an-api-request#authentication
+  - status: 403
+    title: Permission denied
+    envelope_field: detail
+    cause: >-
+      Token is valid but the Service Account's Role does not permit the operation,
+      or the caller lacks access to the organization/database/deployment addressed
+      by the path.
+    remediation: >-
+      Check the Service Account's Role. The Role CANNOT be changed after creation -
+      a differently-permissioned account must be created instead.
+    evidence: documented role model
+    source: https://docs.pixiebrix.com/developer-api/service-accounts
+  - status: 404
+    title: Not found
+    envelope_field: detail
+    cause: >-
+      Unknown resource id, or a resource outside the caller's organization. Also
+      returned for genuinely unrouted paths - observed live: GET
+      https://app.pixiebrix.com/api/ returns 404 (there is no API index document).
+    remediation: Verify the id and that the token's organization owns the resource.
+    evidence: observed
+    x-evidence:
+      url: https://app.pixiebrix.com/api/
+      http_status: 404
+      fetched: '2026-08-26'
+  - status: 406
+    title: Invalid version in "Accept" header
+    envelope_field: detail
+    body: '{"detail":"Invalid version in \"Accept\" header."}'
+    cause: >-
+      The Accept header requested an API version the endpoint does not serve.
+      OBSERVED LIVE on the PUBLIC health endpoint: GET /api/health/ with
+      `Accept: application/json; version=2.0` returns 406, while a plain
+      `Accept: application/json` returns 200. The documented "latest version is
+      2.0" therefore does not hold uniformly across every endpoint - a real trap
+      for a client that sets version=2.0 globally.
+    remediation: >-
+      Omit the version parameter, or send the version the specific endpoint
+      supports.
+    evidence: observed
+    x-evidence:
+      url: https://app.pixiebrix.com/api/health/
+      http_status: 406
+      fetched: '2026-08-26'
+      request_header: 'Accept: application/json; version=2.0'
+  - status: 429
+    title: Too many requests
+    envelope_field: detail
+    cause: Per-token throttle exceeded within a one-minute window.
+    remediation: >-
+      Back off and retry. No Retry-After header and no RateLimit-* headers are
+      documented or observed, so the client must implement its own backoff.
+    evidence: documented
+    source: https://docs.pixiebrix.com/developer-api/making-an-api-request#throttling
+  - status: 400
+    title: Bad request / validation error
+    envelope_field: varies
+    cause: >-
+      Request body failed serializer validation. Django REST Framework returns a
+      field-keyed object ({"field_name": ["message"]}) for validation failures
+      rather than the flat {"detail": ...} envelope, so the error shape is NOT
+      uniform across statuses.
+    remediation: Inspect the per-field messages and correct the payload.
+    evidence: framework default - not documented by PixieBrix and not in the spec
+troubleshooting_docs:
+  - url: https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-bad-api-requests
+    scope: >-
+      Covers errors when a PixieBrix MOD calls a THIRD-PARTY API (the HTTP Request
+      brick) - payload shape, header casing, Postman parity, self-signed TLS. It is
+      not an error reference for the PixieBrix Developer API itself.
+  - url: https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-network-errors
+    scope: Network errors in the browser extension.
+health_check:
+  operation: retrieveHealthCheck
+  path: /api/health/
+  method: GET
+  auth_required: false
+  success: '{"status": "ok"}'
+  failure_semantics: >-
+    "Any other status code or response indicates that the PixieBrix API may be
+    unavailable."
+  source: https://docs.pixiebrix.com/developer-api/health-check-apis
+  verified: '2026-08-26 - returned 200 {"status":"ok"}'

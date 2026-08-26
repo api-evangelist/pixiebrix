@@ -1,0 +1,91 @@
+generated: '2026-08-26'
+method: probed
+source: live GET probes 2026-08-26
+hit_count: 0
+note: >-
+  NO .well-known document is served on any PixieBrix host. Two distinct negative
+  shapes were observed and both are recorded honestly rather than credited.
+  (1) app.pixiebrix.com is a single-page-app CATCH-ALL: every /.well-known/* path
+  returns HTTP 200 with the same 1273-byte HTML application shell. A control probe
+  for a path that cannot exist -
+  https://app.pixiebrix.com/.well-known/kin-score-control-probe-xyz - also returned
+  200 with an identical 1273-byte body, proving the 200s are not documents.
+  (2) www.pixiebrix.com returns an honest 404 ("Invalid .well-known request", 88
+  bytes) and docs.pixiebrix.com returns a GitBook 404 page. NO WellKnown and NO
+  SecurityTxt pointer is emitted in apis.yml for this provider.
+soft_404_control:
+  - host: https://app.pixiebrix.com
+    path: /.well-known/kin-score-control-probe-xyz
+    status: 200
+    bytes: 1273
+    verdict: catch-all SPA shell - every 200 on this host is a false positive
+  - host: https://www.pixiebrix.com
+    path: /.well-known/kin-score-control-probe-xyz
+    status: 404
+    bytes: 88
+    verdict: honest 404
+hosts:
+  - host: https://app.pixiebrix.com
+    note: SPA catch-all; all 200s below are the 1273-byte application shell, not
+      documents. file is intentionally unset on every row.
+    documents:
+      - path: /.well-known/security.txt
+        status: 200
+        soft_404: true
+      - path: /.well-known/openid-configuration
+        status: 200
+        soft_404: true
+      - path: /.well-known/oauth-authorization-server
+        status: 200
+        soft_404: true
+      - path: /.well-known/oauth-protected-resource
+        status: 200
+        soft_404: true
+      - path: /.well-known/api-catalog
+        status: 200
+        soft_404: true
+      - path: /.well-known/ai-plugin.json
+        status: 200
+        soft_404: true
+      - path: /.well-known/agent-card.json
+        status: 200
+        soft_404: true
+      - path: /.well-known/agent.json
+        status: 200
+        soft_404: true
+  - host: https://www.pixiebrix.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+  - host: https://docs.pixiebrix.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404

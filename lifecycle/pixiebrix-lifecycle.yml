@@ -1,0 +1,70 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/developer-api/making-an-api-request + https://docs.pixiebrix.com/developer-api/deprecated-resources
+versioning:
+  scheme: semver
+  transport: Accept header media-type parameter
+  format: 'application/json; version=2.0'
+  current_version: '2.0'
+  policy: >-
+    "We follow Semver and will increment the major version on any backward
+    incompatible changes."
+  source: https://docs.pixiebrix.com/developer-api/making-an-api-request#version
+  caveat: >-
+    Not every endpoint serves version 2.0 - GET /api/health/ returns 406 "Invalid
+    version in Accept header" when version=2.0 is requested (probed 2026-08-26).
+product_versioning:
+  scheme: semver
+  current_release: 3.3.0
+  channel: Chrome Web Store (browser extension)
+  release_notes: https://docs.pixiebrix.com/release-notes
+  note: >-
+    The browser extension and the Developer API version independently - extension
+    3.3.0 vs API 2.0.
+deprecation:
+  policy_published: true
+  policy_url: https://docs.pixiebrix.com/developer-api/deprecated-resources
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  note: >-
+    PixieBrix publishes a named list of deprecated resources with their
+    replacements, but no dated sunset, no notice period, and no RFC 8594
+    Sunset/Deprecation response headers. The removal timeline is stated only as
+    "slated to be removed in the near future", and the OpenAPI specification marks
+    NO operation with `deprecated: true` - so a client cannot detect deprecation
+    from the contract at all.
+  deprecated_resources:
+    - deprecated: GET /api/bricks/{id}/versions/ v1.0
+      replacement: GET /api/bricks/{id}/versions/ v1.1
+      mechanism: Accept header version bump
+    - deprecated: GET /api/services/
+      replacement: GET /api/registry/bricks/?kind=3
+    - deprecated: GET /api/recipes/{name}/
+      replacement: GET /api/registry/bricks/{name}/
+  spec_deprecated_operations: 0
+status_page:
+  url: https://pixiebrix.statuspage.io/
+  provider: Atlassian Statuspage
+  api: https://pixiebrix.statuspage.io/api/v2/summary.json
+  page_id: bqrqyrxv36s2
+  verified: '2026-08-26 - HTTP 200'
+  subscribable: true
+  components_documented: true
+  note: >-
+    Machine-readable Statuspage v2 API is available (summary.json, status.json,
+    components.json, incidents.json), which is a genuine agent-consumable
+    availability signal.
+health_check:
+  url: https://app.pixiebrix.com/api/health/
+  method: GET
+  auth_required: false
+  verified: '2026-08-26 - 200 {"status":"ok"}'
+  docs: https://docs.pixiebrix.com/developer-api/health-check-apis
+sla:
+  published: false
+  note: No public SLA/uptime commitment document was found; Enterprise terms are
+    negotiated (the pricing page lists a "dedicated support engineer" on Enterprise).
+support:
+  channel: support@pixiebrix.com
+  source: openapi/pixiebrix-openapi.yml (info.contact)

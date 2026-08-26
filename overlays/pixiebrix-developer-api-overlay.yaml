@@ -1,0 +1,148 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the PixieBrix Developer API
+  version: 1.0.0
+x-provenance:
+  generated: '2026-08-26'
+  method: generated
+  source: openapi/pixiebrix-openapi.yml
+  extends: openapi/pixiebrix-openapi.yml
+  note: >-
+    Non-destructive Overlay 1.0.0 capturing API Evangelist's enhancements to the
+    PixieBrix-published OpenAPI 3.0.2 document. The original spec is never mutated.
+    Every action below adds information the provider documents in prose but omits
+    from the contract; nothing invents behaviour. The three material gaps this
+    overlay closes are: (1) components.securitySchemes is EMPTY and no `security`
+    block exists, so the contract does not say the API is authenticated; (2) not
+    one 4xx/5xx response is declared on any of the 291 operations; (3) all 291
+    operations lack a `summary`.
+actions:
+  - target: $.info
+    description: Add contact/licence/terms context and the documented base URL.
+    update:
+      x-api-evangelist-review: '2026-08-26'
+      x-documentation: https://docs.pixiebrix.com/developer-api
+      x-reference: https://app.pixiebrix.com/api/docs/
+      x-spec-url: https://app.pixiebrix.com/api/openapi/
+      x-status-page: https://pixiebrix.statuspage.io/
+      x-terms-of-service: https://www.pixiebrix.com/terms
+      x-privacy-policy: https://www.pixiebrix.com/privacy
+
+  - target: $
+    description: >-
+      Declare the token security scheme the API actually requires. The provider
+      documents `Authorization: Token <token>` at
+      https://docs.pixiebrix.com/developer-api/making-an-api-request#authentication
+      but the published spec declares no securitySchemes at all.
+    update:
+      components:
+        securitySchemes:
+          serviceAccountToken:
+            type: apiKey
+            in: header
+            name: Authorization
+            description: >-
+              Service Account token issued from the PixieBrix Admin Console. Send
+              the literal word "Token", a space, then the token. Example header
+              value: `Token <your-service-account-token>`.
+            x-docs: https://docs.pixiebrix.com/developer-api/service-accounts
+      security:
+        - serviceAccountToken: []
+
+  - target: $
+    description: Record the documented request/response conventions on the document root.
+    update:
+      x-versioning:
+        transport: Accept header media-type parameter
+        format: 'application/json; version=2.0'
+        current: '2.0'
+        scheme: semver
+        caveat: >-
+          Not every endpoint serves version 2.0 - GET /api/health/ returns 406
+          "Invalid version in Accept header" when version=2.0 is sent.
+      x-pagination:
+        params: [page, page_size]
+        default_page_size: 100
+        max_page_size: 1000
+        response_headers: [Link, X-Total-Count]
+        link_rfc: RFC 8288
+      x-rate-limit:
+        scope: per-token
+        window: minute
+        limit: not published
+        exhaustion_status: 429
+        response_headers: []
+      x-idempotency:
+        supported: false
+        note: No idempotency key mechanism; 61 POST operations returning 201 are
+          not replay-safe.
+      x-cors:
+        supported: false
+      x-error-envelope:
+        shape: '{"detail": "<message>"}'
+        rfc9457: false
+
+  - target: $.paths['/api/health/'].get
+    description: >-
+      Mark the health check as the one unauthenticated operation and document its
+      real responses, none of which the original spec declares beyond 200.
+    update:
+      summary: Check PixieBrix API health
+      security: []
+      x-unauthenticated: true
+      x-verified: '2026-08-26 returned 200 {"status":"ok"}'
+      x-observed-406: >-
+        Returns 406 {"detail":"Invalid version in \"Accept\" header."} when
+        Accept requests version=2.0.
+
+  - target: $.paths..*[?(@.operationId)]
+    description: >-
+      Attach the error responses that every authenticated operation can return.
+      The provider's spec declares only 2xx codes across all 291 operations, so a
+      generated client currently has no error type.
+    update:
+      x-error-responses:
+        '400': Validation error - Django REST Framework field-keyed object
+        '401': Missing or invalid Authorization token
+        '403': Service Account role lacks permission for this operation
+        '404': Unknown id, or resource outside the caller's organization
+        '406': Unsupported version in the Accept header
+        '429': Per-token throttle exceeded - back off and retry
+
+  - target: $.paths['/api/activity/data/'].delete
+    description: Flag the highest-consequence operation in the contract.
+    update:
+      x-agentic-access:
+        action_class: destructive
+        consequence: irreversible
+        escalation: human-confirmation-required
+        note: >-
+          Unscoped purge of an organization's recorded activity data. No dry-run,
+          no confirmation parameter, and no recovery window is published.
+
+  - target: $.paths['/api/organizations/{organization_pk}/'].delete
+    description: Flag tenant deletion.
+    update:
+      x-agentic-access:
+        action_class: destructive
+        consequence: irreversible
+        escalation: human-confirmation-required
+
+  - target: $.paths['/api/organizations/{organization_pk}/serviceaccounts/{id}/'].delete
+    description: Flag credential revocation.
+    update:
+      x-agentic-access:
+        action_class: destructive
+        consequence: irreversible
+        escalation: human-confirmation-required
+        note: >-
+          Revokes the token. A replacement Service Account gets a NEW token, and
+          its Role cannot be changed after creation.
+
+  - target: $.paths['/api/bricks/{id}/lock/'].post
+    description: Record the reversal pairing for package locking.
+    update:
+      x-reversibility:
+        reversible: true
+        reversal_operation: destroyPackageLockCreate
+        window: not published

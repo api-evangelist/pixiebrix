@@ -1,0 +1,429 @@
+# PixieBrix Docs
+
+## Docs
+
+- [Welcome to PixieBrix](https://docs.pixiebrix.com/welcome-to-pixiebrix.md)
+- [Activating Mods](https://docs.pixiebrix.com/activating-mods.md)
+- [Linking Your PixieBrix Account](https://docs.pixiebrix.com/activating-mods/linking-your-pixiebrix-account.md)
+- [Activating Your Assigned Mods](https://docs.pixiebrix.com/activating-mods/activating-your-assigned-mods.md)
+- [Updating Mods](https://docs.pixiebrix.com/activating-mods/updating-mods.md)
+- [Troubleshooting](https://docs.pixiebrix.com/activating-mods/troubleshooting.md): Troubleshooting Mod Activation
+- [Developing Mods](https://docs.pixiebrix.com/developing-mods.md)
+- [Building Your First Mod](https://docs.pixiebrix.com/developing-mods/building-your-first-mod.md)
+- [Developer Concepts](https://docs.pixiebrix.com/developing-mods/developer-concepts.md)
+- [Types of Mods](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods.md)
+- [Context Menu Item](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/context-menu-item.md)
+- [Button](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/button.md)
+- [Troubleshooting Buttons](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/button/troubleshooting-buttons.md)
+- [Floating Actions](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/button/floating-actions.md): Run mods using buttons that appear as Floating Action icons on the page.
+- [Hotkeys](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/button/hotkeys.md): Initiate mod runs with keyboard shortcuts
+- [Sidebar Panel](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/sidebar-panel.md)
+- [Trigger](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/trigger.md)
+- [Working with Custom Events](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/trigger/working-with-custom-events.md)
+- [Intervals](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/trigger/intervals.md)
+- [Quick Bar Action](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/quick-bar-action.md)
+- [AI Chat Copilot](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/ai-chat-copilot.md)
+- [Customer Support Copilot](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/customer-support-copilot.md)
+- [Customizing Support Flow](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/customer-support-copilot/customizing-support-flow.md)
+- [What Are URL Match Patterns?](https://docs.pixiebrix.com/developing-mods/developer-concepts/types-of-mods/what-are-url-match-patterns.md)
+- [Text Template Guide](https://docs.pixiebrix.com/developing-mods/developer-concepts/text-template-guide.md)
+- [Basic Text Templates](https://docs.pixiebrix.com/developing-mods/developer-concepts/text-template-guide/basic-text-templates.md)
+- [Transforming Data with Filters](https://docs.pixiebrix.com/developing-mods/developer-concepts/text-template-guide/transforming-data-with-filters.md)
+- [Writing Conditional Statements](https://docs.pixiebrix.com/developing-mods/developer-concepts/text-template-guide/writing-conditional-statements.md)
+- [Template Examples](https://docs.pixiebrix.com/developing-mods/developer-concepts/text-template-guide/template-examples.md)
+- [Using Bricks](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks.md)
+- [Brick Input Data Types](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks/brick-input-data-types.md)
+- [Bricks for Scraping Data](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks/bricks-for-scraping-data.md)
+- [Retrieving Attributes from Elements](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks/bricks-for-scraping-data/retrieving-attributes-from-elements.md)
+- [Bricks for Interacting with the DOM](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks/bricks-for-interacting-with-the-dom.md)
+- [Bricks for AI](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks/bricks-for-ai.md)
+- [Passing Custom Data to an LLM](https://docs.pixiebrix.com/developing-mods/developer-concepts/using-bricks/bricks-for-ai/passing-custom-data-to-an-llm.md)
+- [Variables and Data Context](https://docs.pixiebrix.com/developing-mods/developer-concepts/variables-and-data-context.md)
+- [Types of Variables](https://docs.pixiebrix.com/developing-mods/developer-concepts/variables-and-data-context/types-of-variables.md)
+- [Referencing Variables in Brick Configuration](https://docs.pixiebrix.com/developing-mods/developer-concepts/variables-and-data-context/referencing-variables-in-brick-configuration.md)
+- [Using Mod Variables](https://docs.pixiebrix.com/developing-mods/developer-concepts/variables-and-data-context/using-mod-variables.md)
+- [Advanced: Using Page State](https://docs.pixiebrix.com/developing-mods/developer-concepts/variables-and-data-context/advanced-using-page-state.md)
+- [User Input](https://docs.pixiebrix.com/developing-mods/developer-concepts/user-input.md)
+- [Show a Modal or Sidebar Form](https://docs.pixiebrix.com/developing-mods/developer-concepts/user-input/show-a-modal-or-sidebar-form.md)
+- [Prompt for Input](https://docs.pixiebrix.com/developing-mods/developer-concepts/user-input/prompt-for-input.md)
+- [Working With APIs](https://docs.pixiebrix.com/developing-mods/developer-concepts/working-with-apis.md)
+- [API Providers](https://docs.pixiebrix.com/developing-mods/developer-concepts/working-with-apis/api-providers.md)
+- [Encoding URL Parts](https://docs.pixiebrix.com/developing-mods/developer-concepts/working-with-apis/encoding-url-parts.md)
+- [Selecting and Transforming API Results](https://docs.pixiebrix.com/developing-mods/developer-concepts/working-with-apis/selecting-and-transforming-api-results.md)
+- [Working with Markdown](https://docs.pixiebrix.com/developing-mods/developer-concepts/working-with-markdown.md)
+- [Control Flow](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow.md)
+- [Conditional Field on Bricks](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow/conditional-field-on-bricks.md)
+- [Control Flow Bricks](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow/control-flow-bricks.md)
+- [When to Use Control Flow Bricks](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow/control-flow-bricks/when-to-use-control-flow-bricks.md)
+- [Control Flow Brick Output](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow/control-flow-bricks/control-flow-brick-output.md)
+- [Raising Exceptions/Errors](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow/control-flow-bricks/raising-exceptions-errors.md)
+- [FAQs](https://docs.pixiebrix.com/developing-mods/developer-concepts/control-flow/control-flow-bricks/faqs.md)
+- [Transforming Data](https://docs.pixiebrix.com/developing-mods/developer-concepts/transforming-data.md)
+- [Using JavaScript in PixieBrix](https://docs.pixiebrix.com/developing-mods/developer-concepts/transforming-data/using-javascript-in-pixiebrix.md)
+- [Using JQ in PixieBrix](https://docs.pixiebrix.com/developing-mods/developer-concepts/transforming-data/using-jq-in-pixiebrix.md)
+- [Building Interfaces](https://docs.pixiebrix.com/developing-mods/developer-concepts/building-interfaces.md)
+- [Understanding the Preview Panel](https://docs.pixiebrix.com/developing-mods/developer-concepts/building-interfaces/understanding-the-preview-panel.md)
+- [Styling Elements](https://docs.pixiebrix.com/developing-mods/developer-concepts/building-interfaces/styling-elements.md)
+- [Adding Advanced Elements](https://docs.pixiebrix.com/developing-mods/developer-concepts/building-interfaces/adding-advanced-elements.md)
+- [Custom Themes/CSS](https://docs.pixiebrix.com/developing-mods/developer-concepts/building-interfaces/custom-themes-css.md): Applying custom themes and CSS to your forms and interfaces
+- [Mod Product Telemetry](https://docs.pixiebrix.com/developing-mods/developer-concepts/mod-product-telemetry.md): Capturing mod product engagement and error telemetry
+- [Advanced: Brick Runtime](https://docs.pixiebrix.com/developing-mods/developer-concepts/advanced-brick-runtime.md)
+- [Advanced: Mod Performance Tuning](https://docs.pixiebrix.com/developing-mods/developer-concepts/advanced-mod-performance-tuning.md): Best practices for performance tuning mods
+- [Customizing Existing Mods](https://docs.pixiebrix.com/developing-mods/customizing-existing-mods.md)
+- [Sharing Mods](https://docs.pixiebrix.com/developing-mods/sharing-mods.md)
+- [Saving a Mod](https://docs.pixiebrix.com/developing-mods/sharing-mods/saving-a-mod.md)
+- [Exposing Activation-Time Mod Options](https://docs.pixiebrix.com/developing-mods/sharing-mods/exposing-activation-time-mod-options.md)
+- [Sharing a Mod With Your Team](https://docs.pixiebrix.com/developing-mods/sharing-mods/sharing-a-mod-with-your-team.md)
+- [Updating Published Mods](https://docs.pixiebrix.com/developing-mods/sharing-mods/updating-published-mods.md)
+- [Troubleshooting](https://docs.pixiebrix.com/developing-mods/troubleshooting.md)
+- [Mod Development Best Practices](https://docs.pixiebrix.com/developing-mods/mod-development-best-practices.md): Mod development best practices, style guide, and refactoring tips
+- [Advanced: Workshop](https://docs.pixiebrix.com/developing-mods/advanced-workshop.md)
+- [Mod Configuration Options](https://docs.pixiebrix.com/developing-mods/mod-configuration-options.md)
+- [Platform Overview](https://docs.pixiebrix.com/platform-overview.md)
+- [Page Editor](https://docs.pixiebrix.com/platform-overview/page-editor.md)
+- [Open the Page Editor](https://docs.pixiebrix.com/platform-overview/page-editor/open-the-page-editor.md)
+- [Page Editor Components](https://docs.pixiebrix.com/platform-overview/page-editor/page-editor-components.md)
+- [Mod Listing Panel](https://docs.pixiebrix.com/platform-overview/page-editor/page-editor-components/mod-listing-panel.md)
+- [Brick Actions Panel](https://docs.pixiebrix.com/platform-overview/page-editor/page-editor-components/brick-actions-panel.md)
+- [Brick Configuration Panel](https://docs.pixiebrix.com/platform-overview/page-editor/page-editor-components/brick-configuration-panel.md)
+- [Data Panel](https://docs.pixiebrix.com/platform-overview/page-editor/page-editor-components/data-panel.md): The data panel shows the input/output for specific bricks.
+- [Admin Console](https://docs.pixiebrix.com/platform-overview/admin-console.md)
+- [Campaigns](https://docs.pixiebrix.com/platform-overview/admin-console/campaigns.md)
+- [Telemetry](https://docs.pixiebrix.com/platform-overview/admin-console/telemetry.md)
+- [Extension Console](https://docs.pixiebrix.com/platform-overview/extension-console.md)
+- [Managing Teams](https://docs.pixiebrix.com/managing-teams.md)
+- [Creating a Team](https://docs.pixiebrix.com/managing-teams/creating-a-team.md)
+- [Inviting Members](https://docs.pixiebrix.com/managing-teams/inviting-members.md)
+- [Access Control](https://docs.pixiebrix.com/managing-teams/access-control.md)
+- [Roles](https://docs.pixiebrix.com/managing-teams/access-control/roles.md)
+- [Groups](https://docs.pixiebrix.com/managing-teams/access-control/groups.md)
+- [Managing Team Integrations](https://docs.pixiebrix.com/managing-teams/managing-team-integrations.md)
+- [Assigning Mods](https://docs.pixiebrix.com/managing-teams/assigning-mods.md)
+- [Billing](https://docs.pixiebrix.com/managing-teams/billing.md)
+- [Advanced: Isolating Development, Test, and Production Environments](https://docs.pixiebrix.com/managing-teams/advanced-isolating-development-test-and-production-environments.md): Information on logically isolating development, testing, and production PixieBrix environments
+- [Deploying Mods](https://docs.pixiebrix.com/deploying-mods.md)
+- [Deployment Keys](https://docs.pixiebrix.com/deploying-mods/deployment-keys.md): Deploy mods without requiring an end-user account
+- [Integrations](https://docs.pixiebrix.com/integrations.md)
+- [Configuring Integrations](https://docs.pixiebrix.com/integrations/configuring-integrations.md)
+- [Integration Scenarios](https://docs.pixiebrix.com/integrations/integration-scenarios.md): Integration scenarios and tradeoffs
+- [Embed Web Apps via IFrames](https://docs.pixiebrix.com/integrations/embed-web-apps-via-iframes.md): Embed context-aware web applications on any page using inline frames (IFrames)
+- [Integrate with Desktop Apps via Custom URL Schemes](https://docs.pixiebrix.com/integrations/integrate-with-desktop-apps-via-custom-url-schemes.md): Integrate with Desktop Apps via Custom URL Schemes
+- [Airtable](https://docs.pixiebrix.com/integrations/airtable.md)
+- [Automation Anywhere](https://docs.pixiebrix.com/integrations/automation-anywhere.md)
+- [Configure Automation Anywhere Integration in PixieBrix](https://docs.pixiebrix.com/integrations/automation-anywhere/configure-automation-anywhere-integration-in-pixiebrix.md)
+- [Embedding the Automation Co-Pilot](https://docs.pixiebrix.com/integrations/automation-anywhere/embedding-the-automation-co-pilot.md): Embedding the Automation Anywhere Co-Pilot on any page
+- [Running AA Bots via Control Room](https://docs.pixiebrix.com/integrations/automation-anywhere/running-aa-bots-via-control-room.md)
+- [Creating AARI Requests](https://docs.pixiebrix.com/integrations/automation-anywhere/creating-aari-requests.md)
+- [Enhancing AARI Table Fields](https://docs.pixiebrix.com/integrations/automation-anywhere/enhancing-aari-table-fields.md)
+- [Enhancing AARI Forms](https://docs.pixiebrix.com/integrations/automation-anywhere/enhancing-aari-forms.md): Enhancing AARI Forms within the Control Room
+- [AARI Extensions Enterprise IT Setup Guide](https://docs.pixiebrix.com/integrations/automation-anywhere/aari-extensions-enterprise-it-setup-guide.md): Information on setting up Automation Anywhere Automation Co-Pilot
+- [Point PixieBrix Extension to Staging AuthConfig App](https://docs.pixiebrix.com/integrations/automation-anywhere/aari-extensions-enterprise-it-setup-guide/point-pixiebrix-extension-to-staging-authconfig-app.md)
+- [Create a Control Room Certificate on Windows](https://docs.pixiebrix.com/integrations/automation-anywhere/create-a-control-room-certificate-on-windows.md)
+- [Google Drive](https://docs.pixiebrix.com/integrations/google-drive.md)
+- [Creating Google Drive Integration](https://docs.pixiebrix.com/integrations/google-drive/creating-google-drive-integration.md)
+- [Google Drive Bricks](https://docs.pixiebrix.com/integrations/google-drive/google-drive-bricks.md)
+- [Troubleshooting Google Integration Errors](https://docs.pixiebrix.com/integrations/google-drive/troubleshooting-google-integration-errors.md)
+- [Sheety: Sharing Google Sheets without Google Workspace](https://docs.pixiebrix.com/integrations/google-drive/sheety-sharing-google-sheets-without-google-workspace.md)
+- [HTTP Basic Authentication](https://docs.pixiebrix.com/integrations/http-basic-authentication.md): Authenticating API requests that require HTTP Basic Authentication
+- [LM Studio](https://docs.pixiebrix.com/integrations/lm-studio.md): Documentation on using LM Studio models from PixieBrix
+- [Microsoft](https://docs.pixiebrix.com/integrations/microsoft.md)
+- [Connect to Custom Azure Applications/APIs](https://docs.pixiebrix.com/integrations/microsoft/connect-to-custom-azure-applications-apis.md)
+- [Add a Power BI chart to the Sidebar](https://docs.pixiebrix.com/integrations/microsoft/add-a-power-bi-chart-to-the-sidebar.md)
+- [OAuth2 Client Credentials](https://docs.pixiebrix.com/integrations/oauth2-client-credentials.md): Make API requests that require OAuth2 Client Credentials Grant authentication
+- [Ollama](https://docs.pixiebrix.com/integrations/ollama.md): Integrating with a local Ollama server for on-device AI
+- [OpenAI/ChatGPT](https://docs.pixiebrix.com/integrations/openai-chatgpt.md)
+- [OpenClaw](https://docs.pixiebrix.com/integrations/openclaw.md): Integrating with OpenClaw, NanoClaw, ZeroClaw, and other claw providers
+- [Retool](https://docs.pixiebrix.com/integrations/retool.md)
+- [Embed a Retool App](https://docs.pixiebrix.com/integrations/retool/embed-a-retool-app.md)
+- [Trigger Retool Workflows](https://docs.pixiebrix.com/integrations/retool/trigger-retool-workflows.md)
+- [Salesforce](https://docs.pixiebrix.com/integrations/salesforce.md)
+- [SerpAPI](https://docs.pixiebrix.com/integrations/serpapi.md)
+- [Streamlit](https://docs.pixiebrix.com/integrations/streamlit.md): Embed a Streamlit data app on any web application.
+- [Trello](https://docs.pixiebrix.com/integrations/trello.md)
+- [Find board and list IDs in Trello](https://docs.pixiebrix.com/integrations/trello/find-board-and-list-ids-in-trello.md)
+- [UiPath](https://docs.pixiebrix.com/integrations/uipath.md)
+- [Running unattended bots via UiPath Cloud Orchestrator](https://docs.pixiebrix.com/integrations/uipath/running-unattended-bots-via-uipath-cloud-orchestrator.md)
+- [Embed a UiPath App](https://docs.pixiebrix.com/integrations/uipath/embed-a-uipath-app.md)
+- [Running local bots via UiPath Assistant](https://docs.pixiebrix.com/integrations/uipath/running-local-bots-via-uipath-assistant.md)
+- [Val Town](https://docs.pixiebrix.com/integrations/val-town.md)
+- [Zapier](https://docs.pixiebrix.com/integrations/zapier.md)
+- [Zendesk](https://docs.pixiebrix.com/integrations/zendesk.md)
+- [Advanced: Custom Integrations](https://docs.pixiebrix.com/integrations/advanced-custom-integrations.md)
+- [Storing Data with Team Databases](https://docs.pixiebrix.com/storing-data-with-team-databases.md)
+- [Enterprise IT Setup](https://docs.pixiebrix.com/enterprise-it-setup.md)
+- [Authentication](https://docs.pixiebrix.com/enterprise-it-setup/authentication.md)
+- [Enabling Login with Microsoft](https://docs.pixiebrix.com/enterprise-it-setup/authentication/enabling-login-with-microsoft.md)
+- [Enabling Login with Google](https://docs.pixiebrix.com/enterprise-it-setup/authentication/enabling-login-with-google.md)
+- [Setting Up SAML/SSO](https://docs.pixiebrix.com/enterprise-it-setup/authentication/setting-up-saml-sso.md)
+- [Browser Extension Installation and Configuration](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration.md)
+- [Browser Extension Installation Policy](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-installation-policy.md)
+- [Google Workspace Policy](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-installation-policy/google-workspace-policy.md)
+- [Windows Group Policy/ADMX](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-installation-policy/windows-group-policy-admx.md)
+- [Windows Registry](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-installation-policy/windows-registry.md)
+- [Citrix Profile Configuration](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-installation-policy/citrix-profile-configuration.md): Citrix profile management and streaming configuration
+- [Advanced: Create a Windows Installer EXE](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-installation-policy/advanced-create-a-windows-installer-exe.md): Creating a Windows Installer using Nullsoft Scriptable Install System (NSIS)
+- [Browser Extension Configuration Policy](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-configuration-policy.md)
+- [Extension Authentication Configuration](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-configuration-policy/extension-authentication-configuration.md)
+- [Microsoft Edge Mini Menu Configuration](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-configuration-policy/microsoft-edge-mini-menu-configuration.md): Instructions for disabling the Microsoft Edge Mini Menu
+- [Microphone and Audio Capture Configuration](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-configuration-policy/microphone-and-audio-capture-configuration.md): Instructions for configuring microphone and tab audio capture permissions
+- [Extension Logo Configuration](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-configuration-policy/extension-logo-configuration.md): This page describes how to force a Team Logo to be shown / hidden in the PixieBrix Sidebar for a subset of users via a Chrome Policy.
+- [Managed Storage Schema](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-configuration-policy/managed-storage-schema.md)
+- [Browser Extension Security](https://docs.pixiebrix.com/enterprise-it-setup/browser-extension-installation-and-configuration/browser-extension-security.md)
+- [Network/Email Firewall Configuration](https://docs.pixiebrix.com/enterprise-it-setup/network-email-firewall-configuration.md): Information on configuring enterprise network and email firewalls for use with PixieBrix
+- [Custom Branding and Themes](https://docs.pixiebrix.com/enterprise-it-setup/custom-branding-and-themes.md)
+- [Security and Compliance](https://docs.pixiebrix.com/enterprise-it-setup/security-and-compliance.md)
+- [Performance](https://docs.pixiebrix.com/enterprise-it-setup/performance.md): Browser Extension system requirements and performance optimization information
+- [Version Control and Backups](https://docs.pixiebrix.com/enterprise-it-setup/version-control-and-backups.md): Information on package version control and system backups
+- [Web Application Platform Configuration](https://docs.pixiebrix.com/enterprise-it-setup/web-application-platform-configuration.md): Enterprise configuration for running mods as a web app or embedded frame (IFrame)
+- [Enterprise Troubleshooting](https://docs.pixiebrix.com/enterprise-it-setup/enterprise-troubleshooting.md): Troubleshooting Enterprise permissions, extension, and mod deployment issues
+- [Developer API](https://docs.pixiebrix.com/developer-api.md)
+- [Service Accounts](https://docs.pixiebrix.com/developer-api/service-accounts.md)
+- [Making an API Request](https://docs.pixiebrix.com/developer-api/making-an-api-request.md)
+- [Team Management APIs](https://docs.pixiebrix.com/developer-api/team-management-apis.md): PixieBrix Team Management APIs Overviews
+- [Package Management APIs](https://docs.pixiebrix.com/developer-api/package-management-apis.md)
+- [Deployment APIs](https://docs.pixiebrix.com/developer-api/deployment-apis.md)
+- [Database APIs](https://docs.pixiebrix.com/developer-api/database-apis.md)
+- [Health Check APIs](https://docs.pixiebrix.com/developer-api/health-check-apis.md): Service Health Check APIs
+- [OpenAPI Specification](https://docs.pixiebrix.com/developer-api/openapi-specification.md)
+- [Deprecated Resources](https://docs.pixiebrix.com/developer-api/deprecated-resources.md)
+- [How To](https://docs.pixiebrix.com/how-to.md)
+- [Migrate from Vue to Set Input Value Bricks](https://docs.pixiebrix.com/how-to/migrate-from-vue-to-set-input-value-bricks.md)
+- [Installing the PixieBrix Chrome Browser Extension](https://docs.pixiebrix.com/how-to/installing-the-pixiebrix-chrome-browser-extension.md)
+- [Changing the Quick Bar Shortcut](https://docs.pixiebrix.com/how-to/changing-the-quick-bar-shortcut.md)
+- [Pinning the Chrome Extension](https://docs.pixiebrix.com/how-to/pinning-the-chrome-extension.md)
+- [Updating the Browser Extension](https://docs.pixiebrix.com/how-to/updating-the-browser-extension.md)
+- [Installing a PixieBrix Pre-Release Build](https://docs.pixiebrix.com/how-to/installing-a-pixiebrix-pre-release-build.md)
+- [Editing Pages with iFrames](https://docs.pixiebrix.com/how-to/editing-pages-with-iframes.md)
+- [Adding bricks to mods](https://docs.pixiebrix.com/how-to/adding-bricks-to-mods.md)
+- [Opening the PixieBrix Sidebar](https://docs.pixiebrix.com/how-to/opening-the-pixiebrix-sidebar.md)
+- [Troubleshooting](https://docs.pixiebrix.com/how-to/troubleshooting.md)
+- [General Mod Troubleshooting](https://docs.pixiebrix.com/how-to/troubleshooting/general-mod-troubleshooting.md)
+- [Troubleshooting Bad API Requests](https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-bad-api-requests.md)
+- [Troubleshooting Network Errors](https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-network-errors.md)
+- [Troubleshooting IndexedDB Errors](https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-indexeddb-errors.md): Troubleshooting IndexedDB connection, quota, and corruption problems
+- [Troubleshooting Browser Extension Performance and Crashes](https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-browser-extension-performance-and-crashes.md): Troubleshooting browser extension performance and crashes
+- [Troubleshooting extension corruption errors](https://docs.pixiebrix.com/how-to/troubleshooting/troubleshooting-extension-corruption-errors.md): Troubleshooting "The extension may have been corrupted" errors
+- [Extend my PixieBrix Trial](https://docs.pixiebrix.com/how-to/extend-my-pixiebrix-trial.md): This guide explains why you might see a banner in the Admin Console and how to fix it
+- [Copying a mod](https://docs.pixiebrix.com/how-to/copying-a-mod.md): If you'd like to copy a mod to create your own version to develop on, follow these steps.
+- [Release Notes](https://docs.pixiebrix.com/release-notes.md)
+- [Release 3.3.0](https://docs.pixiebrix.com/release-notes/release-3.3.0.md)
+- [Release 3.2.10](https://docs.pixiebrix.com/release-notes/release-3.2.10.md): Published to the Chrome Web Store on August 11, 2026
+- [Release Notes Archive](https://docs.pixiebrix.com/release-notes/release-notes-archive.md)
+- [Release 3.2.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.9.md): Published to the Chrome Web Store on July 29, 2026
+- [Release 3.2.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.8.md): Published in the Chrome Web Store on July 13, 2026
+- [Release 3.2.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.7.md): Published to the Chrome Web Store on June 29, 2026
+- [Release 3.2.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.6.md): Release 3.2.6 was not published to the Chrome Web Store. The changes were published in 3.2.7 on June 29, 2026
+- [Release 3.2.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.5.md)
+- [Release 3.2.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.4.md): Published to the Chrome Web Store on May 26, 2026
+- [Release 3.2.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.3.md): Published to the Chrome Web Store on May 11, 2026
+- [Release 3.2.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.2.md): Published to the Chrome Web Store on April 27, 2026
+- [Release 3.2.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.1.md): Released to the Chrome Web Store on April 14, 2026
+- [Release 3.2.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.2.0.md): Released to the Chrome Web Store on April 6, 2026
+- [Release 3.1.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.1.3.md): Released to the Chrome Web Store on March 23, 2026
+- [Release 3.1.2-hotfix.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.1.2-hotfix.1.md)
+- [Release 3.1.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.1.2.md): Published to the Chrome Web Store on March 16, 2026
+- [Release 3.1.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.1.1.md): Published to the Chrome Web Store on March 2, 2026
+- [Release 3.1.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.1.0.md): Release 3.0.1 was published to the Chrome Web Store on February 23, 2026
+- [Release 3.0.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.9.md)
+- [Release 3.0.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.8.md): Published to the Chrome Web Store on February 10, 2026
+- [Release 3.0.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.7.md): Published to the Chrome Web Store on February 3, 2026
+- [Release 3.0.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.6.md): Published to the Chrome Web Store on January 12, 2026
+- [Release 3.0.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.5.md): Published to the Chrome Web Store on December 17, 2025
+- [Release 3.0.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.4.md): Published to the Chrome Web Store on November 24, 2025
+- [Release 3.0.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.3.md): Published to the Chrome Web Store on November 10, 2025
+- [Release 3.0.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.2.md): Published to the Chrome Web Store on October 27, 2025
+- [Release 3.0.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.1.md): Published to the Chrome Web Store on October 14, 2025
+- [Release 3.0.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-3.0.0.md): Published to the Chrome Web Store on October 1, 2025
+- [Release 2.3.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.8.md): Published to the Chrome Web Store on September 18, 2025
+- [Release 2.3.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.7.md): Published to the Chrome Web Store on September 10, 2025
+- [System Upgrade: August 16, 6:00 AM UTC](https://docs.pixiebrix.com/release-notes/release-notes-archive/system-upgrade-august-16-6-00-am-utc.md)
+- [Release 2.3.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.6.md): Published to the Chrome Web Store on August 25, 2025
+- [Release 2.3.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.5.md): Published to the Chrome Web Store on August 4, 2025
+- [Release 2.3.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.4.md): Published to the Chrome Web Store on July 17, 2025
+- [Release 2.3.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.3.md): Published to the Chrome Web Store on July 7, 2025
+- [Release 2.3.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.2.md): Published to the Chrome Web Store on June 18, 2025
+- [Release 2.3.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.1.md): Published to the Chrome Web Store on May 30, 2025
+- [Release 2.3.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.3.0.md): Published to the Chrome Web Store on May 13, 2025
+- [Release 2.2.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.10.md): Published to the Chrome Web Store on May 5, 2025
+- [Release 2.2.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.9.md): Published to the Chrome Web Store on April 16, 2025
+- [Release 2.2.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.8.md): Published to the Chrome Web Store on March 31, 2025
+- [Release 2.2.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.7.md): Published to the Chrome Web Store on March 19, 2025
+- [Release 2.2.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.6.md): Published to the Chrome Web Store on March 3, 2025
+- [Release 2.2.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.5.md): Published to the Chrome Web Store on February 18, 2025
+- [Release 2.2.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.4.md): Published to the Chrome Web Store on January 27, 2025
+- [Release 2.2.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.3.md): Published to the Chrome Web Store on January 13, 2025
+- [Release 2.2.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.2.md): Published to the Chrome Web Store on December 30, 2024
+- [Release 2.2.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.1.md): Release 2.2.1 was published to the Chrome Web Store on December 9, 2024
+- [Release 2.2.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.2.0.md): Release 2.2.0 was published to the Chrome Web Store on November 18, 2024
+- [Release 2.1.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.7.md): Release 2.1.7 was published to the Chrome Web Store on November 11, 2024
+- [Release 2.1.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.6.md): Release 2.1.6 is under construction
+- [Release 2.1.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.5.md): Release 2.1.5 was published to the Chrome Web Store on October 21, 2024
+- [Release 2.1.4 (Hotfix)](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.4-hotfix.md): Release 2.1.4 was published to the Chrome Web Store on October 8, 2024
+- [Release 2.1.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.3.md): Release 2.1.3 was published to the Chrome Web Store on October 7, 2024
+- [Release 2.1.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.2.md): Release 2.1.2 was published to the Chrome Web Store on September 23, 2024
+- [Release 2.1.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.1.md): Release 2.1.1 was published to the Chrome Web Store on September 9, 2024
+- [Release 2.1.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.1.0.md): Release 2.1.0 was published to the Chrome Web Store on August 26, 2024
+- [Release 2.0.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.7.md): Release 2.0.7 was published to the Chrome Web Store on August 12, 2024
+- [Release 2.0.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.6.md): Release 2.0.6 was published to the Chrome Web Store on July 30, 2024
+- [Release 2.0.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.5.md): Release 2.0.5 was published to the Chrome Web Store on July 15, 2024
+- [Release 2.0.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.4.md): Release 2.0.4 was published to the Chrome Web Store on July 8, 2024
+- [Release 2.0.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.3.md): Release 2.0.3 was published to the Chrome Web Store on June 24, 2024
+- [Release 2.0.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.2.md): Release 2.0.2 was published to the Chrome Web Store on June 11, 2024
+- [Release 2.0.1 (Hotfix)](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.1-hotfix.md)
+- [Release 2.0.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-2.0.0.md): Published to the Chrome Web Store on May 28, 2024
+- [PixieBrix Browser Extension 2.0.0 Migration Guide](https://docs.pixiebrix.com/release-notes/release-notes-archive/pixiebrix-browser-extension-2.0.0-migration-guide.md)
+- [Release 1.8.14](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.14.md): Published to the Chrome Web Store on May 14, 2024
+- [Release 1.8.13](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.13.md): Published to the Chrome Web Store on May 1, 2024
+- [Release 1.8.12](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.12.md): Published to the Chrome Web Store on April 8, 2024
+- [Release 1.8.11](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.11.md): Published to the Chrome Web Store on March 25, 2024
+- [Release 1.8.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.10.md): Published to the Chrome Web Store on March 11, 2024
+- [Release 1.8.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.9.md): Released to the Chrome Web Store on February 20, 2024
+- [Release 1.8.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.8.md): Released to the Chrome Web Store on February 7, 2024
+- [Release 1.8.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.7.md): Released to the Chrome Web Store on January 24, 2024
+- [Release 1.8.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.6.md): Released to the Chrome Web Store on January 9, 2024
+- [Release 1.8.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.5.md): Released to the Chrome Web Store on December 18, 2023
+- [Release 1.8.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.4.md): Released to the Chrome Web Store on December 4, 2023
+- [Release 1.8.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.3.md): Release 1.8.3 is was released to the Chrome Web Store on November 20, 2023
+- [Release 1.8.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.2.md): Release 1.8.2 was released to the Chrome Web Store on November 6, 2023
+- [Release 1.8.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.1.md): Release 1.8.1 was released to the Chrome Web Store on October 12, 2023
+- [Release 1.8.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.8.0.md): Release 1.8.0 was released to the Chrome Web Store on October 12, 2023
+- [Release 1.7.41](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.41.md): Published to the Chrome Web Store on October 2, 2023
+- [Release 1.7.40](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.40.md): Published to the Chrome Web Store on September 13, 2023
+- [Release 1.7.39](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.39.md): Published to the Chrome Web Store on August 31, 2023
+- [Release 1.7.38](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.38.md): Published to the Chrome Web Store on August 30, 2023
+- [Release 1.7.37](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.37.md): This release contains a regression, and will not be published
+- [Release 1.7.36](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.36.md): Published to the Chrome Web Store on August 11, 2023
+- [Release 1.7.35](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.35.md): Published to the Chrome Web Store on August 1, 2023
+- [Release 1.7.34](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.34.md): Published to the Chrome Web Store on July 20, 2023
+- [Release 1.7.33](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.33.md): Published to the Chrome Web Store on July 7, 2023
+- [Release 1.7.32](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.32.md): Released to the Chrome Web Store on June 26, 2023
+- [Release 1.7.31](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.31.md): This release contains a regression, and will not be published
+- [Release 1.7.30](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.30.md): Published to the Chrome Web Store on June 20, 2023
+- [Release 1.7.29](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.29.md): Published to the Chrome Web Store on June 6, 2023
+- [Release 1.7.28](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.28.md): Published to the Chrome Web Store on May 22, 2023
+- [Release 1.7.27](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.27.md): Published to the Chrome Web Store on May 11, 2023
+- [Release 1.7.26](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.26.md): Published to the Chrome Web Store on May 3, 2023
+- [Release 1.7.25](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.25.md): Published to the Chrome Web Store on April 30, 2023
+- [Release 1.7.24](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.24.md): Published in the Chrome Web Store on April 27, 2023
+- [Release 1.7.23](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.23.md): Published to the Chrome Web Store on April 13, 2023
+- [Release 1.7.22](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.22.md): Published to the Chrome Web Store on March 31, 2023
+- [Release 1.7.21](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.21.md): Published to the Chrome Web Store on March 22, 2023
+- [Release 1.7.20](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.20.md): Published to the Chrome Web Store on March 13, 2023
+- [Release 1.7.19](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.19.md): Published to the Chrome Web Store on February 21, 2023
+- [Release 1.7.18](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.18.md): Release to the Chrome Web Store on Feb 1, 2023
+- [Release 1.7.17](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.17.md): Released to the Chrome Web Store on January 23, 2023
+- [Release 1.7.16](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.16.md): Published to the Chrome Web Store on January 9, 2023
+- [Release 1.7.15](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.15.md): This release was published to the Chrome Web Store on December 9, 2022
+- [Release 1.7.14](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.14.md): Published to the Chrome Web Store on December 2, 2022
+- [Release 1.7.13](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.13.md): Released to the Chrome Web Store on November 19, 2022
+- [Release 1.7.12](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.12.md): Published to the Chrome Web Store on November 11, 2022
+- [Release 1.7.11](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.11.md): Published to the Chrome Web Store on October 21, 2022
+- [Release 1.7.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.10.md): Published to Chrome Web Store on October 14, 2022
+- [Release 1.7.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.9.md): Published to the Chrome Web Store on September 30, 2022
+- [Release 1.7.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.8.md): Published to the Chrome Web Store on September 23, 2022
+- [Release 1.7.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.7.md): Published to the Chrome Web Store on September 16, 2022
+- [Release 1.7.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.6.md): Published to the Chrome Web Store on September 1, 2022
+- [Release 1.7.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.5.md): This release will not be submitted to the Chrome Web Store
+- [Release 1.7.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.4.md): Published to the Chrome Web Store on August 16, 2022
+- [Release 1.7.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.3.md): Published to the Chrome Web Store on August 11, 2022
+- [Release 1.7.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.2.md): Published to the Chrome Web Store on 7/25/2022
+- [Release 1.7.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.1.md): Published to the Chrome Web Store on July 5, 2022
+- [Release 1.7.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.7.0.md): Published to the Chrome Web Store on June 19, 2022
+- [Release 1.6.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.6.4.md): Published to the Chrome Web Store on June 2, 2022
+- [Release 1.6.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.6.3.md): Published to the Chrome Web Store on May 24, 2022
+- [Release 1.6.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.6.2.md): Published to the Chrome Web Store on 5/11/2022
+- [Release 1.6.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.6.1.md): Published to the Chrome Web Store on 5/4/2022
+- [Release 1.6.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.6.0.md): Released to the Chrome Web Store on 4/27/2022
+- [Release 1.5.11](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.11.md): Released to the Chrome Web Store on 4/14/2022
+- [Release 1.5.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.10.md): Published to the Chrome Web Store on 4/13/2022
+- [Release 1.5.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.9.md): Released to the Chrome Web Store on April 1, 2022
+- [Release 1.5.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.8.md): Published to the Chrome Web Store on March 23, 2022
+- [Release 1.5.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.7.md): Published to Chrome Web Store on March 16, 2022
+- [Release 1.5.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.6.md): Released to the Chrome Web Store on March 9, 2022
+- [Release 1.5.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.5.md): Released in the Chrome Web Store on February 24, 2022
+- [Release 1.5.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.4.md): Released to the Chrome Web Store
+- [Release 1.5.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.3.md): Released to the Chrome Web Store on Feb 6, 2022
+- [Release 1.5.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.2.md): Released to the Chrome Web Store on Jan 30, 2022
+- [Release 1.5.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.1.md): Published to the Chrome Web Store on 1.5.1
+- [Release 1.5.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.5.0.md): Published in the Chrome Web Store on Jan 18, 2022
+- [Release 1.4.12](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.12.md): Published to the Chrome Web Store on Jan 3, 2022
+- [Release 1.4.11](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.11.md): This release was published to the Chrome Web Store on 12/21/2021
+- [Release 1.4.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.10.md): Released to the Chrome Web Store on 12/8/2021
+- [Release 1.4.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.9.md): Published to the Chrome Web Store on 12/2/2021
+- [Release 1.4.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.8.md): Published to the Chrome Web Store on 11/27/2021
+- [Release 1.4.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.7.md): Published in the Chrome Web Store 11/16/2021
+- [Release 1.4.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.6.md): This was published to the Chrome Web Store on 11/9/2021
+- [Release 1.4.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.5.md): This release was not published in the Chrome Web Store due to a bug found during QA
+- [Release 1.4.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.4.md): Published to the Chrome Web Store on 10/26/2021
+- [Release 1.4.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.3.md): This release was not released in the Chrome Web Store due to a bug found during QA
+- [Release 1.4.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.2.md): This release was not released in the Chrome Web Store due to a bug found during QA
+- [Release 1.4.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.1.md): Released to Chrome Web Store on 10/8/2021
+- [Release 1.4.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.4.0.md): Released in the Chrome Web Store on 10/3/2021
+- [Release 1.3.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.3.2.md): Release 1.3.2 was not released in the Chrome Web Store
+- [Release 1.3.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.3.1.md): Published to the Chrome Web Store on 9/17/2021
+- [Release 1.3.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.3.0.md): Released to the Chrome Web Store on 9/6/2021
+- [Release 1.2.11](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.11.md)
+- [Release 1.2.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.10.md): Published in the Chrome Web Store on 8/22/2021
+- [Release 1.2.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.9.md): Published in the Chrome Web Store on 8/19
+- [Release 1.2.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.8.md): Released in the Chrome Web Store on 8/12/2021
+- [Release 1.2.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.7.md): Published in Chrome Web Store on 8/7/2021
+- [Release 1.2.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.5.md): Published in the Chrome Web Store on 8/1/2021
+- [Release 1.2.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.4.md)
+- [Release 1.2.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.3.md): Released in the Chrome Web Store on 7/23/2021
+- [Release 1.2.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.2.md): Published to the Chrome Web Store on 7/21/2021
+- [Release 1.2.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.1.md): Published to the Chrome Web Store on 7/19/2021
+- [Release 1.2.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.2.0.md): Published to the Chrome Web Store on 7/12/2021
+- [Release 1.1.12](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.12.md): Published to Chrome Web Store on 7/7/2021
+- [Release 1.1.11](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.11.md): Published in Chrome Web Store on 6/30/2021
+- [Release 1.1.10](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.10.md): Released in Chrome Web Store on 6/21/2021
+- [Release 1.1.9](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.9.md): This release was released on 6/16/2021
+- [Release 1.1.8](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.8.md): Published to the Chrome Web Store on 6/9/2021
+- [Release: 1.1.7](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.7.md): Release to the Chrome Web Store on 6/8/2021
+- [Release: 1.1.6](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.6.md): Published in the Chrome Web Store on on 6/8/2021
+- [Release: 1.1.5](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.5.md): Published in the Chrome Web Store on 6/1/2021
+- [Release: 1.1.4](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.4.md): Published to Chrome Web Store on 5/19/2021
+- [Release: 1.1.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.3.md): Published in Chrome Web Store on 5/4/2021
+- [Release: 1.1.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.2.md): Published in the Chrome Web Store on 4/22/2021
+- [Release: 1.1.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.1.md): Published to the Chrome Web Store on 4/20/2021
+- [Release: 1.1.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.1.0.md): Published in Chrome Web Store on 4/13/2021
+- [Release: 1.0.3](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.0.3.md): Published to the Chrome Web Store on 4/8/2021
+- [Release: 1.0.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.0.2.md): Published to Chrome Web Store on 3/26/2021
+- [Release: 1.0.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.0.1.md): Published to the Chrome Web Store on 3/25/2021
+- [Release: 1.0.0](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-1.0.0.md): Published to Chrome Web Store on 3/17/2021
+- [Release: 0.2.2](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-0.2.2.md): Released in the Chrome Web Store on 3/4/2021
+- [Release: 0.2.1](https://docs.pixiebrix.com/release-notes/release-notes-archive/release-0.2.1.md): Released to the Chrome Web Store on 2/26/2021
+- [Developer Tutorials](https://docs.pixiebrix.com/tutorials/developer-tutorials.md)
+- [Beginner](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner.md)
+- [Clip web data to spreadsheet](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/clip-web-data-to-spreadsheet.md)
+- [Search Yelp Reviews from OpenTable](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/search-yelp-reviews-from-opentable.md)
+- [Right-click Currency Conversion](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/right-click-currency-conversion.md)
+- [Web Highlighter Tutorial](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/web-highlighter-tutorial.md)
+- [Trello Status Sidebar](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/trello-status-sidebar.md)
+- [Right-click Google Scholar Search](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/right-click-google-scholar-search.md)
+- [Google Dorking](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/google-dorking.md)
+- [Tweet a Link](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/tweet-a-link.md)
+- [Ask AI To Generate a LinkedIn Connection Request](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/ask-ai-to-generate-a-linkedin-connection-request.md)
+- [How to Customize the AI Rate and Fix Mod](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/how-to-customize-the-ai-rate-and-fix-mod.md)
+- [Right-click Translate Language](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/right-click-translate-language.md)
+- [Basic Translation Tutorial](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/basic-translation-tutorial.md)
+- [AI Bot Sidebar](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/ai-bot-sidebar.md)
+- [Search and Highlight Words on a Page](https://docs.pixiebrix.com/tutorials/developer-tutorials/beginner/search-and-highlight-words-on-a-page.md)
+- [Intermediate](https://docs.pixiebrix.com/tutorials/developer-tutorials/intermediate.md)
+- [Create a status nudge button in Github](https://docs.pixiebrix.com/tutorials/developer-tutorials/intermediate/create-a-status-nudge-button-in-github.md)
+- [Get Help](https://docs.pixiebrix.com/support/get-help.md): Information on contacting PixieBrix support
+
+
+---
+
+# Agent Instructions
+This documentation is published with GitBook. GitBook is the documentation platform designed so that both humans and AI agents can read, navigate, and reason over technical content effectively. Learn more at gitbook.com.
+
+## Querying This Documentation
+If you need additional information, you can query the documentation dynamically by asking a question.
+Perform an HTTP GET request on a page URL with the `ask` query parameter:
+```
+GET https://docs.pixiebrix.com/welcome-to-pixiebrix.md?ask=<question>
+```
+The question should be specific, self-contained, and written in natural language.
+The response will contain a direct answer to the question and relevant excerpts and sources from the documentation.
+Use this mechanism when the answer is not explicitly present in the current page, you need clarification or additional context, or you want to retrieve related documentation sections.

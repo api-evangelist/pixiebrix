@@ -1,0 +1,144 @@
+generated: '2026-08-26'
+method: searched
+source: https://www.pixiebrix.com/security + https://docs.pixiebrix.com/developer-api/making-an-api-request + openapi/pixiebrix-openapi.yml
+standards:
+  - id: openapi
+    conforms: true
+    version: 3.0.2
+    evidence: >-
+      A 498KB OpenAPI 3.0.2 document is served at
+      https://app.pixiebrix.com/api/openapi/ and rendered by Swagger UI at
+      https://app.pixiebrix.com/api/docs/. 200 paths, 291 operations, 138
+      component schemas, 31 tags, unique operationIds on every operation.
+  - id: rfc8288
+    name: Web Linking (Link header pagination)
+    conforms: true
+    evidence: >-
+      "Pagination metadata is returned in the `Link` response header. See RFC 8288
+      for how relation types (first, prev, next, last) work."
+      https://docs.pixiebrix.com/developer-api/making-an-api-request#pagination
+  - id: semver
+    conforms: true
+    evidence: >-
+      "We follow Semver and will increment the major version on any backward
+      incompatible changes." Applies to the Accept-header API version and to the
+      3.x extension release train.
+  - id: pagination
+    conforms: true
+    evidence: page/page_size query params on 55 operations; default 100, max 1000;
+      Link + X-Total-Count response headers.
+  - id: rfc9457
+    name: Problem Details for HTTP APIs
+    conforms: false
+    evidence: >-
+      Error envelope is Django REST Framework's {"detail": "..."} with no type,
+      title, status or instance member and no application/problem+json media type.
+      No 4xx/5xx response is declared anywhere in the OpenAPI document.
+  - id: idempotency
+    conforms: false
+    evidence: >-
+      No Idempotency-Key header or equivalent appears in the specification or the
+      documentation; 61 non-idempotent POST-201 operations have no replay
+      protection.
+  - id: oauth2
+    conforms: false
+    evidence: >-
+      The Developer API is token-only (`Authorization: Token <token>`). PixieBrix
+      acts as an OAuth 2.0 CLIENT for third-party integrations
+      (https://docs.pixiebrix.com/integrations/oauth2-client-credentials) but
+      exposes no OAuth 2.0 authorization server of its own; no
+      /.well-known/oauth-authorization-server is served.
+  - id: oidc
+    conforms: false
+    evidence: No /.well-known/openid-configuration on any host (see
+      well-known/pixiebrix-well-known.yml).
+  - id: saml2
+    conforms: true
+    scope: end-user sign-in only, not the Developer API
+    evidence: >-
+      SAML 2.0 SSO is a published Enterprise-plan feature
+      (https://www.pixiebrix.com/pricing,
+      https://docs.pixiebrix.com/enterprise-it-setup/authentication/setting-up-saml-sso).
+  - id: scim
+    conforms: false
+    evidence: >-
+      No SCIM schema URN and no /scim/v2 path in the 200-path specification. User
+      provisioning is by SAML/SSO domain capture and email invitation, plus the
+      proprietary /api/organizations/{organization_pk}/memberships/ and
+      /invitations/ resources.
+  - id: json:api
+    conforms: false
+    evidence: Plain JSON resource representations; no top-level data/included envelope.
+  - id: odata
+    conforms: false
+    evidence: No $metadata surface; filtering is Django-filter style query params.
+  - id: rfc8594
+    name: Sunset HTTP Header
+    conforms: false
+    evidence: >-
+      A deprecated-resources page exists but no Sunset or Deprecation response
+      header is documented, and no operation carries `deprecated: true` in the spec.
+  - id: rfc9116
+    name: security.txt
+    conforms: false
+    evidence: /.well-known/security.txt returns 404 on www.pixiebrix.com and the
+      catch-all SPA shell on app.pixiebrix.com.
+  - id: cors
+    conforms: false
+    evidence: '"The Developer API does not currently support Cross-Origin Resource
+      Sharing (CORS)."'
+domain_standard:
+  market: browser-based work automation / AI agent governance for contact-center and
+    enterprise operations
+  declared_in_contract: false
+  note: >-
+    REWARD-ONLY CHECK, HONESTLY UNMET. No industry data or messaging standard is
+    declared anywhere in the PixieBrix contract. The market PixieBrix sells into -
+    browser-layer automation and AI-agent activity governance - has no established
+    interoperability standard for this pipeline to test against, and PixieBrix's
+    activity/policy resources (/api/activity/policies/, /api/activity/ingest/,
+    /api/activity/reports/security/) are entirely proprietary shapes rather
+    than an implementation of any published schema. There is no CAMARA/FHIR/SCIM/
+    OpenRTB/OData/xAPI-class signature in the specification. Nothing is invented to
+    fill this slot.
+  candidates_probed:
+    - standard: SCIM 2.0
+      result: absent - proprietary membership/invitation resources instead
+    - standard: OpenTelemetry / OpenMetrics
+      result: absent - /api/telemetry/ is a proprietary error-ingest surface, not OTLP
+    - standard: xAPI / Caliper
+      result: not applicable - not an education provider
+compliance:
+  certifications:
+    - name: SOC 2 Type 2
+      auditor: A-LIGN
+      criteria: [Security, Availability, Confidentiality]
+      evidence: >-
+        "We have completed our SOC 2 Type 2 audit with third-party audit firm
+        A-LIGN" - https://www.pixiebrix.com/security
+    - name: GDPR
+      status: compliant
+      evidence: '"Yes, we are GDPR compliant" - https://www.pixiebrix.com/security'
+    - name: HIPAA
+      status: eligible
+      evidence: >-
+        Services "can be configured and used in a way that is HIPAA compliant" -
+        an eligibility statement, not a certification.
+    - name: PCI
+      status: badge displayed on the security page
+      evidence: https://www.pixiebrix.com/security
+    - name: CCPA
+      status: partial
+      evidence: >-
+        "currently exempt from and do not attest to compliance with all provisions"
+        while complying with most.
+    - name: Google Cloud Application Security Assessment (CASA)
+      status: assessed
+      evidence: https://www.pixiebrix.com/security
+  assurance:
+    - annual independent penetration testing
+    - Chrome Web Store review of each extension version
+  trust_center: https://trust.pixiebrix.com/
+  bug_bounty:
+    exists: false
+    evidence: '"We do not have a bug bounty program and do not pay monetary rewards"'

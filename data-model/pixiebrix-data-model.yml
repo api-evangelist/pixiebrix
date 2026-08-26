@@ -1,0 +1,275 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/pixiebrix-openapi.yml
+note: >-
+  DERIVED FROM PATH HIERARCHY, NOT FROM $ref LINKS. The specification's 138
+  component schemas are FLAT - a scan found ZERO $ref-valued or $ref-array
+  properties between schemas, which is characteristic of a Django REST Framework
+  generated document where relations are serialized as bare id/UUID fields. The
+  entity graph below is therefore reconstructed from the URL nesting
+  (/organizations/{organization_pk}/databases/{id}/...) and from the path
+  parameter names, which are the only relationship evidence the contract carries.
+  Confidence is high for containment edges and is marked per relationship.
+root_entity: Organization
+identifier_style: UUID path ids (`{id}`) with named parent keys
+  (`organization_pk`, `deployment_pk`, `database_pk`, `group_pk`, `campaign_pk`,
+  `user_pk`, `report_pk`, `campaign_pk`, `tour_pk`)
+entities:
+  - name: Organization
+    schema: Organization
+    description: The team/tenant. Root of nearly every authorized path - 68 of 291
+      operations take an `organization_pk` path parameter.
+    path: /api/organizations/{organization_pk}/
+    relationships:
+      - has_many: Group
+        via: /organizations/{organization_pk}/groups/
+        confidence: high
+      - has_many: OrganizationMembership
+        via: /organizations/{organization_pk}/memberships/
+        confidence: high
+      - has_many: Database
+        via: /organizations/{organization_pk}/databases/
+        confidence: high
+      - has_many: Deployment
+        via: /organizations/{organization_pk}/deployments/
+        confidence: high
+      - has_many: Campaign
+        via: /organizations/{organization_pk}/campaigns/
+        confidence: high
+      - has_many: OrganizationInvitation
+        via: /organizations/{organization_pk}/invitations/
+        confidence: high
+      - has_many: ServiceAccount
+        via: /organizations/{organization_pk}/serviceaccounts/
+        confidence: high
+      - has_many: DeploymentKey
+        via: /organizations/{organization_pk}/deployment-keys/
+        confidence: high
+      - has_many: Asset
+        via: /organizations/{organization_pk}/assets/
+        confidence: high
+      - has_many: OrganizationContact
+        via: /organizations/{organization_pk}/contacts/
+        confidence: high
+      - has_many: ActivityPolicy
+        via: /organizations/{org_pk}/activity-policies/
+        confidence: high
+      - has_one: OrganizationTheme
+        via: /organizations/{organization_pk}/theme/
+        confidence: high
+      - has_one: Subscription
+        via: /organizations/{organization_pk}/subscriptions/
+        confidence: medium
+  - name: Group
+    schema: Group / GroupDetail
+    description: Authorization grouping inside an organization; deployments and
+      database permissions are assigned to groups rather than to individuals.
+    path: /api/groups/{group_pk}/
+    relationships:
+      - belongs_to: Organization
+        via: organization_pk
+        confidence: high
+      - has_many: GroupMembership
+        via: /groups/{group_pk}/memberships/
+        confidence: high
+      - has_many: DatabasePermission
+        via: /groups/{group_pk}/databases/
+        confidence: high
+      - has_many: ServiceAuthPermission
+        via: /groups/{group_pk}/integrations/
+        confidence: high
+      - has_many: GroupPackagePermission
+        via: /groups/{id}/permissions/
+        confidence: high
+  - name: User
+    schema: Me / OrganizationMembership / AppUser
+    description: A team member principal. `/api/me/` is the caller's own view.
+    path: /api/users/{user_pk}/ and /api/me/
+    relationships:
+      - has_many: GroupMembership
+        confidence: high
+      - has_many: UserDeployment
+        via: /members/{user_pk}/deployments/
+        confidence: high
+      - has_many: Extension
+        via: /members/{user_pk}/extensions/
+        confidence: high
+      - has_many: ActivityPolicy
+        via: /users/{user_pk}/activity-policies/
+        confidence: high
+      - has_many: Package
+        via: /users/{user_pk}/bricks/
+        confidence: high
+  - name: ServiceAccount
+    description: API-only principal that owns a Developer API token; excluded from
+      seat utilization. Role is immutable after creation.
+    path: /api/organizations/{organization_pk}/serviceaccounts/{id}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+  - name: Package
+    schema: PackageMeta / PackageConfig / PackageVersion
+    description: >-
+      A registry entry - a brick, mod (blueprint), integration definition or
+      starter brick. `kind` discriminates the type (kind=3 is an integration
+      definition, per the deprecation mapping GET /api/services/ ->
+      /api/registry/bricks/?kind=3). Namespaced by team scope (e.g. `@myorg/...`).
+    path: /api/bricks/{id}/ and /api/registry/bricks/{name}/
+    relationships:
+      - has_many: PackageVersion
+        via: /bricks/{id}/versions/
+        confidence: high
+      - has_one: PackageLock
+        via: /bricks/{id}/lock/
+        confidence: high
+      - has_many: GroupPackagePermission
+        confidence: high
+      - referenced_by: Deployment
+        via: package/blueprint id
+        confidence: medium
+  - name: PackagePromotionPipeline
+    description: Promotes a version of a source package into a target package
+      (dev -> test -> prod scope promotion).
+    path: /api/pipelines/{id}/promote/
+    relationships:
+      - references: Package
+        role: source and target
+        confidence: high
+  - name: Deployment
+    schema: Deployment / DeploymentDetail
+    description: Assignment of a mod/package to a set of end users, with bindings,
+      managers, alert contacts, telemetry and error reporting.
+    path: /api/deployments/{deployment_pk}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+      - has_many: DeploymentPermission
+        via: /deployments/{deployment_pk}/groups/
+        confidence: high
+      - has_many: DeploymentManagerPermission
+        via: /deployments/{deployment_pk}/managers/
+        confidence: high
+      - has_many: DeploymentAlertEmail
+        via: /deployments/{deployment_pk}/contacts/
+        confidence: high
+      - has_many: DeploymentReport
+        via: /deployments/{deployment_pk}/reports/
+        confidence: high
+      - has_many: ErrorItem
+        via: /deployments/{deployment_pk}/errors/
+        confidence: high
+      - has_many: DeploymentMessage
+        via: /deployments/{deployment_pk}/messages/
+        confidence: high
+      - has_one: DependencyTree
+        via: /deployments/{deployment_pk}/dependencies/
+        confidence: high
+  - name: Database
+    schema: Database / DatabaseSchema
+    description: PixieBrix-hosted key-value record store used by mods. Count and
+      record ceiling are plan-gated.
+    path: /api/databases/{database_pk}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+      - has_many: Record
+        via: /databases/{database_pk}/records/
+        confidence: high
+      - has_one: DatabaseSchema
+        via: /databases/{database_pk}/schema/
+        confidence: high
+      - has_many: DatabaseRecordsArchive
+        via: /databases/{database_pk}/record-archives/
+        confidence: high
+      - has_many: Asset
+        via: /databases/{database_pk}/assets/
+        confidence: high
+      - has_many: DatabasePermission
+        via: /databases/{id}/permissions/
+        confidence: high
+      - has_one: Queue
+        via: /databases/{database_pk}/queue/
+        confidence: medium
+  - name: Campaign
+    schema: Campaign / CampaignMember / CampaignDatabase
+    description: Outreach/engagement campaign scoped to an organization.
+    path: /api/organizations/{organization_pk}/campaigns/{campaign_pk}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+      - has_many: CampaignMember
+        via: /campaigns/{campaign_pk}/members/
+        confidence: high
+      - has_many: CampaignDatabase
+        via: /campaigns/{campaign_pk}/databases/
+        confidence: high
+      - has_many: CampaignJob
+        via: /campaigns/{campaign_pk}/jobs/
+        confidence: high
+  - name: ActivityPolicy
+    schema: ActivityPolicy / EffectivePolicyResponse
+    description: >-
+      Agent/user activity governance rule (AI prompt, prohibited language,
+      clipboard, page-pattern). The caller's EFFECTIVE policy is the additive
+      UNION of every policy assigned to the user's groups - retrieved via
+      retrieveEffectivePolicyResponse. Gated by an organization feature flag.
+    path: /api/activity/policies/{id}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+      - assigned_to: Group
+        confidence: high
+      - produces: SecurityEvent
+        confidence: medium
+  - name: SecurityEvent
+    description: Recorded policy violation / shadow-AI detection, reported through
+      the activity reporting endpoints.
+    path: /api/activity/reports/security/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+  - name: AuditEvent
+    schema: AuditEvent
+    description: Immutable administrative audit trail (groups, deployments).
+    path: /api/audit/organizations/{id}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+  - name: ControlRoom
+    schema: ControlRoom / ControlRoomConfiguration / ControlRoomPrincipal
+    description: Automation Anywhere Control Room linkage for RPA interoperability.
+    path: /api/control-rooms/
+    relationships:
+      - belongs_to: Organization
+        confidence: medium
+  - name: EditableAuth
+    description: A shared integration credential configuration (service auth) usable
+      by mods; configured per team.
+    path: /api/services/shared/{id}/
+    relationships:
+      - belongs_to: Organization
+        confidence: high
+      - granted_to: Group
+        via: /groups/{group_pk}/integrations/
+        confidence: high
+tag_domains:
+  - tag: organizations
+    operations: 70
+  - tag: deployments
+    operations: 30
+  - tag: support
+    operations: 30
+  - tag: activity
+    operations: 28
+  - tag: databases
+    operations: 22
+  - tag: groups
+    operations: 22
+  - tag: copilot
+    operations: 11
+  - tag: me
+    operations: 11
+  - tag: bricks
+    operations: 10
+  - tag: services
+    operations: 7

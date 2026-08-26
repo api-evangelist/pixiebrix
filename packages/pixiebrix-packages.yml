@@ -1,0 +1,71 @@
+generated: '2026-08-26'
+method: searched
+source: https://registry.npmjs.org/-/v1/search?text=pixiebrix + https://github.com/pixiebrix
+note: >-
+  PixieBrix publishes first-party open-source npm packages, but NONE of them is a
+  client library for the PixieBrix Developer API (https://app.pixiebrix.com/api/).
+  Every first-party package below is browser-extension tooling extracted from the
+  PixieBrix extension itself. The Developer API is documented as plain HTTP with a
+  `Authorization: Token <token>` header and ships no official SDK in any language:
+  npm, PyPI (pypi.org/pypi/pixiebrix/json -> 404), and the 18-repo GitHub org were
+  all checked and none carries an API client. This is the notable finding for this
+  provider - a 291-operation REST API with an OpenAPI spec and zero SDKs.
+sdk_for_developer_api: false
+packages:
+  - language: javascript
+    registry: npm
+    name: webext-messenger
+    url: https://www.npmjs.com/package/webext-messenger
+    install: npm install webext-messenger
+    official: true
+    version: 0.36.0
+    published: '2026-07-10'
+    repository: https://github.com/pixiebrix/webext-messenger
+    note: Browser Extension component messaging framework. First-party PixieBrix
+      open source, not a Developer API client.
+  - language: javascript
+    registry: npm
+    name: eslint-config-pixiebrix
+    url: https://www.npmjs.com/package/eslint-config-pixiebrix
+    install: npm install eslint-config-pixiebrix
+    official: true
+    version: 0.47.0
+    published: '2025-02-14'
+    repository: https://github.com/pixiebrix/eslint-config-pixiebrix
+    note: Shareable ESLint config. Source repository is ARCHIVED on GitHub
+      (archived=true, last push 2025-05-01) - a decay signal.
+  - language: javascript
+    registry: npm
+    name: "@pixiebrix/jq-web"
+    url: https://www.npmjs.com/package/@pixiebrix/jq-web
+    install: npm install @pixiebrix/jq-web
+    official: true
+    version: 0.5.1
+    published: '2023-09-21'
+    repository: https://github.com/pixiebrix/jq-web
+    note: jq compiled to WebAssembly for in-browser use, powering PixieBrix's jq
+      transform brick. Last published 2023-09-21.
+third_party:
+  - language: javascript
+    registry: npm
+    name: "@pipedream/pixiebrix"
+    url: https://www.npmjs.com/package/@pipedream/pixiebrix
+    official: false
+    version: 0.2.0
+    published: '2026-05-20'
+    note: Pipedream-authored connector components, not published by PixieBrix.
+registries_checked:
+  - registry: npm
+    result: 3 first-party packages found, none an API client
+  - registry: pypi
+    result: 404 - no pixiebrix package
+  - registry: rubygems
+    result: not published
+  - registry: packagist
+    result: not published
+  - registry: crates.io
+    result: not published
+  - registry: nuget
+    result: not published
+  - registry: pkg.go.dev
+    result: not published

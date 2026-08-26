@@ -1,0 +1,146 @@
+generated: '2026-08-26'
+method: derived
+source: openapi/pixiebrix-openapi.yml
+status: candidate
+note: >-
+  PixieBrix ships NO first-party MCP server. Searched and probed 2026-08-26:
+  mcp.pixiebrix.com does not resolve; POST tools/list to
+  https://app.pixiebrix.com/mcp returned HTTP 403 (Django forbidden, not an MCP
+  handshake) and https://app.pixiebrix.com/api/mcp/ returned 404; the docs site
+  (429-entry llms.txt at https://docs.pixiebrix.com/llms.txt) contains no MCP page;
+  the 18-repo GitHub org publishes no MCP server. Third-party MCP wrappers for
+  PixieBrix exist (viaSocket, Zapier) but are NOT first-party and are not credited
+  here. The tools below are a DERIVED CANDIDATE surface - what a PixieBrix MCP
+  server would expose if one existed - grounded in real operationIds from the
+  published OpenAPI. Nothing here is live and no endpoint URL is asserted.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: unknown
+  verified: derived
+probes:
+  - url: https://app.pixiebrix.com/mcp
+    method: POST tools/list
+    status: 403
+  - url: https://app.pixiebrix.com/api/mcp/
+    method: POST tools/list
+    status: 404
+  - url: https://mcp.pixiebrix.com/mcp
+    method: POST tools/list
+    status: '<no response> - host does not resolve'
+  - url: https://docs.pixiebrix.com/llms.txt
+    method: GET
+    status: 200
+    finding: no MCP server documented anywhere in the 429-entry docs index
+third_party_servers:
+  - vendor: viaSocket
+    url: https://viasocket.com/mcp/pixiebrix
+    official: false
+  - vendor: Zapier
+    official: false
+third_party_note: Not first-party; listed for completeness only, not credited as a
+  PixieBrix agent surface.
+candidate_auth:
+  type: apiKey
+  header: Authorization
+  format: 'Token <service-account-token>'
+  note: A server would carry the Service Account token; the Role assigned at
+    creation would bound every tool call.
+candidate_tools:
+  - name: check_api_health
+    description: Verify the PixieBrix API is operational.
+    rest: [retrieveHealthCheck]
+    method: GET
+    path: /api/health/
+    consequence: read
+    auth_required: false
+  - name: list_organization_memberships
+    description: List memberships of a PixieBrix team.
+    rest: [listMemberships]
+    method: GET
+    path: /api/organizations/{organization_pk}/memberships/
+    consequence: read
+  - name: list_groups
+    description: List authorization groups in a team.
+    rest: [listGroups]
+    method: GET
+    path: /api/organizations/{organization_pk}/groups/
+    consequence: read
+  - name: list_deployments
+    description: List mod deployments for a team.
+    rest: [listDeployments]
+    method: GET
+    path: /api/organizations/{organization_pk}/deployments/
+    consequence: read
+  - name: list_databases
+    description: List team databases.
+    rest: [listDatabases]
+    method: GET
+    path: /api/organizations/{organization_pk}/databases/
+    consequence: read
+  - name: query_database_records
+    description: Read records from a PixieBrix database.
+    rest: [listRecords]
+    method: GET
+    path: /api/databases/{database_pk}/records/
+    consequence: read
+    note: Does not return X-Total-Count or a Link rel="last"; paginate by following
+      rel="next" only.
+  - name: upsert_database_record
+    description: Create or update a record in a PixieBrix database.
+    rest: [updateRecordDetail]
+    method: PUT
+    path: /api/databases/{database_pk}/records/{key}/
+    consequence: write
+    reversible: false
+  - name: list_registry_bricks
+    description: Browse the brick/mod package registry.
+    rest: [listRegistryBricks]
+    method: GET
+    path: /api/registry/bricks/
+    consequence: read
+  - name: get_effective_activity_policy
+    description: Return the caller's merged effective activity policy for an
+      organization - the additive union of all policies assigned to the user's groups.
+    rest: [retrieveEffectivePolicyResponse]
+    method: GET
+    path: /api/activity/policy/
+    consequence: read
+    note: Gated by the activity-tracking organization feature flag.
+  - name: list_activity_policies
+    description: List an organization's agent/user activity governance policies.
+    rest: [listActivityPolicies]
+    method: GET
+    path: /api/activity/policies/
+    consequence: read
+  - name: list_security_events
+    description: List recorded policy violations and shadow-AI detections.
+    rest: [listSecurityEvents]
+    method: GET
+    path: /api/activity/reports/security/
+    consequence: read
+  - name: list_audit_events
+    description: Read the administrative audit trail.
+    rest: [listAuditEvents]
+    method: GET
+    path: /api/audit/organizations/{id}/
+    consequence: read
+  - name: list_deployment_errors
+    description: Read runtime errors reported by a deployment.
+    rest: [listDeploymentErrors]
+    method: GET
+    path: /api/deployments/{deployment_pk}/errors/
+    consequence: read
+excluded_from_candidate:
+  note: >-
+    Deliberately NOT proposed as tools. The API has no idempotency mechanism and no
+    published recovery window (see conventions/pixiebrix-conventions.yml), so these
+    are unsafe to expose to an autonomous agent without human confirmation.
+  operations:
+    - destroyPurgeActivityData
+    - destroyOrganization
+    - destroyDatabase
+    - destroyDeploymentDetail
+    - destroyServiceAccount

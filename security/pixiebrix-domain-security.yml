@@ -1,0 +1,29 @@
+generated: '2026-08-26'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.pixiebrix.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 31 04:54:06 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: docs.pixiebrix.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  4 20:22:42 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: app.pixiebrix.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 11 04:49:52 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+domains:
+- domain: pixiebrix.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

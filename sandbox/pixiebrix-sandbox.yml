@@ -1,0 +1,61 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/managing-teams/advanced-isolating-development-test-and-production-environments
+docs: https://docs.pixiebrix.com/managing-teams/advanced-isolating-development-test-and-production-environments
+model: tenant-isolation
+hosted_sandbox: false
+test_mode: false
+test_credentials_published: false
+note: >-
+  PixieBrix publishes NO sandbox host, NO test-mode key prefix, NO test fixtures and
+  NO magic test values - there is one production host, https://app.pixiebrix.com,
+  and one kind of Service Account token. What it does publish is a documented
+  TENANT-ISOLATION pattern: run separate PixieBrix Teams for Development, Test and
+  Production. That is the provider's stated answer to "how do I test safely", so it
+  is captured here rather than recording a bare absence. NO test values are invented.
+isolation_pattern:
+  mechanism: one PixieBrix Team per environment
+  isolation: 'PixieBrix Teams are logically isolated; roles/authorization are
+    assigned per-team.'
+  environments: [Development, Test, Production]
+  package_scopes:
+    production: '@myorg'
+    development: '@myorg-dev'
+    test: '@myorg-test'
+    note: Convention published in the docs - suffix the production team scope with
+      the environment short name.
+  membership:
+    production: User principals assigned automatically via SSO/SAML or domain capture
+    development_test: Admin invites users by email address
+  default_roles:
+    production: Restricted
+    test: Restricted (or Member)
+    development: Developer (or Member/Restricted)
+  promotion_flow: >-
+    Mods and package definitions are developed under the Development team and copied
+    to Test/Production via the Page Editor or Workshop. Shared team mods can only be
+    deployed by the team that owns the mod. Production package definitions are
+    shared back to Dev/Test so they can be used in mods.
+  api_promotion:
+    operation: promotePackagePromotionPipeline
+    path: /api/pipelines/{id}/promote/
+    method: POST
+    note: >-
+      The Developer API exposes the promotion step programmatically - copy a
+      specified version of a source package to a target package, publishing it as a
+      new version with a commit message.
+  integration_credentials: Integrations are configured separately per team and
+    selected when configuring the deployment, so production credentials never enter
+    the Development team.
+cost_of_the_pattern:
+  note: >-
+    Each environment is a separate Team and PixieBrix bills per user per month, so
+    the documented isolation pattern has a real licence cost. Service account
+    allowance is also per-team (Team plan = 1, Business = unlimited).
+public_unauthenticated_endpoint:
+  path: /api/health/
+  method: GET
+  response: '{"status": "ok"}'
+  note: The only endpoint callable with no credentials - useful as a connectivity
+    smoke test.
+  verified: '2026-08-26 - HTTP 200'

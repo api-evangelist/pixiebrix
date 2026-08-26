@@ -1,0 +1,44 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/developer-api/making-an-api-request#throttling
+docs: https://docs.pixiebrix.com/developer-api/making-an-api-request
+limit_count: 0
+note: >-
+  PixieBrix documents THAT the Developer API is throttled and WHAT status code it
+  returns, but publishes no number: the docs say only "The API endpoints are
+  throttled on a per-token basis to prevent abuse. If you make too many requests
+  within a given minute, the server will respond with `429 Too many requests`."
+  No quota, burst, or window value is published, so limit_count is an honest 0.
+  No RateLimit-* / X-RateLimit-* / Retry-After header was observed on a live
+  unauthenticated response either (GET https://app.pixiebrix.com/api/health/ ->
+  200, response carried no rate-limit headers), so an agent has no runtime signal
+  to back off on other than the 429 itself.
+limits:
+  - scope: per-token
+    window: minute
+    limit: null
+    burst: null
+    documented: true
+    note: Stated as "too many requests within a given minute" with no numeric value.
+exhaustion:
+  status: 429
+  body: 'Too many requests'
+  retry_after_header: false
+response_headers:
+  observed: []
+  documented: []
+  note: >-
+    No rate-limit response headers are documented, and none were observed on the
+    public GET /api/health/ probe on 2026-08-26. Headers present on that response
+    were date, content-type, allow, vary, x-request-id, strict-transport-security
+    and a content-security-policy - none rate-limit related.
+related_quotas:
+  note: >-
+    Plan-level RESOURCE quotas exist and are published on the pricing page (database
+    count and records per database, service account count) - see
+    plans/pixiebrix-plans-pricing.yml. Those are storage quotas, not request rates.
+  source: https://www.pixiebrix.com/pricing
+pagination_caps:
+  page_size_default: 100
+  page_size_max: 1000
+  source: https://docs.pixiebrix.com/developer-api/making-an-api-request#pagination

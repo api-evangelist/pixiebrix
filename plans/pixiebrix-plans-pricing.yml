@@ -1,0 +1,69 @@
+generated: '2026-08-26'
+method: searched
+source: https://www.pixiebrix.com/pricing
+plan_count: 4
+currency: USD
+note: >-
+  Read from the published pricing page on 2026-08-26. Pricing is per-user/month with
+  a monthly and an annual rate; the annual column on the page is the HIGHER figure,
+  which is how PixieBrix presents it. Quotas that gate the Developer API are the
+  database/record limits and the service-account allowance.
+plans:
+  - name: Free
+    price: 0
+    currency: USD
+    period: month
+    unit: per user
+    seats: unlimited (personal use)
+    limits:
+      databases: 1
+      records_per_database: 2000
+      team_service_accounts: 0
+    api_access: false
+    note: No team service account, so no Developer API token on this tier.
+  - name: Team
+    price: 10
+    price_annual: 15
+    currency: USD
+    period: month
+    unit: per user
+    seats: unlimited
+    limits:
+      databases: 5
+      records_per_database: 10000
+      team_service_accounts: 1
+    api_access: true
+  - name: Business
+    price: 30
+    price_annual: 40
+    currency: USD
+    period: month
+    unit: per user
+    seats: unlimited
+    limits:
+      databases: 10
+      records_per_database: 100000
+      team_service_accounts: unlimited
+    api_access: true
+    overage: 'Volume discounts as you scale users'
+  - name: Enterprise
+    price: null
+    price_display: Custom
+    currency: USD
+    period: month
+    unit: per user
+    seats: custom
+    contact_sales: true
+    limits:
+      databases: custom
+      records_per_database: custom
+      team_service_accounts: unlimited
+    api_access: true
+    features:
+      - Self-hosted deployment
+      - SAML 2.0 SSO integration
+      - Custom integrations
+      - Dedicated support engineer
+overage_policy: not published
+free_tier: true
+trial: not published on the pricing page

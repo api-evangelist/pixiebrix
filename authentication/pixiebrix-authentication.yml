@@ -1,0 +1,62 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/developer-api/making-an-api-request
+docs: https://docs.pixiebrix.com/developer-api/making-an-api-request#authentication
+note: >-
+  DERIVED FROM DOCS, NOT FROM THE SPEC. The published OpenAPI
+  (openapi/pixiebrix-openapi.yml) declares components.securitySchemes as EMPTY and
+  carries no top-level or per-operation `security` block, even though all 291
+  operations except GET /api/health/ require a token. This is a real, reportable
+  contract gap: a generated client or an agent reading only the spec cannot tell
+  the API is authenticated. The auth model below is taken verbatim from the
+  provider's own documentation.
+spec_declares_security: false
+schemes:
+  - id: serviceAccountToken
+    type: apiKey
+    in: header
+    name: Authorization
+    format: 'Token <token>'
+    description: >-
+      Django-REST-Framework style token authentication. The value is the token
+      issued when a Service Account is created in the PixieBrix Admin Console,
+      prefixed with the literal word "Token" and a space.
+    docs: https://docs.pixiebrix.com/developer-api/making-an-api-request
+    required: true
+    applies_to: all operations except GET /api/health/
+credential_issuance:
+  mechanism: Service Account
+  docs: https://docs.pixiebrix.com/developer-api/service-accounts
+  description: >-
+    Service Accounts are API-only users, permissioned like human team members but
+    excluded from subscription seat utilization. Created from the Admin Console
+    ("Service Accounts" > "Create Service Account"); the token is shown once in a
+    "Service Account Created" modal.
+  role_assignment: Role is chosen at creation time and CANNOT be changed afterwards.
+  rotation: not documented
+  expiry: not documented
+  availability:
+    - plan: Team
+      service_accounts: 1
+    - plan: Business
+      service_accounts: unlimited
+    - plan: Enterprise
+      service_accounts: custom
+oauth2: false
+oauth2_note: >-
+  PixieBrix's own Developer API does not use OAuth 2.0 - it is token-only, so no
+  scopes/ artifact is emitted. PixieBrix does act as an OAuth 2.0 CLIENT for the
+  third-party services its bricks integrate with (documented at
+  https://docs.pixiebrix.com/integrations/oauth2-client-credentials), but that is a
+  consumer-side integration surface, not an authorization surface on this API.
+end_user_sso:
+  saml2: true
+  note: SAML 2.0 SSO and domain capture are available on the Enterprise plan for
+    Admin Console / extension sign-in, not for Developer API calls.
+  docs: https://docs.pixiebrix.com/enterprise-it-setup/authentication/setting-up-saml-sso
+cors:
+  supported: false
+  note: >-
+    "The Developer API does not currently support Cross-Origin Resource Sharing
+    (CORS)." Callers from a browser app must proxy through a backend.
+  source: https://docs.pixiebrix.com/developer-api/making-an-api-request

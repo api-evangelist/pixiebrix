@@ -1,0 +1,243 @@
+generated: '2026-08-26'
+method: searched
+source: https://docs.pixiebrix.com/developer-api/making-an-api-request
+docs: https://docs.pixiebrix.com/developer-api/making-an-api-request
+derived_from: openapi/pixiebrix-openapi.yml
+summary: >-
+  Cross-cutting runtime semantics for the PixieBrix Developer API - a Django REST
+  Framework surface at https://app.pixiebrix.com/api/. Authentication, versioning,
+  pagination and throttling are all documented on one page; idempotency, request-id
+  correlation and a machine-readable error envelope are NOT.
+
+authentication:
+  style: api-key-in-authorization-header
+  header: Authorization
+  format: 'Token <token>'
+  issued_by: Service Account (Admin Console)
+  see: authentication/pixiebrix-authentication.yml
+
+versioning:
+  style: media-type-parameter
+  header: Accept
+  format: 'application/json; version=2.0'
+  current: '2.0'
+  scheme: semver
+  policy: >-
+    "We follow Semver and will increment the major version on any backward
+    incompatible changes."
+  enforcement_observed: >-
+    Sending an unsupported version is rejected. Probed 2026-08-26: GET
+    /api/health/ with `Accept: application/json; version=2.0` returned HTTP 406
+    with body {"detail":"Invalid version in \"Accept\" header."} - the health
+    endpoint is not served at version 2.0. The same request with a plain
+    `Accept: application/json` returned 200 {"status":"ok"}.
+  source: https://docs.pixiebrix.com/developer-api/making-an-api-request#version
+
+content_negotiation:
+  default: application/json
+  alternates:
+    - text/csv
+  format: 'Accept: "text/csv; version=2.0"'
+  note: Certain endpoints (notably export/report endpoints) can return CSV. The
+    OpenAPI specification is the authority on which content types an operation
+    supports.
+
+pagination:
+  style: page-number
+  params:
+    page: 1-based page number
+    page_size: items per page
+  default_page_size: 100
+  max_page_size: 1000
+  response_headers:
+    - name: Link
+      rfc: RFC 8288
+      relations: [first, prev, next, last]
+    - name: X-Total-Count
+      description: total number of items across all pages
+  available_from_version: '2.0'
+  exceptions:
+    - operation: GET /api/databases/{database_pk}/records/
+      missing: [X-Total-Count, 'Link rel="last"']
+      reason: >-
+        Both require a full record count, which performs poorly for very large
+        databases.
+  spec_coverage: 55 of 291 operations declare page/page_size query parameters.
+  source: https://docs.pixiebrix.com/developer-api/making-an-api-request#pagination
+
+filtering_and_search:
+  free_text_param: q
+  ordering_param: ordering
+  common_filters: [organization, user, groups, kind, kind__in, platforms, start, end, tz, package__name]
+  note: Django-filter style; `start`/`end` bound activity and report time ranges.
+
+idempotency:
+  supported: false
+  header: null
+  scope: null
+  retention: null
+  note: >-
+    PixieBrix publishes NO idempotency key mechanism for the Developer API. No
+    Idempotency-Key (or equivalent) header appears anywhere in the 291-operation
+    OpenAPI specification or in the developer documentation. Retry safety therefore
+    rests entirely on HTTP method semantics: GET/PUT/DELETE are naturally
+    idempotent, and the 61 POST operations that return 201 are NOT - a retried
+    create can duplicate a group, invitation, deployment, campaign, service account
+    or package version. Agents must reconcile by listing before retrying a POST.
+  safe_methods: [GET, HEAD, OPTIONS]
+  naturally_idempotent: [PUT, DELETE]
+  not_idempotent: [POST, PATCH]
+  post_operations_returning_201: 61
+
+request_tracing:
+  header: x-request-id
+  direction: response
+  observed: true
+  observed_value_shape: UUIDv4
+  note: >-
+    Observed on a live response 2026-08-26 (GET /api/health/ returned
+    x-request-id: d07f4f25-11c5-4109-8d52-ab41125ced93). The header is NOT
+    documented and no docs page instructs callers to quote it in a support
+    request, so it is an undocumented-but-present correlation handle.
+
+error_envelope:
+  format: ad-hoc-json
+  rfc9457: false
+  shape: '{"detail": "<human readable message>"}'
+  observed_example:
+    status: 406
+    body: '{"detail": "Invalid version in \"Accept\" header."}'
+  note: >-
+    Django REST Framework's default envelope. There is no `type`, `title`,
+    `status`, `instance` or application error `code` field, so an agent cannot
+    branch on a stable machine-readable identifier - only on the HTTP status and
+    English prose. See errors/pixiebrix-problem-types.yml.
+
+rate_limit_signaling:
+  documented: true
+  numeric_limit_published: false
+  exhaustion_status: 429
+  headers: []
+  retry_after: false
+  see: rate-limits/pixiebrix-rate-limits.yml
+
+cors:
+  supported: false
+  guidance: Proxy Developer API calls through a backend or a CORS proxy.
+
+dry_run_mode:
+  supported: false
+  note: No preview/validate/dry-run parameter or endpoint is published.
+
+reversibility:
+  grade: documented
+  has_write_surface: true
+  note: >-
+    The API has a large write surface (61 create operations, 34 hard deletes) and
+    several reversal-SHAPED operations exist, but PixieBrix publishes NO recovery
+    window for ANY of them. No documentation page states a retention period, an
+    undelete endpoint, a soft-delete/trash model, or a grace period, so every
+    DELETE below must be treated by an agent as immediate and permanent. Graded
+    `documented` rather than `verified` precisely because no window is stated -
+    and no window is asserted here, because inventing one could cost a user real
+    data.
+  surfaces:
+    - action: Lock a brick/mod package version
+      operation: createPackageLockCreate
+      method: POST
+      path: /api/bricks/{id}/lock/
+      reversal: destroyPackageLockCreate
+      reversal_method: DELETE
+      reversal_path: /api/bricks/{id}/lock/
+      window: not published
+      confidence: high
+      note: A clean, fully reversible pair - lock then unlock.
+    - action: Accept a team invitation
+      operation: acceptMeInvitation
+      method: POST
+      path: /api/invitations/{id}/accept/
+      reversal: destroyOrganizationMembership
+      reversal_method: DELETE
+      reversal_path: /api/memberships/{id}/
+      window: not published
+      confidence: medium
+      note: >-
+        Not a true undo - removing the resulting membership reverses the effect,
+        it does not restore the pending invitation. rejectMeInvitation exists but
+        is an ALTERNATIVE to accepting, not a reversal of it.
+    - action: Publish a package version to a target package
+      operation: promotePackagePromotionPipeline
+      method: POST
+      path: /api/pipelines/{id}/promote/
+      reversal: re-promote an earlier version
+      window: not published
+      confidence: medium
+      note: >-
+        Package publishing is append-only and versioned (listPackageVersionHeavies
+        lists every version), so a bad publish is rolled forward by promoting the
+        prior version again rather than rolled back. No delete-version operation
+        is published.
+    - action: Delete a team database
+      operation: destroyDatabase
+      method: DELETE
+      path: /api/organizations/{organization_pk}/databases/{id}/
+      reversal: none published
+      window: not published
+      confidence: high
+      note: >-
+        listDatabaseRecordsArchives (GET
+        /api/organizations/{organization_pk}/databases/{database_pk}/record-archives/)
+        returns downloadable archived SNAPSHOTS of a database's records, which is a
+        recovery INPUT, but the API publishes no restore-from-archive operation and
+        no retention period for the snapshots. Recovery would be a manual re-import.
+    - action: Delete a database record
+      operation: destroyRecordDetail
+      method: DELETE
+      path: /api/databases/{database_pk}/records/{key}/
+      reversal: none published
+      window: not published
+      confidence: high
+    - action: Delete a deployment
+      operation: destroyDeploymentDetail
+      method: DELETE
+      path: /api/deployments/{id}/
+      reversal: none published
+      window: not published
+      confidence: high
+      note: Un-deploys a mod from every assigned end user.
+    - action: Delete a service account (revoke its API token)
+      operation: destroyServiceAccount
+      method: DELETE
+      path: /api/organizations/{organization_pk}/serviceaccounts/{id}/
+      reversal: none published - a new service account gets a NEW token
+      window: not published
+      confidence: high
+      note: >-
+        Compounded by the documented rule that a Service Account's Role cannot be
+        changed after creation, so a mis-roled account can only be deleted and
+        replaced.
+    - action: Purge activity data
+      operation: destroyPurgeActivityData
+      method: DELETE
+      path: /api/activity/data/
+      reversal: none published
+      window: not published
+      confidence: high
+      note: >-
+        The single highest-consequence operation in the contract - an unscoped
+        purge of an organization's recorded agent/user activity. No confirmation
+        parameter, dry-run, or recovery path is published.
+    - action: Delete an organization
+      operation: destroyOrganization
+      method: DELETE
+      path: /api/organizations/{organization_pk}/
+      reversal: none published
+      window: not published
+      confidence: high
+
+cross_links:
+  errors: errors/pixiebrix-problem-types.yml
+  lifecycle: lifecycle/pixiebrix-lifecycle.yml
+  authentication: authentication/pixiebrix-authentication.yml
+  rate_limits: rate-limits/pixiebrix-rate-limits.yml
+  data_model: data-model/pixiebrix-data-model.yml
