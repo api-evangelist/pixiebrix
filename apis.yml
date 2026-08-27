@@ -30,27 +30,16 @@ tags:
 - Agent Governance
 - Robotic Process Automation
 apis:
-- aid: pixiebrix-developer-api
-  name: PixieBrix Developer API
-  description: 'The PixieBrix Developer API is the token-authenticated REST admin and
-    package-registry API for PixieBrix teams. It covers organization and group
-    management, memberships and invitations, service accounts, mod/package publishing
-    to the registry, deployments to end users, PixieBrix databases and records,
-    activity and security policies, audit events, campaigns, support copilot
-    configuration and a public health check. Requests authenticate with a service
-    account token, are versioned through the Accept header, and paginate via RFC 8288
-    Link headers.'
+- aid: pixiebrix:pixiebrix-activity-api
+  name: PixieBrix Activity API
+  description: The activity API from PixieBrix — 23 operation(s) for activity.
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
-  - Developer API
-  - Administration
-  - Package Registry
-  - Deployments
-  - Databases
+  - activity
   properties:
   - type: OpenAPI
-    url: openapi/pixiebrix-openapi.yml
+    url: openapi/pixiebrix-activity-api-openapi.yml
   - type: Documentation
     url: https://docs.pixiebrix.com/developer-api
   - type: APIReference
@@ -67,14 +56,794 @@ apis:
     url: errors/pixiebrix-problem-types.yml
   - type: DataModel
     url: data-model/pixiebrix-data-model.yml
-  - type: Overlay
-    url: overlays/pixiebrix-developer-api-overlay.yaml
+- aid: pixiebrix:pixiebrix-audit-api
+  name: PixieBrix Audit API
+  description: The audit API from PixieBrix — 3 operation(s) for audit.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - audit
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-audit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-bricks-api
+  name: PixieBrix Bricks API
+  description: The bricks API from PixieBrix — 6 operation(s) for bricks.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - bricks
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-bricks-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-campaigns-api
+  name: PixieBrix Campaigns API
+  description: The campaigns API from PixieBrix — 4 operation(s) for campaigns.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - campaigns
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-campaigns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-config-api
+  name: PixieBrix Config API
+  description: The config API from PixieBrix — 1 operation(s) for config.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - config
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-config-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-control-rooms-api
+  name: PixieBrix Control Rooms API
+  description: The control-rooms API from PixieBrix — 3 operation(s) for control-rooms.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - control-rooms
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-control-rooms-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-copilot-api
+  name: PixieBrix Copilot API
+  description: The copilot API from PixieBrix — 10 operation(s) for copilot.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - copilot
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-copilot-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-databases-api
+  name: PixieBrix Databases API
+  description: The databases API from PixieBrix — 12 operation(s) for databases.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - databases
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-databases-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-deployments-api
+  name: PixieBrix Deployments API
+  description: The deployments API from PixieBrix — 19 operation(s) for deployments.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - deployments
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-deployments-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-events-api
+  name: PixieBrix Events API
+  description: The events API from PixieBrix — 1 operation(s) for events.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - events
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-events-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-groups-api
+  name: PixieBrix Groups API
+  description: The groups API from PixieBrix — 9 operation(s) for groups.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - groups
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-groups-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-health-api
+  name: PixieBrix Health API
+  description: The health API from PixieBrix — 1 operation(s) for health.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - health
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-health-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-identify-api
+  name: PixieBrix Identify API
+  description: The identify API from PixieBrix — 1 operation(s) for identify.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - identify
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-identify-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-invitations-api
+  name: PixieBrix Invitations API
+  description: The invitations API from PixieBrix — 3 operation(s) for invitations.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - invitations
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-invitations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-magic-link-api
+  name: PixieBrix Magic Link API
+  description: The magic-link API from PixieBrix — 1 operation(s) for magic-link.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - magic-link
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-magic-link-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-marketplace-api
+  name: PixieBrix Marketplace API
+  description: The marketplace API from PixieBrix — 3 operation(s) for marketplace.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - marketplace
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-marketplace-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-me-api
+  name: PixieBrix Me API
+  description: The me API from PixieBrix — 7 operation(s) for me.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - me
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-me-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-memberships-api
+  name: PixieBrix Memberships API
+  description: The memberships API from PixieBrix — 1 operation(s) for memberships.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - memberships
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-memberships-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-onboarding-api
+  name: PixieBrix Onboarding API
+  description: The onboarding API from PixieBrix — 1 operation(s) for onboarding.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - onboarding
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-onboarding-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-organizations-api
+  name: PixieBrix Organizations API
+  description: The organizations API from PixieBrix — 42 operation(s) for organizations.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - organizations
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-organizations-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-permissions-api
+  name: PixieBrix Permissions API
+  description: The permissions API from PixieBrix — 1 operation(s) for permissions.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - permissions
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-permissions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-pipelines-api
+  name: PixieBrix Pipelines API
+  description: The pipelines API from PixieBrix — 2 operation(s) for pipelines.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - pipelines
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-pipelines-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-platforms-api
+  name: PixieBrix Platforms API
+  description: The platforms API from PixieBrix — 1 operation(s) for platforms.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - platforms
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-platforms-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-proxy-api
+  name: PixieBrix Proxy API
+  description: The proxy API from PixieBrix — 1 operation(s) for proxy.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - proxy
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-proxy-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-registry-api
+  name: PixieBrix Registry API
+  description: The registry API from PixieBrix — 2 operation(s) for registry.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - registry
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-registry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-services-api
+  name: PixieBrix Services API
+  description: The services API from PixieBrix — 3 operation(s) for services.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - services
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-services-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-settings-api
+  name: PixieBrix Settings API
+  description: The settings API from PixieBrix — 1 operation(s) for settings.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - settings
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-settings-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-support-api
+  name: PixieBrix Support API
+  description: The support API from PixieBrix — 29 operation(s) for support.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - support
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-support-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-telemetry-api
+  name: PixieBrix Telemetry API
+  description: The telemetry API from PixieBrix — 4 operation(s) for telemetry.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - telemetry
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-telemetry-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-tests-api
+  name: PixieBrix Tests API
+  description: The tests API from PixieBrix — 2 operation(s) for tests.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - tests
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-tests-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
+- aid: pixiebrix:pixiebrix-tours-api
+  name: PixieBrix Tours API
+  description: The tours API from PixieBrix — 3 operation(s) for tours.
+  humanURL: https://docs.pixiebrix.com/developer-api
+  baseURL: https://app.pixiebrix.com/api/
+  tags:
+  - tours
+  properties:
+  - type: OpenAPI
+    url: openapi/pixiebrix-tours-api-openapi.yml
+  - type: Documentation
+    url: https://docs.pixiebrix.com/developer-api
+  - type: APIReference
+    url: https://app.pixiebrix.com/api/docs/
+  - type: GettingStarted
+    url: https://docs.pixiebrix.com/developer-api/making-an-api-request
+  - type: Authentication
+    url: authentication/pixiebrix-authentication.yml
+  - type: RateLimits
+    url: rate-limits/pixiebrix-rate-limits.yml
+  - type: Conventions
+    url: conventions/pixiebrix-conventions.yml
+  - type: ErrorCatalog
+    url: errors/pixiebrix-problem-types.yml
+  - type: DataModel
+    url: data-model/pixiebrix-data-model.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: Overlay
+  url: overlays/pixiebrix-developer-api-overlay.yaml
 - type: Website
   url: https://www.pixiebrix.com/
 - type: DeveloperPortal
