@@ -1,0 +1,49 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Config API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: config
+paths:
+  /api/config/{key}/:
+    get:
+      operationId: retrieveConfig
+      description: Return the value of a single public application configuration setting identified by its key.
+      parameters:
+      - name: key
+        in: path
+        required: true
+        description: A unique value identifying this config.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Config'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Config'
+          description: ''
+      tags:
+      - config
+components:
+  schemas:
+    Config:
+      type: object
+      properties:
+        key:
+          type: string
+          maxLength: 50
+        value:
+          type: string
+      required:
+      - key
+      - value

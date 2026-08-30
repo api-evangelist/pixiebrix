@@ -1,0 +1,1609 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Deployments API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: deployments
+paths:
+  /api/deployments/:
+    get:
+      operationId: listUserHeartbeats
+      description: View for individual users to report/retrieve available deployments.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: platforms
+        required: false
+        in: query
+        description: Comma-separated or repeated platform names. Defaults to 'webextension'.
+        schema:
+          type: string
+          default: webextension
+      responses:
+        '200':
+          content:
+            application/json; version=1.1:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=1.1:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/deployments/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/deployments/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/deployments/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/deployments/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - deployments
+    post:
+      operationId: telemetryListUserHeartbeat
+      description: Record which deployments the user has installed, and return list of available deployments.
+      parameters:
+      - name: platforms
+        required: false
+        in: query
+        description: Comma-separated or repeated platform names. Defaults to 'webextension'.
+        schema:
+          type: string
+          default: webextension
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+      responses:
+        '201':
+          content:
+            application/json; version=1.1:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=1.1:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/dependencies/:
+    get:
+      operationId: retrieveDeploymentDependenciesBatch
+      description: Batched transitive dependencies for deployments (heartbeat registry eviction).
+      parameters:
+      - name: ids
+        in: query
+        required: true
+        description: Comma-separated deployment UUIDs (at least one valid UUID required). Deployments the caller cannot see are skipped. The response is a single merged list of dependencies across all requested deployments that are visible, deduplicated by (package id, version).
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDependenciesBatch'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDependenciesBatch'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{id}/:
+    get:
+      operationId: retrieveDeploymentDetail
+      description: View for admins to get/update/delete a single deployment.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDetail'
+          description: ''
+      tags:
+      - deployments
+    put:
+      operationId: updateDeploymentDetail
+      description: View for admins to get/update/delete a single deployment.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentDetail'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDetail'
+          description: ''
+      tags:
+      - deployments
+    patch:
+      operationId: partialUpdateDeploymentDetail
+      description: View for admins to get/update/delete a single deployment.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentDetail'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentDetail'
+          description: ''
+      tags:
+      - deployments
+    delete:
+      operationId: destroyDeploymentDetail
+      description: View for admins to get/update/delete a single deployment.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/dependencies/:
+    get:
+      operationId: retrieveDeploymentDependencies
+      description: Return the dependency tree for a single deployment, rooted at the deployment and including its package's transitive package dependencies and any attached databases.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DependencyTree'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DependencyTree'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/reports/:
+    get:
+      operationId: listDeploymentReportMetadata
+      description: Return the metadata for the reports configured on a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentReportMetadata'
+            text/csv; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentReportMetadata'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/reports/{id}/:
+    get:
+      operationId: retrieveDeploymentReport
+      description: Return a single deployment report including the telemetry data from its most recent successful generation run.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentReport'
+            text/csv; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentReport'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/reports/{report_pk}/jobs/{id}/:
+    get:
+      operationId: retrieveDeploymentReportJob
+      description: Return the status and result of a single report-generation job for a deployment report.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: report_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/users/:
+    get:
+      operationId: listActiveDeploymentGroups
+      description: Return the users who currently have a deployment active, each with their latest installed mod and extension versions and the version history they have run.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActiveDeploymentGroup'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActiveDeploymentGroup'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/errors/:
+    get:
+      operationId: listDeploymentErrors
+      description: Return recent error telemetry for a single deployment, grouped by error.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+          description: ''
+      tags:
+      - deployments
+    delete:
+      operationId: destroyDeploymentErrors
+      description: Delete all error telemetry recorded for a single deployment, returning no content.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/groups/:
+    get:
+      operationId: listDeploymentPermissions
+      description: Return the groups granted permission to a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentPermission'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - deployments
+    post:
+      operationId: createDeploymentPermission
+      description: Grant a group permission to a deployment so its members receive the deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentPermission'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentPermission'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/managers/:
+    get:
+      operationId: listDeploymentManagerPermissions
+      description: Return the groups granted manager permission over a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentManagerPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentManagerPermission'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - deployments
+    post:
+      operationId: createDeploymentManagerPermission
+      description: Grant a group manager permission over a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentManagerPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentManagerPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentManagerPermission'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentManagerPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentManagerPermission'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/contacts/:
+    get:
+      operationId: listDeploymentAlertEmails
+      description: Return the alert-notification contact emails configured for a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentAlertEmail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentAlertEmail'
+          description: ''
+      tags:
+      - deployments
+    post:
+      operationId: createDeploymentAlertEmail
+      description: Add an alert-notification contact email to a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/contacts/{id}/:
+    get:
+      operationId: retrieveDeploymentAlertEmail
+      description: Return a single alert-notification contact email for a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+          description: ''
+      tags:
+      - deployments
+    put:
+      operationId: updateDeploymentAlertEmail
+      description: Replace an existing alert-notification contact email for a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+          description: ''
+      tags:
+      - deployments
+    patch:
+      operationId: partialUpdateDeploymentAlertEmail
+      description: Partially update an existing alert-notification contact email for a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentAlertEmail'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentAlertEmail'
+          description: ''
+      tags:
+      - deployments
+    delete:
+      operationId: destroyDeploymentAlertEmail
+      description: Remove an alert-notification contact email from a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/messages/:
+    post:
+      operationId: createDeploymentMessage
+      description: Send an email message about a deployment to a specified recipient on behalf of the current user.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentMessage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentMessage'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentMessage'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentMessage'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentMessage'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/reports/{report_pk}/jobs/:
+    post:
+      operationId: createDeploymentReportJob
+      description: Start a background job to generate a deployment report's telemetry data, returning the new job or redirecting to one already in progress.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: report_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Job'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/alerts/:
+    post:
+      operationId: createDeploymentAlert
+      description: Send an alert email about a deployment to its configured error-notification contacts.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/my-bindings/:
+    put:
+      operationId: updateUserDeploymentBindings
+      description: View for end-users to upsert their personal deployment auth bindings.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/groups/{id}/:
+    delete:
+      operationId: destroyDeploymentPermission
+      description: Revoke a group's permission to a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - deployments
+  /api/deployments/{deployment_pk}/managers/{id}/:
+    delete:
+      operationId: destroyDeploymentManagerPermission
+      description: Revoke a group's manager permission over a deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - deployments
+components:
+  schemas:
+    DeploymentAlertEmail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        notify_error:
+          type: boolean
+        notify_uninstall:
+          type: boolean
+      required:
+      - email
+    DeploymentDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+      required:
+      - name
+      - package_version
+      - services
+      - platform_names
+    DeploymentMessage:
+      type: object
+      properties:
+        recipient:
+          type: string
+          format: email
+        subject:
+          type: string
+        message:
+          type: string
+      required:
+      - recipient
+      - subject
+      - message
+    DeploymentManagerPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        group_id:
+          type: string
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - group_id
+    DeploymentPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        group_id:
+          type: string
+          format: uuid
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - group_id
+    ActiveDeploymentGroup:
+      type: object
+      properties:
+        email:
+          type: string
+        version:
+          type: string
+        client_version:
+          type: string
+        known_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+            required:
+            - version
+            - timestamp
+      required:
+      - email
+      - version
+      - client_version
+      - known_versions
+    DependencyTree:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        id:
+          type: string
+        registry_id:
+          type: string
+        database_id:
+          type: string
+      required:
+      - name
+      - kind
+      - id
+      - registry_id
+      - database_id
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
+    DeploymentReportMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: A human-readable name/label for the report
+          maxLength: 256
+        timezone:
+          type: string
+      required:
+      - id
+      - name
+      - timezone
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+        user:
+          type: string
+          writeOnly: true
+      required:
+      - name
+      - package_version
+      - services
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+      required:
+      - id
+    DeploymentReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id of the report
+        name:
+          type: string
+          description: The name of the report
+        timestamp:
+          type: string
+          format: date-time
+          description: Report generation timestamp
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              timestamp:
+                type: string
+                format: date
+              event_name:
+                type: string
+              event_label:
+                type: string
+              value:
+                type: integer
+            required:
+            - email
+            - timestamp
+            - event_name
+            - event_label
+            - value
+      required:
+      - id
+      - name
+      - timestamp
+      - data
+    DeploymentTelemetry:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
+          type: string
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
+          type: array
+          items:
+            type: object
+            properties:
+              deployment:
+                type: string
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+      required:
+      - uid
+      - version
+    DeploymentDependenciesBatch:
+      type: object
+      properties:
+        dependencies:
+          type: array
+          items:
+            type: object
+            properties:
+              package_id:
+                type: string
+              version:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+            required:
+            - package_id
+            - version
+            - updated_at
+      required:
+      - dependencies

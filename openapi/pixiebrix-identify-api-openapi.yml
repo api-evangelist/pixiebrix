@@ -1,0 +1,51 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Identify API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: identify
+paths:
+  /api/identify/:
+    post:
+      operationId: createIdentify
+      description: Record identity and profile properties for the current user in the telemetry pipeline.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Identify'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Identify'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Identify'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Identify'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Identify'
+          description: ''
+      tags:
+      - identify
+components:
+  schemas:
+    Identify:
+      type: object
+      properties:
+        uid:
+          type: string
+        data:
+          type: object
+          additionalProperties: true

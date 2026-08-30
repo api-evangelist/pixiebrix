@@ -1,0 +1,79 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Settings API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: settings
+paths:
+  /api/settings/:
+    put:
+      operationId: updateUserSettings
+      description: Replace the authenticated user's account settings, including their publishing scope.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+          description: ''
+      tags:
+      - settings
+    patch:
+      operationId: partialUpdateUserSettings
+      description: Update one or more of the authenticated user's account settings, such as their publishing scope.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserSettings'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserSettings'
+          description: ''
+      tags:
+      - settings
+components:
+  schemas:
+    UserSettings:
+      type: object
+      properties:
+        scope:
+          type:
+          - string
+          - 'null'
+          pattern: ^@[a-z0-9][a-z0-9._-]*$
+          maxLength: 128

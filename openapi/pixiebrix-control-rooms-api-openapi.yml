@@ -1,0 +1,171 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Control Rooms API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: control-rooms
+paths:
+  /api/control-rooms/:
+    get:
+      operationId: retrieveControlRoom
+      description: Look up whether a control room is registered for the given hostname query parameter, returning its id and URL when found, or an empty 204 response when no matching control room exists.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoom'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoom'
+          description: ''
+      tags:
+      - control-rooms
+  /api/control-rooms/configurations/{id}/:
+    get:
+      operationId: retrieveControlRoomConfiguration
+      description: Return the full configuration for a single control room, including its URL, service account credentials, and linked organization.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this control room.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoomConfiguration'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoomConfiguration'
+          description: ''
+      tags:
+      - control-rooms
+    patch:
+      operationId: partialUpdateControlRoomConfiguration
+      description: Update fields on an existing control room configuration, re-linking it to the control room when the URL changes.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this control room.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlRoomConfiguration'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ControlRoomConfiguration'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ControlRoomConfiguration'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoomConfiguration'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoomConfiguration'
+          description: ''
+      tags:
+      - control-rooms
+    delete:
+      operationId: destroyControlRoomConfiguration
+      description: Delete a control room configuration.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this control room.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - control-rooms
+  /api/control-rooms/configurations/:
+    post:
+      operationId: createControlRoomConfiguration
+      description: Register a new control room configuration, linking it to an organization and connecting it to the control room at the provided URL.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ControlRoomConfiguration'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ControlRoomConfiguration'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ControlRoomConfiguration'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoomConfiguration'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ControlRoomConfiguration'
+          description: ''
+      tags:
+      - control-rooms
+components:
+  schemas:
+    ControlRoom:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          description: The Control Room URL
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - url
+    ControlRoomConfiguration:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        url:
+          type: string
+          format: uri
+          description: The Control Room URL
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        service_account_username:
+          type: string
+          maxLength: 255
+        service_account_key:
+          type: string
+        organization:
+          type: string
+      required:
+      - url
+      - service_account_username
+      - service_account_key
+      - organization

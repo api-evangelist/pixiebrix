@@ -1,0 +1,50 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Magic Link API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: magic-link
+paths:
+  /api/magic-link/:
+    get:
+      operationId: loginMagicLink
+      description: Validate a magic-link token from the request and sign the user in, returning no content on success.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - magic-link
+    post:
+      operationId: createMagicLink
+      description: Request a passwordless magic link for the given email, sending it by email (creating the account if needed), or returning the single sign-on location for enterprise email domains.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - magic-link

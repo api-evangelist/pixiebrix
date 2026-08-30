@@ -1,0 +1,246 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Tours API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: tours
+paths:
+  /api/tours/:
+    get:
+      operationId: listTours
+      description: Return the guided tours available to the current user across their organizations, each with its mod, target platforms, and the user's most recent run.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tour'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tour'
+          description: ''
+      tags:
+      - tours
+  /api/tours/{tour_pk}/runs/:
+    post:
+      operationId: createTourRun
+      description: Start a new run of the specified tour for the current user, marking it as in progress.
+      parameters:
+      - name: tour_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TourRun'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TourRun'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TourRun'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/TourRun'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/TourRun'
+          description: ''
+      tags:
+      - tours
+  /api/tours/{tour_pk}/runs/{id}/:
+    patch:
+      operationId: partialUpdateTourRun
+      description: Update the status of an existing run of the specified tour, for example to mark it completed or skipped.
+      parameters:
+      - name: tour_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TourRun'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TourRun'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TourRun'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/TourRun'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/TourRun'
+          description: ''
+      tags:
+      - tours
+components:
+  schemas:
+    TourRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        tour:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 254
+          required:
+          - name
+          readOnly: true
+        status:
+          enum:
+          - IN_PROGRESS
+          - COMPLETED
+          - SKIPPED
+          type: string
+        tour_version:
+          type: string
+          description: Version of the tour that was run (provided by the frontend)
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 254
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - tour_version
+    Tour:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 254
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        mod:
+          type: string
+          readOnly: true
+        latest_run:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            tour:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  readOnly: true
+                name:
+                  type: string
+                  maxLength: 254
+              required:
+              - name
+              readOnly: true
+            status:
+              enum:
+              - IN_PROGRESS
+              - COMPLETED
+              - SKIPPED
+              type: string
+            tour_version:
+              type: string
+              description: Version of the tour that was run (provided by the frontend)
+              pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+              maxLength: 254
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+              readOnly: true
+          required:
+          - tour_version
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name

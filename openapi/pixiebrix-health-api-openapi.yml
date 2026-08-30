@@ -1,0 +1,28 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Health API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: health
+paths:
+  /api/health/:
+    get:
+      operationId: retrieveHealthCheck
+      description: Report service health by checking core dependencies (database and cache) and returning an "ok" status when they are reachable or an error status otherwise.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - health

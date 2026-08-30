@@ -1,0 +1,1121 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Databases API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: databases
+paths:
+  /api/databases/:
+    get:
+      operationId: listUserDatabases
+      description: Return the databases the authenticated user can access, whether personally owned or shared through a team.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Database'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/databases/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - databases
+    post:
+      operationId: createUserDatabase
+      description: Create a new database owned by the authenticated user.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Database'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Database'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Database'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - databases
+  /api/databases/records/jobs/{id}/:
+    get:
+      operationId: retrieveDatabaseExportJob
+      description: Return the status and result of a database-records export job, including any output file data or error message once the job finishes.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this database export job.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseExportJob'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseExportJob'
+          description: ''
+      tags:
+      - databases
+  /api/databases/{id}/:
+    get:
+      operationId: retrieveUserDatabase
+      description: Return a single database the authenticated user can access, including its name, type, and record statistics.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - databases
+    patch:
+      operationId: partialUpdateUserDatabase
+      description: Update selected fields of a database the authenticated user owns, such as its name.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Database'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Database'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Database'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - databases
+    delete:
+      operationId: destroyUserDatabase
+      description: Permanently delete a database, and all of its records, owned by the authenticated user.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - databases
+  /api/databases/{id}/permissions/:
+    get:
+      operationId: retrieveUserDatabasePermission
+      description: Return the authenticated user's effective permissions (such as read and write) for a single database.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserDatabasePermission'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserDatabasePermission'
+          description: ''
+      tags:
+      - databases
+  /api/databases/{database_pk}/records/:
+    get:
+      operationId: listRecords
+      description: Return the key/value records stored in the given database, newest first when previewing.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+            text/csv; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api.flat+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/records/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/records/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/records/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/records/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - databases
+    post:
+      operationId: createRecord
+      description: Add one record, or several records in a single request, to the database, merging data into any existing record with the same key according to the chosen merge strategy.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Record'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Record'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            text/csv; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api.flat+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+          description: ''
+      tags:
+      - databases
+    put:
+      operationId: updateRecord
+      description: Replace or merge a record in the database (creating it if it does not yet exist), targeting a single record when a key is provided in the path or one or more records supplied in the request body.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Record'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Record'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            text/csv; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api.flat+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+          description: ''
+      tags:
+      - databases
+    delete:
+      operationId: clearRecord
+      description: Delete every record in the database, optionally limited by query filters.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - databases
+  /api/databases/{database_pk}/records/{key}/:
+    get:
+      operationId: retrieveRecordDetail
+      description: Return a single record from the database identified by its key.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            text/csv; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api.flat+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+          description: ''
+      tags:
+      - databases
+    put:
+      operationId: updateRecordDetail
+      description: Replace or merge a record in the database (creating it if it does not yet exist), targeting a single record when a key is provided in the path or one or more records supplied in the request body.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Record'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Record'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Record'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            text/csv; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api.flat+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Record'
+          description: ''
+      tags:
+      - databases
+    delete:
+      operationId: destroyRecordDetail
+      description: Delete a single record from the database identified by its key.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: key
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - databases
+  /api/databases/{database_pk}/assets/:
+    get:
+      operationId: listAssets
+      description: Return the file assets (such as uploaded images) attached to a database, including each asset's filename, upload status, and download URL.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Asset'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/assets/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/assets/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/assets/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/assets/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - databases
+    post:
+      operationId: createAssetPreUpload
+      description: Register a new file asset on a database and return a presigned URL the client uses to upload the file directly to cloud storage.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssetPreUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssetPreUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssetPreUpload'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/AssetPreUpload'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/AssetPreUpload'
+          description: ''
+      tags:
+      - databases
+  /api/databases/{database_pk}/assets/{id}/:
+    get:
+      operationId: retrieveAsset
+      description: Return a single database asset by id; by default redirects to the asset's file download, or returns the asset's metadata when requested.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Asset'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Asset'
+          description: ''
+      tags:
+      - databases
+    patch:
+      operationId: partialUpdateAsset
+      description: Update an existing database asset, for example to mark it as uploaded after the file has been stored.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Asset'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Asset'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Asset'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Asset'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Asset'
+          description: ''
+      tags:
+      - databases
+  /api/databases/{database_pk}/references/:
+    get:
+      operationId: listDatabaseReferences
+      description: List bricks that use a database.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionSlim'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionSlim'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/references/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/references/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/references/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/references/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - databases
+  /api/databases/{database_pk}/deployments/:
+    get:
+      operationId: listDatabaseDeployments
+      description: List deployments that use a database.
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - databases
+  /api/databases/records/jobs/:
+    post:
+      operationId: createDatabaseExportJob
+      description: Start an asynchronous job that exports the records from one or more databases to a downloadable file (JSON, CSV, or XLSX), returning the new job's id and initial status.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseExportRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DatabaseExportRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DatabaseExportRequest'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseExportRequest'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseExportRequest'
+          description: ''
+      tags:
+      - databases
+  /api/databases/{database_pk}/queue/assign/:
+    post:
+      operationId: createQueueAssign
+      description: 'Get the next available item in a queue.
+
+
+        Runs as an atomic operation so multiple clients don''t get assigned the same task.'
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - databases
+components:
+  schemas:
+    DatabaseExportJob:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        data:
+          type:
+          - string
+          - 'null'
+          format: binary
+        error_message:
+          type:
+          - string
+          - 'null'
+      required:
+      - id
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        organization_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        enforce_schema:
+          type: boolean
+          description: Enforce the JSON Schema for database records
+        owner_field:
+          type:
+          - string
+          - 'null'
+          description: Field indicating the record owner
+          maxLength: 256
+        user:
+          type: string
+          writeOnly: true
+        type:
+          enum:
+          - Key-Value
+          - Asset
+          type: string
+          default: Key-Value
+        last_write_at:
+          type: string
+          format: date-time
+          readOnly: true
+        num_records:
+          type: integer
+          readOnly: true
+      required:
+      - name
+    AssetPreUpload:
+      type: object
+      properties:
+        asset:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            download_url:
+              type: string
+              format: uri
+              readOnly: true
+              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+            filename:
+              type: string
+              description: The original filename. Note this is different than the cloud storage filename.
+              maxLength: 255
+            is_uploaded:
+              type: boolean
+              description: True if the file is uploaded to cloud storage
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+              readOnly: true
+        upload_url:
+          type: string
+          format: uri
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        fields:
+          type: object
+          additionalProperties: true
+      required:
+      - asset
+      - upload_url
+      - fields
+    PackageVersionSlim:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - package_id
+      - name
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+        user:
+          type: string
+          writeOnly: true
+      required:
+      - name
+      - package_version
+      - services
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        download_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        filename:
+          type: string
+          description: The original filename. Note this is different than the cloud storage filename.
+          maxLength: 255
+        is_uploaded:
+          type: boolean
+          description: True if the file is uploaded to cloud storage
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Record:
+      type: object
+      properties:
+        id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
+          type: string
+          writeOnly: true
+          default: replace
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - data
+    DatabaseExportRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 1024
+        databases:
+          type: array
+          items:
+            type: string
+            format: uuid
+        media_type:
+          enum:
+          - application/xlsx
+          - application/json
+          - text/csv
+          type: string
+          default: application/json
+        filters:
+          type: object
+          additionalProperties: true
+          default: {}
+      required:
+      - name
+      - databases
+    UserDatabasePermission:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            enum:
+            - 1
+            - 2
+            type: integer
+          readOnly: true
+          description: Array of permissions for the database.

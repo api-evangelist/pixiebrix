@@ -1,0 +1,2407 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Support API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: support
+paths:
+  /api/support/users/:
+    get:
+      operationId: listSupportUsers
+      description: Search and list users for support investigation, returning each user's profile and the active teams they belong to; supports searching by first name, last name, or email.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportUserDetail'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportUserDetail'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/users/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/users/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/users/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/users/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/users/{id}/:
+    get:
+      operationId: retrieveSupportUsers
+      description: Return a single user's profile and the active teams they belong to for support investigation.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportUserDetail'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportUserDetail'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{user_pk}/events/:
+    get:
+      operationId: retrieveSupportUserEvents
+      description: Return the recent product-usage and telemetry events recorded for a single user, for support investigation.
+      parameters:
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/SupportUserEvent'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/SupportUserEvent'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{user_pk}/errors/:
+    get:
+      operationId: listUserErrors
+      description: Return recent error telemetry recorded for a single user, newest first.
+      parameters:
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserErrorItem'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserErrorItem'
+          description: ''
+      tags:
+      - support
+  /api/support/deployments/{deployment_pk}/errors/:
+    get:
+      operationId: listSupportDeploymentErrors
+      description: Support console view for retrieving errors for any deployment.
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{user_pk}/bricks/:
+    get:
+      operationId: listSupportUserBricks
+      description: List the packages authored by a single user that are visible to that user, for support investigation.
+      parameters:
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Package'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{user_pk}/bricks/{brick_pk}/:
+    get:
+      operationId: retrieveSupportUserBricks
+      description: Return a single package authored by and visible to a user, for support investigation.
+      parameters:
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: brick_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{user_pk}/flags/:
+    get:
+      operationId: listSupportUserFlags
+      description: Return the effective feature flags for a support user.
+      parameters:
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportUserFlag'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportUserFlag'
+          description: ''
+      tags:
+      - support
+  /api/support/mod-copilot-sessions/:
+    get:
+      operationId: listSupportConsoleModCopilotSessions
+      description: Support console view for listing and retrieving Mod Copilot Sessions.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModCopilotSession'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ModCopilotSession'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/mod-copilot-sessions/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/mod-copilot-sessions/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/mod-copilot-sessions/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/mod-copilot-sessions/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/mod-copilot-sessions/{id}/:
+    get:
+      operationId: retrieveSupportConsoleModCopilotSessions
+      description: Support console view for listing and retrieving Mod Copilot Sessions.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSession'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSession'
+          description: ''
+      tags:
+      - support
+  /api/support/token/:
+    get:
+      operationId: listSupportAgents
+      description: API tokens that support agents use to call the Support Console API on a staff member's behalf.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportServiceAccountSummary'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportServiceAccountSummary'
+          description: ''
+      tags:
+      - support
+    post:
+      operationId: createSupportAgent
+      description: API tokens that support agents use to call the Support Console API on a staff member's behalf.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportServiceAccountWithToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportServiceAccountWithToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportServiceAccountWithToken'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/SupportServiceAccountWithToken'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/SupportServiceAccountWithToken'
+          description: ''
+      tags:
+      - support
+  /api/support/organizations/:
+    get:
+      operationId: listSupportOrganizations
+      description: "Search and retrieve organizations for support investigation.\n\nUse this when a ticket quotes a team name or scope but not a user.\n\n- ``?scope=@acme`` — exact-match lookup against the unique ``scope`` field.\n  Prefer when the scope is known; returns at most one row.\n- ``?q=...`` — fuzzy ``icontains`` over both ``name`` and ``scope``. Use\n  when you only have a partial or display-name hint."
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: scope
+        required: false
+        in: query
+        description: Optional. Exact-match team scope (e.g. ``@acme``). Scopes are unique, so this returns at most one row — prefer over ``q`` when the scope is known.
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportOrganization'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportOrganization'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/organizations/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/organizations/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/organizations/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/organizations/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/organizations/{id}/:
+    get:
+      operationId: retrieveSupportOrganizations
+      description: "Search and retrieve organizations for support investigation.\n\nUse this when a ticket quotes a team name or scope but not a user.\n\n- ``?scope=@acme`` — exact-match lookup against the unique ``scope`` field.\n  Prefer when the scope is known; returns at most one row.\n- ``?q=...`` — fuzzy ``icontains`` over both ``name`` and ``scope``. Use\n  when you only have a partial or display-name hint."
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportOrganization'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportOrganization'
+          description: ''
+      tags:
+      - support
+  /api/support/organizations/{org_pk}/groups/:
+    get:
+      operationId: listSupportOrganizationGroups
+      description: 'List an organization''s groups for support investigation.
+
+
+        Lets a consumer find a group by name (and gauge its size via
+
+        ``member_count``) without first locating a deployment that targets it.'
+      parameters:
+      - name: org_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportGroup'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportGroup'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/organizations/{org_pk}/groups/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/organizations/{org_pk}/groups/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/organizations/{org_pk}/groups/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/organizations/{org_pk}/groups/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/groups/{group_pk}/members/:
+    get:
+      operationId: listSupportGroupMembers
+      description: 'List the users with an active membership in a group, for support triage.
+
+
+        Resolves a group id (e.g. from a deployment''s targeted groups) to its
+
+        roster so diagnostics can be scoped to a known cohort instead of guessing
+
+        email patterns. ``?q=`` does an ``icontains`` over first name, last name,
+
+        and email. Soft-deleted (removed) memberships are excluded.'
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportUserDetail'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportUserDetail'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/groups/{group_pk}/members/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/groups/{group_pk}/members/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/groups/{group_pk}/members/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/groups/{group_pk}/members/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/organizations/{org_pk}/activity-policies/:
+    get:
+      operationId: listSupportOrganizationActivityPolicies
+      description: 'List an organization''s activity policies for support investigation.
+
+
+        Read-only view of the policies authored for an org (id, name, version,
+
+        assigned groups, timestamps) so support can audit the shape/version of
+
+        policies in the field without going through the org-scoped product API.
+
+        Use ``/api/support/activity-policies/<id>/`` for one policy''s full config.
+
+        Not gated by the activity-tracking flag — support can inspect a policy even
+
+        after the flag is toggled off.'
+      parameters:
+      - name: org_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportActivityPolicyList'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportActivityPolicyList'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/organizations/{org_pk}/activity-policies/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/organizations/{org_pk}/activity-policies/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/organizations/{org_pk}/activity-policies/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/organizations/{org_pk}/activity-policies/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/activity-policies/{id}/:
+    get:
+      operationId: retrieveSupportActivityPolicies
+      description: 'Retrieve one activity policy''s full authored config for support.
+
+
+        Returns the ``config`` exactly as stored, plus the owning organization and
+
+        assigned groups. Read-only and support-group gated.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportActivityPolicyDetail'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportActivityPolicyDetail'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{user_pk}/activity-policies/:
+    get:
+      operationId: listSupportUserActivityPolicies
+      description: 'List the activity policies that apply to a user via their group memberships.
+
+
+        Resolves the same "which policies apply to this member" question the Admin
+
+        Console member-detail screen answers, but keyed on a user id for support
+
+        triage — each row carries the policy''s ``assigned_groups`` (all groups it''s
+
+        assigned to) and ``matching_groups`` (the subset the user belongs to that
+
+        make it apply). Spans every organization the user has an applicable policy
+
+        in; ``organization`` on each row disambiguates. Soft-deleted memberships are
+
+        excluded (``group_ids`` reflects active memberships only).'
+      parameters:
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportMemberActivityPolicy'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportMemberActivityPolicy'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/users/{user_pk}/activity-policies/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/users/{user_pk}/activity-policies/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/users/{user_pk}/activity-policies/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/users/{user_pk}/activity-policies/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/deployments/:
+    get:
+      operationId: listSupportDeployments
+      description: 'Search and retrieve organization deployments for support investigation.
+
+
+        List requires ``?organization=<id>`` and supports ``?q=<name>`` (icontains
+
+        on deployment name) and ``?active=true|false``.
+
+
+        Retrieve returns the current ``options_config``, the resolved package
+
+        version, effective deployment-level bindings, target platforms, and the
+
+        user groups the deployment targets. Use ``/audit/`` for prior values.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: organization
+        required: true
+        in: query
+        description: Required. Organization id whose deployments to list.
+        schema:
+          type: string
+      - name: active
+        required: false
+        in: query
+        description: Optional. Filter to active (true) or paused (false) deployments.
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportDeploymentList'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SupportDeploymentList'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/deployments/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/deployments/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/deployments/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/deployments/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/deployments/{id}/:
+    get:
+      operationId: retrieveSupportDeployments
+      description: 'Search and retrieve organization deployments for support investigation.
+
+
+        List requires ``?organization=<id>`` and supports ``?q=<name>`` (icontains
+
+        on deployment name) and ``?active=true|false``.
+
+
+        Retrieve returns the current ``options_config``, the resolved package
+
+        version, effective deployment-level bindings, target platforms, and the
+
+        user groups the deployment targets. Use ``/audit/`` for prior values.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportDeploymentDetail'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportDeploymentDetail'
+          description: ''
+      tags:
+      - support
+  /api/support/deployments/{deployment_pk}/audit/:
+    get:
+      operationId: listSupportDeploymentAudits
+      description: 'Audit history for a single deployment, for support investigation.
+
+
+        Returns the same ``AuditEvent`` rows as ``/api/audit/deployments/<pk>/``
+
+        but is accessible to Support group members rather than only organization
+
+        managers/admins. Each event''s ``data`` includes the deployment name, mod
+
+        registry id + version, active flag, options_config, integration
+
+        configurations, and platforms at the time of the change — see
+
+        ``api/audit/signals.py:deployment_save``.'
+      parameters:
+      - name: deployment_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/deployments/{deployment_pk}/audit/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/deployments/{deployment_pk}/audit/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/deployments/{deployment_pk}/audit/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/deployments/{deployment_pk}/audit/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/databases/{database_pk}/records/:
+    get:
+      operationId: listSupportDatabaseRecords
+      description: "List records in a team database for support investigation.\n\nRestricted to organization-owned (team) databases. Supports the same\nrecord-level filters as ``/api/databases/{database_pk}/records/``:\n\n- ``?start_date=YYYY-MM-DD`` / ``?end_date=YYYY-MM-DD`` filter on\n  ``created_at`` (inclusive on both sides).\n- ``?data__email=user@example.com`` (and other ``?data__*=`` filters)\n  query the record JSON; ``data__email`` is indexed.\n\nThe shared ``max_record_count = 10_000`` guard enforced by\n``PaginatedListAPIView`` is reused — callers must paginate or filter."
+      parameters:
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Record'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/databases/{database_pk}/records/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/databases/{database_pk}/records/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/databases/{database_pk}/records/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/databases/{database_pk}/records/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/packages/:
+    get:
+      operationId: listSupportPackages
+      description: 'Search and retrieve package definitions for support investigation.
+
+
+        List action supports full-text search via ``?q=`` (matched against
+
+        package name / registry id and verbose name).
+
+
+        Retrieve action looks up a single package by its registry id (the ``name``
+
+        field, e.g. ``@scope/collection/package``).  An optional ``?version=``
+
+        query parameter returns the config at that semantic version instead of the
+
+        current version.'
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: created_at_gte
+        required: false
+        in: query
+        description: Filter packages created on or after this date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: created_at_lte
+        required: false
+        in: query
+        description: Filter packages created on or before this date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: updated_at_gte
+        required: false
+        in: query
+        description: Filter packages updated on or after this date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: updated_at_lte
+        required: false
+        in: query
+        description: Filter packages updated on or before this date (YYYY-MM-DD)
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageMeta'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageMeta'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/packages/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/packages/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/packages/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/packages/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/packages/{name}/versions/:
+    get:
+      operationId: listSupportPackageVersions
+      description: List versions for a package for support investigation.
+      parameters:
+      - name: name
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionHeavy'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionHeavy'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/support/packages/{name}/versions/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/support/packages/{name}/versions/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/support/packages/{name}/versions/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/support/packages/{name}/versions/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - support
+  /api/support/packages/{name}/:
+    get:
+      operationId: retrieveSupportPackages
+      description: 'Search and retrieve package definitions for support investigation.
+
+
+        List action supports full-text search via ``?q=`` (matched against
+
+        package name / registry id and verbose name).
+
+
+        Retrieve action looks up a single package by its registry id (the ``name``
+
+        field, e.g. ``@scope/collection/package``).  An optional ``?version=``
+
+        query parameter returns the config at that semantic version instead of the
+
+        current version.'
+      parameters:
+      - name: name
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: version
+        in: query
+        required: false
+        description: Optional semantic version. When provided, returns that package version instead of the current version.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportPackageDetail'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportPackageDetail'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{id}/activity/seed/:
+    post:
+      operationId: createSupportUserActivitySeed
+      description: Generate demo activity-tracking data (spans + events) for a single user in one of their organizations, for building Activity Overview demos. The organization must already have the activity-tracking flag enabled. Any existing activity for this user in that organization is deleted first so re-runs replace rather than accumulate. Dev/demo tooling — not for production customer data.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportActivitySeedRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportActivitySeedRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportActivitySeedRequest'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportActivitySeedResult'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SupportActivitySeedResult'
+          description: ''
+      tags:
+      - support
+  /api/support/mod-copilot-sessions/{id}/feedback/:
+    post:
+      operationId: createSupportConsoleModCopilotSessionFeedback
+      description: 'Support console view for submitting feedback on Mod Copilot Sessions.
+
+
+        Any user with Support group membership can submit feedback on any session,
+
+        regardless of session ownership.'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this mod copilot session feedback.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSessionFeedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSessionFeedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSessionFeedback'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSessionFeedback'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSessionFeedback'
+          description: ''
+      tags:
+      - support
+  /api/support/users/{id}/cache/:
+    delete:
+      operationId: destroyAppUser
+      description: Invalidate the server-side cache for a single user so their next request reloads fresh data; does not delete the user.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this app user.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - support
+  /api/support/token/{id}/:
+    delete:
+      operationId: destroySupportAgent
+      description: API tokens that support agents use to call the Support Console API on a staff member's behalf.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - support
+components:
+  schemas:
+    PackageMeta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sharing:
+          type: object
+          properties:
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
+      required:
+      - name
+      - kind
+      - sharing
+    SupportDeploymentList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+      required:
+      - name
+    SupportUserFlag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The feature flag name.
+        note:
+          type:
+          - string
+          - 'null'
+          description: Description of the waffle flag. Null for computed flags.
+        django_admin_url:
+          type:
+          - string
+          - 'null'
+          description: URL to the waffle flag in Django Admin. Null for computed flags (e.g. restricted-* flags derived from organization settings).
+      required:
+      - name
+      - note
+      - django_admin_url
+    SupportPackageDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        raw_config:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - kind
+    SupportGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        member_count:
+          type: integer
+          readOnly: true
+      required:
+      - name
+    Package:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        share_dependencies:
+          type: boolean
+          writeOnly: true
+          default: false
+        config:
+          type: string
+        public:
+          type: boolean
+          default: false
+        organizations:
+          type: array
+          items:
+            type: string
+        owner_organization:
+          type: string
+          readOnly: true
+        message:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        is_locked:
+          type: boolean
+          readOnly: true
+        lock_owner:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  readOnly: true
+                email:
+                  type: string
+                  format: email
+                  maxLength: 254
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+          required:
+          - user
+          readOnly: true
+      required:
+      - kind
+      - config
+    SupportActivitySeedResult:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+        weeks:
+          type: integer
+        spans:
+          type: integer
+          description: Activity spans created.
+        events:
+          type: integer
+          description: Activity events created.
+        deleted_spans:
+          type: integer
+          description: Prior spans removed for this user in this org before seeding.
+        deleted_events:
+          type: integer
+          description: Prior events removed for this user in this org before seeding.
+      required:
+      - organization_id
+      - weeks
+      - spans
+      - events
+      - deleted_spans
+      - deleted_events
+    SupportActivitySeedRequest:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: Organization to generate the activity data in. Must be one the user is an active member of, with activity tracking already enabled.
+        weeks:
+          type: integer
+          maximum: 12
+          minimum: 1
+          default: 4
+          description: Weeks of history to generate, ending today.
+        seed:
+          type: integer
+          description: Optional RNG seed for reproducible data. Omit to derive a stable per-user seed.
+      required:
+      - organization_id
+    SupportOrganization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        scope:
+          type:
+          - string
+          - 'null'
+          pattern: ^@[a-z0-9][a-z0-9._-]*$
+          maxLength: 128
+        restricted:
+          type: boolean
+          description: Apply restrictions to the PixieBrix extension interface
+        partner:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        member_count:
+          type: integer
+          readOnly: true
+        trial_end_timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: Timestamp when the Business Plan trial ends. null if not on trial.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    UserErrorItem:
+      type: object
+      properties:
+        extension_label:
+          type:
+          - string
+          - 'null'
+          description: Label of the extension, depends on the extension's telemetry settings
+        id:
+          type: integer
+          readOnly: true
+        message:
+          type: string
+          description: Just the error message, not the complete traceback
+        step_label:
+          type:
+          - string
+          - 'null'
+          description: Step of the extension, depends on the extension's telemetry settings
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp the error occurred, not the time the record is added to the db
+        platform:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Unique platform identifier
+              maxLength: 50
+            display_name:
+              type: string
+              description: Display name
+              maxLength: 255
+          required:
+          - name
+          - display_name
+          readOnly: true
+        user_agent_extension_version:
+          type: string
+          description: Browser extension semantic version
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 64
+        user_agent_extension_full_version:
+          type: string
+          description: Browser extension version including any pre-release suffix, e.g. 3.2.10-hotfix.2. Blank for the web app and for extension builds older than the field
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 255
+      required:
+      - message
+      - timestamp
+    PackageVersionHeavy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
+          type: string
+          description: Optional commit/changelog message for version
+      required:
+      - id
+      - package_id
+      - name
+      - updated_by
+    SupportServiceAccountSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          readOnly: true
+        prefix:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+    SupportActivityPolicyList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    AuditEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        actor:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        target_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_type:
+          type: string
+          maxLength: 256
+        data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - actor
+      - target_object
+      - action_object
+      - action_type
+    SupportActivityPolicyDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
+      required:
+      - name
+    ModCopilotSessionFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        session:
+          type: string
+          description: The session being reviewed
+        rating:
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: 'User rating: -1 for negative, 1 for positive'
+          minimum: -32768
+          maximum: 32767
+        comment:
+          type: string
+          description: User's feedback comment
+        message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional message ID for feedback on a specific message
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - session
+      - rating
+      - comment
+    SupportMemberActivityPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        matching_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+      required:
+      - name
+    SupportUserDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        service_account:
+          type: boolean
+          readOnly: true
+        deployment_key_account:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        organizations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 128
+              trial_end_timestamp:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+                description: Timestamp when the Business Plan trial ends. null if not on trial.
+            required:
+            - name
+          readOnly: true
+      required:
+      - username
+    SupportUserEvent:
+      type: object
+      properties:
+        name:
+          type: string
+        time:
+          type: string
+          format: date-time
+        id:
+          type: string
+        blueprintId:
+          type: string
+        blueprintVersion:
+          type: string
+        extensionPointId:
+          type: string
+        label:
+          type: string
+      required:
+      - name
+      - time
+      - id
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
+    Record:
+      type: object
+      properties:
+        id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
+          type: string
+          writeOnly: true
+          default: replace
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - data
+    ModCopilotSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        data:
+          type: object
+          properties:
+            messages:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  role:
+                    type: string
+                  timestamp:
+                    type: string
+                  content:
+                    type:
+                    - string
+                    - 'null'
+                  toolCallId:
+                    type:
+                    - string
+                    - 'null'
+                  state:
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: true
+                  response:
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: true
+                required:
+                - id
+                - role
+                - timestamp
+            id:
+              type: string
+          required:
+          - messages
+          - id
+        source_version:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Commit SHA of the app-service (backend) running when the session was created
+        platform_version:
+          type:
+          - string
+          - 'null'
+          description: The platform version that created the session
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        feedback:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  email:
+                    type: string
+                    format: email
+                    maxLength: 254
+              session:
+                type: string
+                description: The session being reviewed
+              rating:
+                enum:
+                - -1
+                - 1
+                type: integer
+                description: 'User rating: -1 for negative, 1 for positive'
+                minimum: -32768
+                maximum: 32767
+              comment:
+                type: string
+                description: User's feedback comment
+              message_id:
+                type:
+                - string
+                - 'null'
+                description: Optional message ID for feedback on a specific message
+                maxLength: 255
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - session
+            - rating
+            - comment
+          readOnly: true
+      required:
+      - data
+    SupportDeploymentDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        options_config:
+          type: object
+          additionalProperties: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+      required:
+      - name
+    SupportServiceAccountWithToken:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          default: Support Agent
+          description: Human-readable name to identify this agent.
+          maxLength: 30
+        prefix:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+        token:
+          type: string
+          readOnly: true

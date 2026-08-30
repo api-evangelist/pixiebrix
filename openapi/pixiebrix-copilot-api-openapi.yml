@@ -1,0 +1,543 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Copilot API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: copilot
+paths:
+  /api/copilot/skills/{skill_id}/:
+    get:
+      operationId: retrieveSkillDetail
+      description: Serve mod-generation copilot skill content (body only, front-matter stripped).
+      parameters:
+      - name: skill_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/suggested-mod-prompts/:
+    get:
+      operationId: listSuggestedModPrompts
+      description: List suggested mod prompts (authenticated GET) or bulk upsert (POST with shared token).
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SuggestedModPrompt'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SuggestedModPrompt'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - copilot
+    post:
+      operationId: createSuggestedModPromptBulkUpload
+      description: Bulk upsert prompts (shared-token auth for CI / automation).
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SuggestedModPromptBulkUpload'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SuggestedModPromptBulkUpload'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SuggestedModPromptBulkUpload'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SuggestedModPromptBulkUpload'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/SuggestedModPromptBulkUpload'
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/mod-generation/:
+    post:
+      operationId: createModGeneration
+      description: Generate a new mod from a chat conversation, returning the AI assistant's reply (and any tool calls), optionally streamed as server-sent events.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/mod-edit/:
+    post:
+      operationId: createModEdit
+      description: 'API view for editing existing mods via AI copilot.
+
+
+        Similar to ModGenerationView but uses a different system prompt optimized for
+
+        editing existing mods rather than creating new ones from scratch.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/chat/completions/:
+    post:
+      operationId: createChatCompletion
+      description: Stream a chat completion for the default chat copilot.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/mod-generation/sessions/{id}/feedback/:
+    post:
+      operationId: createModCopilotSessionFeedback
+      description: Record the current user's feedback (rating and optional comment) on the mod-generation copilot session with the given id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this mod copilot session feedback.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSessionFeedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSessionFeedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSessionFeedback'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSessionFeedback'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSessionFeedback'
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/extract-from-page/:
+    post:
+      operationId: createExtractFromPage
+      description: Extract structured data from page HTML or Markdown using AI, returning a result that conforms to the supplied JSON schema.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/custom-prompt/:
+    post:
+      operationId: createCustomPrompt
+      description: Transform the provided input data with AI according to a custom prompt, returning a result that conforms to the supplied JSON schema.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/verify-mod/:
+    post:
+      operationId: createVerifyMod
+      description: Verify a mod definition against the conversation's requirements using AI, returning which acceptance criteria are implemented and which are missing.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - copilot
+  /api/copilot/mod-generation/sessions/{id}/:
+    put:
+      operationId: updateModCopilotSession
+      description: Create or replace the mod-generation copilot session with the given id, storing its conversation and version metadata for the current user.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this mod copilot session.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSession'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSession'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ModCopilotSession'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSession'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ModCopilotSession'
+          description: ''
+      tags:
+      - copilot
+components:
+  schemas:
+    SuggestedModPromptBulkUpload:
+      type: object
+      properties:
+        prompts:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                maxLength: 255
+              user_message:
+                type: string
+              hostname:
+                type:
+                - string
+                - 'null'
+            required:
+            - title
+            - user_message
+      required:
+      - prompts
+    ModCopilotSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        data:
+          type: object
+          properties:
+            messages:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  role:
+                    type: string
+                  timestamp:
+                    type: string
+                  content:
+                    type:
+                    - string
+                    - 'null'
+                  toolCallId:
+                    type:
+                    - string
+                    - 'null'
+                  state:
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: true
+                  response:
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: true
+                required:
+                - id
+                - role
+                - timestamp
+            id:
+              type: string
+          required:
+          - messages
+          - id
+        source_version:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Commit SHA of the app-service (backend) running when the session was created
+        platform_version:
+          type:
+          - string
+          - 'null'
+          description: The platform version that created the session
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        feedback:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  email:
+                    type: string
+                    format: email
+                    maxLength: 254
+              session:
+                type: string
+                description: The session being reviewed
+              rating:
+                enum:
+                - -1
+                - 1
+                type: integer
+                description: 'User rating: -1 for negative, 1 for positive'
+                minimum: -32768
+                maximum: 32767
+              comment:
+                type: string
+                description: User's feedback comment
+              message_id:
+                type:
+                - string
+                - 'null'
+                description: Optional message ID for feedback on a specific message
+                maxLength: 255
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - session
+            - rating
+            - comment
+          readOnly: true
+      required:
+      - data
+    ModCopilotSessionFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        session:
+          type: string
+          description: The session being reviewed
+        rating:
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: 'User rating: -1 for negative, 1 for positive'
+          minimum: -32768
+          maximum: 32767
+        comment:
+          type: string
+          description: User's feedback comment
+        message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional message ID for feedback on a specific message
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - session
+      - rating
+      - comment
+    SuggestedModPrompt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: Short prompt name shown to users
+          maxLength: 255
+        user_message:
+          type: string
+          description: Initial user message for the prompt
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - title
+      - user_message

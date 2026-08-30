@@ -1,0 +1,61 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Events API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: events
+paths:
+  /api/events/:
+    post:
+      operationId: createEventList
+      description: Accept a batch of client-side analytics events and forward them to the telemetry pipeline.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventList'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventList'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/EventList'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/EventList'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/EventList'
+          description: ''
+      tags:
+      - events
+components:
+  schemas:
+    EventList:
+      type: object
+      properties:
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              data:
+                type: object
+                additionalProperties: true
+              uid:
+                type: string
+              event:
+                type: string
+        timestamp:
+          type: string
+          format: date-time

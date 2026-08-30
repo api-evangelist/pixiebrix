@@ -1,0 +1,225 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Campaigns API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: campaigns
+paths:
+  /api/campaigns/{campaign_pk}/jobs/{id}/:
+    get:
+      operationId: retrieveCampaignEngagementJob
+      description: Return the status and result of a campaign engagement report job by its id.
+      parameters:
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: ''
+      tags:
+      - campaigns
+  /api/campaigns/{campaign_pk}/databases/:
+    get:
+      operationId: listCampaignDatabases
+      description: Return the databases accessible to the members of a campaign, along with the campaign group permissions on each.
+      parameters:
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampaignDatabase'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampaignDatabase'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - campaigns
+  /api/campaigns/{campaign_pk}/jobs/:
+    post:
+      operationId: createCampaignEngagementJob
+      description: Start a new campaign engagement report job, or redirect to the existing job if one is already in progress for the campaign.
+      parameters:
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Job'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Job'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Job'
+          description: ''
+      tags:
+      - campaigns
+  /api/campaigns/{campaign_pk}/emails/jobs/:
+    post:
+      operationId: createCampaignEmailJob
+      description: Queue a batch email job for a campaign, sending either registration invitations or activation reminders to its members based on the requested type.
+      parameters:
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - campaigns
+components:
+  schemas:
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+      required:
+      - id
+    CampaignDatabase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        organization_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        enforce_schema:
+          type: boolean
+          description: Enforce the JSON Schema for database records
+        owner_field:
+          type:
+          - string
+          - 'null'
+          description: Field indicating the record owner
+          maxLength: 256
+        user:
+          type: string
+          writeOnly: true
+        type:
+          enum:
+          - Key-Value
+          - Asset
+          type: string
+          default: Key-Value
+        last_write_at:
+          type: string
+          format: date-time
+          readOnly: true
+        num_records:
+          type: integer
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - id
+            - name
+          readOnly: true
+      required:
+      - name

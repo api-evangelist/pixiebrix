@@ -1,0 +1,223 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Audit API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: audit
+paths:
+  /api/audit/organizations/{id}/:
+    get:
+      operationId: listAuditEvents
+      description: Return the audit-event history for an organization (membership changes, role changes, and similar administrative actions), newest first.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/audit/organizations/{id}/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/audit/organizations/{id}/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/audit/organizations/{id}/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/audit/organizations/{id}/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - audit
+  /api/audit/groups/{id}/:
+    get:
+      operationId: listAuditGroups
+      description: Return the audit-event history for a single resource targeted by the event (such as a group or deployment), newest first.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/audit/groups/{id}/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/audit/groups/{id}/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/audit/groups/{id}/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/audit/groups/{id}/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - audit
+  /api/audit/deployments/{id}/:
+    get:
+      operationId: listAuditDeployments
+      description: Return the audit-event history for a single resource targeted by the event (such as a group or deployment), newest first.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AuditEvent'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/audit/deployments/{id}/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/audit/deployments/{id}/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/audit/deployments/{id}/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/audit/deployments/{id}/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - audit
+components:
+  schemas:
+    AuditEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        actor:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        target_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_type:
+          type: string
+          maxLength: 256
+        data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - actor
+      - target_object
+      - action_object
+      - action_type

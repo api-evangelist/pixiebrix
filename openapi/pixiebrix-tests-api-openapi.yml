@@ -1,0 +1,33 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Tests API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: tests
+paths:
+  /api/tests/accounts/social/:
+    delete:
+      operationId: destroyDeleteTestSocialAccount
+      description: Delete the calling social-login test account and its associated data; intended for test teardown only.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - tests
+  /api/tests/accounts/rainforest/:
+    delete:
+      operationId: destroyDeleteRainforestAccount
+      description: Delete the calling automated-testing service's test account and its associated data; intended for test teardown only.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - tests

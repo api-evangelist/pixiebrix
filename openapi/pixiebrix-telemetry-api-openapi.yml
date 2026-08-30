@@ -1,0 +1,328 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Telemetry API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: telemetry
+paths:
+  /api/telemetry/errors/public-blueprints/:
+    get:
+      operationId: listPublicBlueprintErrorItemGroups
+      description: Return recent error telemetry for currently published marketplace mods, grouped by error.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicBlueprintErrorItemGroup'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PublicBlueprintErrorItemGroup'
+          description: ''
+      tags:
+      - telemetry
+  /api/telemetry/errors/{id}/:
+    get:
+      operationId: retrieveErrorDetail
+      description: Return the full details of a single error telemetry item by its id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this error item.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ErrorItem'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ErrorItem'
+          description: ''
+      tags:
+      - telemetry
+  /api/telemetry/errors/:
+    post:
+      operationId: createErrorItem
+      description: Record one or more client-reported error telemetry items for the current user, returning no content.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ErrorItem'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ErrorItem'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ErrorItem'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ErrorItem'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ErrorItem'
+          description: ''
+      tags:
+      - telemetry
+  /api/telemetry/external/events/:
+    post:
+      operationId: createExternalEvent
+      description: Endpoint for recording custom user telemetry via service account, e.g., from Zapier.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExternalEvent'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ExternalEvent'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ExternalEvent'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ExternalEvent'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/ExternalEvent'
+          description: ''
+      tags:
+      - telemetry
+components:
+  schemas:
+    PublicBlueprintErrorItemGroup:
+      type: object
+      properties:
+        blueprint_name:
+          type: string
+        blueprint_version:
+          type: string
+        extension_label:
+          type:
+          - string
+          - 'null'
+        step_label:
+          type:
+          - string
+          - 'null'
+        brick_version:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        user_agent_extension_versions:
+          type: array
+          items:
+            type: string
+        request_urls:
+          type: array
+          items:
+            type: string
+      required:
+      - blueprint_name
+      - blueprint_version
+      - extension_label
+      - step_label
+      - brick_version
+      - message
+      - occurrence_count
+      - users
+      - last_occurrence_timestamp
+      - user_agent_extension_versions
+      - request_urls
+    ExternalEvent:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        data:
+          type: object
+          additionalProperties: true
+        event:
+          type: string
+      required:
+      - email
+      - event
+    ErrorItem:
+      type: object
+      properties:
+        uuid:
+          type: string
+          format: uuid
+        class_name:
+          type: string
+          description: JavaScript error class name
+          maxLength: 255
+        message:
+          type: string
+          description: Just the error message, not the complete traceback
+        is_application_error:
+          type: boolean
+          description: True if the extension author/maintainer can't fix the error on their own
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp the error occurred, not the time the record is added to the db
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
+        organization:
+          type:
+          - string
+          - 'null'
+        deployment:
+          type:
+          - string
+          - 'null'
+        blueprint_version:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+          required:
+          - id
+          - version
+        brick_version:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+          required:
+          - id
+          - version
+        service_version:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+          required:
+          - id
+          - version
+        extension_uuid:
+          type: string
+          format: uuid
+          description: The mod component UUID
+        extension_label:
+          type:
+          - string
+          - 'null'
+          description: Label of the extension, depends on the extension's telemetry settings
+        step_label:
+          type:
+          - string
+          - 'null'
+          description: Step of the extension, depends on the extension's telemetry settings
+        user_agent:
+          type: string
+        user_agent_extension_version:
+          type: string
+          description: Browser extension semantic version
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 64
+        user_agent_extension_full_version:
+          type: string
+          description: Browser extension version including any pre-release suffix, e.g. 3.2.10-hotfix.2. Blank for the web app and for extension builds older than the field
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 255
+        error_data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        platform:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Unique platform identifier
+              maxLength: 50
+            display_name:
+              type: string
+              description: Display name
+              maxLength: 255
+          required:
+          - name
+          - display_name
+          readOnly: true
+        platform_name:
+          type: string
+          writeOnly: true
+      required:
+      - uuid
+      - class_name
+      - message
+      - is_application_error
+      - timestamp
+      - extension_uuid
+      - user_agent
+      - platform_name

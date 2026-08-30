@@ -1,0 +1,742 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Me API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: me
+paths:
+  /api/me/:
+    get:
+      operationId: retrieveMe
+      description: Return the current user's profile, settings, organization and group memberships, and feature flags, or just the feature flags when the request is not authenticated.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.1:
+              schema:
+                $ref: '#/components/schemas/Me'
+            application/vnd.pixiebrix.api+json; version=1.1:
+              schema:
+                $ref: '#/components/schemas/Me'
+          description: ''
+      tags:
+      - me
+    delete:
+      operationId: destroyMe
+      description: Permanently delete the current user's account.
+      parameters: []
+      responses:
+        '204':
+          description: ''
+      tags:
+      - me
+  /api/me/partner-principals/:
+    get:
+      operationId: listControlRoomPrincipals
+      description: List the current user's control room principals, returning the control room user id and control room URL for each control room the user is linked to.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ControlRoomPrincipal'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ControlRoomPrincipal'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/me/partner-principals/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/me/partner-principals/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/me/partner-principals/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/me/partner-principals/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - me
+  /api/me/token/:
+    get:
+      operationId: retrieveAuthToken
+      description: Return the token for the current user.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+      tags:
+      - me
+  /api/me/settings/webextension/:
+    get:
+      operationId: retrieveUserExtensionSettings
+      description: Return the authenticated user's browser extension UI preferences, such as text selection menu and floating action button settings and their per-site denylists.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserExtensionSettings'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserExtensionSettings'
+          description: ''
+      tags:
+      - me
+    patch:
+      operationId: partialUpdateUserExtensionSettings
+      description: Update one or more of the authenticated user's browser extension UI preferences, such as text selection menu and floating action button settings and their per-site denylists.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserExtensionSettings'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserExtensionSettings'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserExtensionSettings'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserExtensionSettings'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserExtensionSettings'
+          description: ''
+      tags:
+      - me
+  /api/me/milestones/:
+    get:
+      operationId: listMilestones
+      description: Return the onboarding milestones the current user has reached, each identified by a key with optional metadata.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Milestone'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Milestone'
+          description: ''
+      tags:
+      - me
+    post:
+      operationId: createMilestone
+      description: Record an onboarding milestone for the current user, replacing the metadata if a milestone with the same key already exists.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Milestone'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Milestone'
+          description: ''
+      tags:
+      - me
+  /api/me/deployments/{id}/:
+    get:
+      operationId: retrieveUserDeployment
+      description: View to create, get and delete user deployments.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+          description: ''
+      tags:
+      - me
+    delete:
+      operationId: destroyUserDeployment
+      description: View to create, get and delete user deployments.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - me
+  /api/me/deployments/:
+    post:
+      operationId: createUserDeployment
+      description: View to create, get and delete user deployments.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+          description: ''
+      tags:
+      - me
+components:
+  schemas:
+    UserExtensionSettings:
+      type: object
+      properties:
+        is_text_selection_menu_enabled:
+          type: boolean
+        is_floating_action_button_enabled:
+          type: boolean
+        text_selection_menu_orientation:
+          enum:
+          - horizontal
+          - vertical
+          type: string
+        text_selection_menu_site_denylist:
+          type: array
+          items:
+            type: string
+        floating_action_button_site_denylist:
+          type: array
+          items:
+            type: string
+      required:
+      - is_text_selection_menu_enabled
+      - is_floating_action_button_enabled
+      - text_selection_menu_orientation
+    Me:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        scope:
+          type:
+          - string
+          - 'null'
+          pattern: ^@[a-z0-9][a-z0-9._-]*$
+          maxLength: 128
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        name:
+          type: string
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+            scope:
+              type:
+              - string
+              - 'null'
+              pattern: ^@[a-z0-9][a-z0-9._-]*$
+              maxLength: 128
+            is_enterprise:
+              type: boolean
+              readOnly: true
+            control_room:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  readOnly: true
+                url:
+                  type: string
+                  format: uri
+                  description: The Control Room URL
+                  maxLength: 200
+                  pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+              required:
+              - url
+              readOnly: true
+            theme:
+              type: object
+              properties:
+                show_sidebar_logo:
+                  type: boolean
+                logo:
+                  type:
+                  - string
+                  - 'null'
+                  format: uri
+                  description: The image URL of a custom logo. Image format must be SVG or PNG.
+                  maxLength: 200
+                  pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+                toolbar_icon:
+                  type:
+                  - string
+                  - 'null'
+                  format: uri
+                  description: The image URL of the icon displayed in the browser toolbar. Image format must be PNG.
+                  maxLength: 200
+                  pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+                fab_logo:
+                  type:
+                  - string
+                  - 'null'
+                  format: uri
+                  description: The image URL of the icon displayed in the floating action button (FAB) in the browser extension. Image format must be SVG or PNG.
+                  maxLength: 200
+                  pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+                whitelabel_theme_name:
+                  type: string
+                  description: The name of the theme to use for white-labeling.
+                  maxLength: 128
+              required:
+              - whitelabel_theme_name
+              readOnly: true
+            ai_default_chat_copilot:
+              type: boolean
+              description: When enabled, a default AI Chat Copilot is available in the sidebar for team members.
+          required:
+          - name
+          - ai_default_chat_copilot
+          readOnly: true
+        organization_memberships:
+          type: array
+          items:
+            type: object
+            properties:
+              organization:
+                type: string
+                format: uuid
+              organization_name:
+                type: string
+              role:
+                enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                type: integer
+                minimum: 0
+                maximum: 32767
+              scope:
+                type:
+                - string
+                - 'null'
+              is_deployment_manager:
+                type: boolean
+                readOnly: true
+                description: True if user is a manager of one or more team deployments
+              control_room:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  url:
+                    type: string
+                    format: uri
+                    description: The Control Room URL
+                    maxLength: 200
+                    pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+                required:
+                - url
+            required:
+            - organization
+            - organization_name
+            - role
+            - scope
+            - control_room
+          readOnly: true
+        group_memberships:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - id
+            - name
+          readOnly: true
+        is_onboarded:
+          type: boolean
+          readOnly: true
+        service_account:
+          type: boolean
+          description: True if the account is an organization API service account
+        deployment_key_account:
+          type: boolean
+          description: True if the account is an organization API deployment key account
+        test_account:
+          type: boolean
+          description: True if the account is an automated/manual test account
+        partner:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+            theme:
+              type: string
+              readOnly: true
+            documentation_url:
+              type:
+              - string
+              - 'null'
+              format: uri
+              maxLength: 200
+              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+          required:
+          - name
+          readOnly: true
+        enforce_update_millis:
+          type: integer
+          readOnly: true
+        flags:
+          type: array
+          items:
+            type: string
+          readOnly: true
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+        user:
+          type: string
+          writeOnly: true
+      required:
+      - name
+      - package_version
+      - services
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          readOnly: true
+    Milestone:
+      type: object
+      properties:
+        key:
+          type: string
+          pattern: '[a-z\d]+(?:_[a-z\d]+)*'
+          maxLength: 128
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Optional additional information to provide context about the Milestone.
+      required:
+      - key
+    ControlRoomPrincipal:
+      type: object
+      properties:
+        control_room_user_id:
+          type: integer
+          maximum: 9223372036854775807
+          format: int64
+          description: AA unique identifier used to interact with the Control Room user via the AA API
+          minimum: 0
+        control_room_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - control_room_user_id
+    DeploymentTelemetry:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
+          type: string
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
+          type: array
+          items:
+            type: object
+            properties:
+              deployment:
+                type: string
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+      required:
+      - uid
+      - version

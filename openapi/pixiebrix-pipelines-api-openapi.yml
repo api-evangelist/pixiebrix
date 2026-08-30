@@ -1,0 +1,237 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Pipelines API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: pipelines
+paths:
+  /api/pipelines/:
+    get:
+      operationId: listPackagePromotionPipelines
+      description: Return the package promotion pipelines you administer, each linking a source package to a target package so versions can be copied between them.
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackagePromotionPipeline'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackagePromotionPipeline'
+          description: ''
+      tags:
+      - pipelines
+  /api/pipelines/{id}/promote/:
+    post:
+      operationId: promotePackagePromotionPipeline
+      description: Copy a specified version of the pipeline's source package to its target package, publishing it as a new version with the provided commit message.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackagePromotionPipeline'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PackagePromotionPipeline'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PackagePromotionPipeline'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/PackagePromotionPipeline'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/PackagePromotionPipeline'
+          description: ''
+      tags:
+      - pipelines
+components:
+  schemas:
+    PackagePromotionPipeline:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Used to visually identify the promotion pipeline. Must be formatted as the collection and name parts of the target and source package registry ids, e.g. foo/bar
+          pattern: ^((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 255
+        source:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+              description: Surrogate primary key
+            name:
+              type: string
+              readOnly: true
+            kind:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            share_dependencies:
+              type: boolean
+              writeOnly: true
+              default: false
+            config:
+              type: string
+            public:
+              type: boolean
+              default: false
+            organizations:
+              type: array
+              items:
+                type: string
+            owner_organization:
+              type: string
+              readOnly: true
+            message:
+              type: string
+            updated_at:
+              type: string
+              format: date-time
+              readOnly: true
+            verbose_name:
+              type:
+              - string
+              - 'null'
+              description: Human-readable name
+              maxLength: 128
+            is_locked:
+              type: boolean
+              readOnly: true
+            lock_owner:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      readOnly: true
+                    email:
+                      type: string
+                      format: email
+                      maxLength: 254
+                created_at:
+                  type: string
+                  format: date-time
+                  readOnly: true
+              required:
+              - user
+              readOnly: true
+          required:
+          - kind
+          - config
+        target:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+              description: Surrogate primary key
+            name:
+              type: string
+              readOnly: true
+            kind:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            share_dependencies:
+              type: boolean
+              writeOnly: true
+              default: false
+            config:
+              type: string
+            public:
+              type: boolean
+              default: false
+            organizations:
+              type: array
+              items:
+                type: string
+            owner_organization:
+              type: string
+              readOnly: true
+            message:
+              type: string
+            updated_at:
+              type: string
+              format: date-time
+              readOnly: true
+            verbose_name:
+              type:
+              - string
+              - 'null'
+              description: Human-readable name
+              maxLength: 128
+            is_locked:
+              type: boolean
+              readOnly: true
+            lock_owner:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                      readOnly: true
+                    email:
+                      type: string
+                      format: email
+                      maxLength: 254
+                created_at:
+                  type: string
+                  format: date-time
+                  readOnly: true
+              required:
+              - user
+              readOnly: true
+          required:
+          - kind
+          - config
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+      - source
+      - target

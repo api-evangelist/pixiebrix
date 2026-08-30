@@ -1,0 +1,384 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Marketplace API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: marketplace
+paths:
+  /api/marketplace/listings/:
+    get:
+      operationId: listMarketplaceListings
+      description: Return the published marketplace listings, including each listing's package, tags, screenshots, and display image, optionally filtered by package name or update time.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: package__name
+        required: false
+        in: query
+        description: package__name
+        schema:
+          type: string
+      - name: updated_at__gt
+        required: false
+        in: query
+        description: updated_at__gt
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketplaceListing'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MarketplaceListing'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/marketplace/listings/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/marketplace/listings/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/marketplace/listings/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/marketplace/listings/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - marketplace
+  /api/marketplace/listings/{id}/:
+    get:
+      operationId: retrieveMarketplaceListing
+      description: Return a single published marketplace listing by id, including its package, tags, screenshots, and display image.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: package__name
+        required: false
+        in: query
+        description: package__name
+        schema:
+          type: string
+      - name: updated_at__gt
+        required: false
+        in: query
+        description: updated_at__gt
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/MarketplaceListing'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/MarketplaceListing'
+          description: ''
+      tags:
+      - marketplace
+  /api/marketplace/tags/:
+    get:
+      operationId: listTags
+      description: Return the tags used to categorize marketplace listings, ordered by priority and then name.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/marketplace/tags/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/marketplace/tags/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/marketplace/tags/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/marketplace/tags/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - marketplace
+components:
+  schemas:
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate key for the tag
+        name:
+          type: string
+          description: The name/caption to show in the tag
+          maxLength: 128
+        slug:
+          type: string
+          description: The URL slug for the tag
+          maxLength: 128
+          pattern: ^[-a-zA-Z0-9_]+$
+        fa_icon:
+          type:
+          - string
+          - 'null'
+          description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
+          pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
+          maxLength: 32
+        subtype:
+          enum:
+          - generic
+          - role
+          - service
+          - category
+          - persona
+          - pixie_picks
+          - use_case
+          - other
+          type: string
+          default: generic
+          description: The sub-type/category of the tag
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    MarketplaceListing:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate key of the listing
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+              description: Surrogate primary key
+            name:
+              type: string
+              readOnly: true
+            kind:
+              type: string
+            description:
+              type: string
+            verbose_name:
+              type:
+              - string
+              - 'null'
+              description: Human-readable name
+              maxLength: 128
+            version:
+              type: string
+              readOnly: true
+            config:
+              type: object
+              additionalProperties: true
+            author:
+              type: object
+              properties:
+                scope:
+                  type:
+                  - string
+                  - 'null'
+                  pattern: ^@[a-z0-9][a-z0-9._-]*$
+                  maxLength: 128
+            organization:
+              type: object
+              properties:
+                scope:
+                  type:
+                  - string
+                  - 'null'
+                  pattern: ^@[a-z0-9][a-z0-9._-]*$
+                  maxLength: 128
+          required:
+          - kind
+          - description
+          - config
+          - author
+          - organization
+        instructions:
+          type: string
+          description: Markdown-formatted instructions
+        assets:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              listing:
+                type: string
+              caption:
+                type:
+                - string
+                - 'null'
+                description: A plain-text caption for the asset
+                maxLength: 1024
+              url:
+                type: string
+                format: uri
+                readOnly: true
+              order:
+                type: integer
+                maximum: 32767
+                description: The order in which the asset will appear in the listing
+                minimum: 0
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - listing
+        fa_icon:
+          type:
+          - string
+          - 'null'
+          description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
+          pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
+          maxLength: 32
+        icon_color:
+          type: string
+          pattern: ^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$
+          maxLength: 25
+        tags:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+                description: Surrogate key for the tag
+              name:
+                type: string
+                description: The name/caption to show in the tag
+                maxLength: 128
+              slug:
+                type: string
+                description: The URL slug for the tag
+                maxLength: 128
+                pattern: ^[-a-zA-Z0-9_]+$
+              fa_icon:
+                type:
+                - string
+                - 'null'
+                description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
+                pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
+                maxLength: 32
+              subtype:
+                enum:
+                - generic
+                - role
+                - service
+                - category
+                - persona
+                - pixie_picks
+                - use_case
+                - other
+                type: string
+                default: generic
+                description: The sub-type/category of the tag
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - name
+        image:
+          type: object
+          properties:
+            alt_text:
+              type:
+              - string
+              - 'null'
+              description: Alt text for the logo
+              maxLength: 128
+            url:
+              type: string
+              format: uri
+              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+          required:
+          - url
+        example_page_url:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: Example web page to try out the package
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        unlisted:
+          type: boolean
+          description: Designates a listing that is undiscoverable in the Marketplace; only those with a direct link can access it.
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - package
+      - assets
+      - tags
+      - image

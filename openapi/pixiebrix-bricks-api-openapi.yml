@@ -1,0 +1,576 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Bricks API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: bricks
+paths:
+  /api/bricks/:
+    get:
+      operationId: listPackageMeta
+      description: View for editable brick packages in the registry.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageMeta'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageMeta'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/bricks/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/bricks/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/bricks/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/bricks/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - bricks
+    post:
+      operationId: createPackage
+      description: View for editable brick packages in the registry.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Package'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Package'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Package'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+      tags:
+      - bricks
+  /api/bricks/{id}/:
+    get:
+      operationId: retrievePackage
+      description: View for editable brick packages in the registry.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+      tags:
+      - bricks
+    put:
+      operationId: updatePackage
+      description: View for editable brick packages in the registry.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Package'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Package'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Package'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Package'
+          description: ''
+      tags:
+      - bricks
+    delete:
+      operationId: destroyPackage
+      description: View for editable brick packages in the registry.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - bricks
+  /api/bricks/{id}/versions/:
+    get:
+      operationId: listPackageVersionHeavies
+      description: Return the list of versions for a brick package the requesting user can edit, including each version's metadata and the user who last updated it, newest version first.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionHeavy'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionHeavy'
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionDeprecated'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionDeprecated'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/bricks/{id}/versions/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/bricks/{id}/versions/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/bricks/{id}/versions/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/bricks/{id}/versions/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - bricks
+  /api/bricks/{id}/versions/{version}/:
+    get:
+      operationId: retrievePackageVersionConfig
+      description: Return a single version of a brick package the requesting user can edit, including its full config.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: version
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.1:
+              schema:
+                $ref: '#/components/schemas/PackageVersionConfig'
+            application/vnd.pixiebrix.api+json; version=1.1:
+              schema:
+                $ref: '#/components/schemas/PackageVersionConfig'
+          description: ''
+      tags:
+      - bricks
+  /api/bricks/{id}/generate-commit-message/:
+    post:
+      operationId: createCommitMessage
+      description: Generate a commit message based on the diff between submitted config and the current version.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CommitMessageRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CommitMessageRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CommitMessageRequest'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/CommitMessageResponse'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/CommitMessageResponse'
+          description: ''
+      tags:
+      - bricks
+  /api/bricks/{id}/lock/:
+    post:
+      operationId: createPackageLockCreate
+      description: Acquire a lock.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PackageLockCreate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PackageLockCreate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PackageLockCreate'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PackageLockCreate'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PackageLockCreate'
+          description: ''
+      tags:
+      - bricks
+    delete:
+      operationId: destroyPackageLockCreate
+      description: Release a lock.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - bricks
+components:
+  schemas:
+    Package:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        share_dependencies:
+          type: boolean
+          writeOnly: true
+          default: false
+        config:
+          type: string
+        public:
+          type: boolean
+          default: false
+        organizations:
+          type: array
+          items:
+            type: string
+        owner_organization:
+          type: string
+          readOnly: true
+        message:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        is_locked:
+          type: boolean
+          readOnly: true
+        lock_owner:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  readOnly: true
+                email:
+                  type: string
+                  format: email
+                  maxLength: 254
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+          required:
+          - user
+          readOnly: true
+      required:
+      - kind
+      - config
+    PackageMeta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sharing:
+          type: object
+          properties:
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
+      required:
+      - name
+      - kind
+      - sharing
+    PackageLockCreate:
+      type: object
+      properties:
+        force:
+          type: boolean
+    PackageVersionHeavy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
+          type: string
+          description: Optional commit/changelog message for version
+      required:
+      - id
+      - package_id
+      - name
+      - updated_by
+    CommitMessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The generated commit message describing the changes
+      required:
+      - message
+    PackageVersionDeprecated:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        version:
+          type: string
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+        raw_config:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
+          type: string
+          description: Optional commit/changelog message for version
+      required:
+      - config
+      - updated_by
+      deprecated: true
+    CommitMessageRequest:
+      type: object
+      properties:
+        config:
+          type: string
+          description: The YAML configuration of the package to generate a commit message for
+      required:
+      - config
+    PackageVersionConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        version:
+          type: string
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+        raw_config:
+          type: string
+      required:
+      - config

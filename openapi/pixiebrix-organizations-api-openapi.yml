@@ -1,0 +1,3828 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Organizations API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: organizations
+paths:
+  /api/organizations/{organization_pk}/campaigns/:
+    get:
+      operationId: listCampaigns
+      description: Return the campaigns belonging to an organization, ordered by name.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createCampaign
+      description: Create a new campaign in an organization with the given name.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/campaigns/{id}/:
+    get:
+      operationId: retrieveCampaign
+      description: Return a single campaign in an organization by its id.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+          description: ''
+      tags:
+      - organizations
+    patch:
+      operationId: partialUpdateCampaign
+      description: Update selected fields, such as the name, of a campaign in an organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Campaign'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+          description: ''
+      tags:
+      - organizations
+    delete:
+      operationId: destroyCampaign
+      description: Delete a campaign from an organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/campaigns/{campaign_pk}/members/:
+    get:
+      operationId: listCampaignMembers
+      description: Paginated view of members in a Campaign.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampaignMember'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampaignMember'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/{campaign_pk}/members/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/{campaign_pk}/members/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/{campaign_pk}/members/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/campaigns/{campaign_pk}/members/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createCampaignMember
+      description: Paginated view of members in a Campaign.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CampaignMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CampaignMember'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/CampaignMember'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/CampaignMember'
+          description: ''
+      tags:
+      - organizations
+    put:
+      operationId: updateCampaignMember
+      description: Paginated view of members in a Campaign.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: campaign_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CampaignMember'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/CampaignMember'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CampaignMember'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/CampaignMember'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/CampaignMember'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/invitations/:
+    get:
+      operationId: listOrganizationInvitations
+      description: Return the pending membership invitations for a team, including each invitee's email, role, and the inviter.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PendingInvitation'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PendingInvitation'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/invitations/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/invitations/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/invitations/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/invitations/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createOrganizationInvitation
+      description: Invite one or more people to join a team by email and assigned role, creating pending invitations.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PendingInvitation'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PendingInvitation'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/:
+    get:
+      operationId: listOrganizations
+      description: Return the teams (organizations) the current user belongs to, including the user's membership details for each.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createOrganization
+      description: Create a new team (organization).
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Organization'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Organization'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Organization'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/:
+    get:
+      operationId: retrieveOrganization
+      description: Return a single team (organization) the current user belongs to by id.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Organization'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: ''
+      tags:
+      - organizations
+    patch:
+      operationId: partialUpdateOrganization
+      description: Update selected fields on a team (organization).
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Organization'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Organization'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Organization'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Organization'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Organization'
+          description: ''
+      tags:
+      - organizations
+    delete:
+      operationId: destroyOrganization
+      description: Delete a team (organization); deletion is blocked for teams with packages, an active subscription, or enterprise status.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/members/{id}/:
+    get:
+      operationId: retrieveUserDetail
+      description: Return detailed information for a single member of the team, including their group memberships.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/UserDetail'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/members/{user_pk}/extensions/:
+    get:
+      operationId: listUserInstalledExtensions
+      description: Return the browser extensions most recently reported installed on a team member's device(s), newest first.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserBrowserExtension'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserBrowserExtension'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/members/{user_pk}/deployments/:
+    get:
+      operationId: listMemberDeployments
+      description: Return every deployment assigned to a team member (via direct assignment or group membership), annotated with whether each is the effective deployment, paused, or superseded by a higher-precedence deployment for the same package. Restricted to organization admins/managers.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: user_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MemberDeployment'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MemberDeployment'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/extensions/:
+    get:
+      operationId: listOrganizationInstalledExtensions
+      description: Return the distinct browser extensions reported across the organization's members, aggregated per extension with a distinct-member count and install-type breakdown. Unmanaged extensions are listed first.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationInstalledExtension'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationInstalledExtension'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/serviceaccounts/:
+    get:
+      operationId: listServiceAccounts
+      description: Return the service accounts (non-human team members used for automation) belonging to an organization, including each account's label, role, and activity timestamps.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceAccount'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceAccount'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/serviceaccounts/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/serviceaccounts/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/serviceaccounts/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/serviceaccounts/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createServiceAccountWithToken
+      description: Create a new service account in an organization with the given label and role, and return it together with a one-time API token for authenticating as that account.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceAccountWithToken'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceAccountWithToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceAccountWithToken'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAccountWithToken'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAccountWithToken'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/serviceaccounts/{id}/:
+    get:
+      operationId: retrieveServiceAccount
+      description: Return a single service account in an organization, including its label, role, and activity timestamps.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAccount'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAccount'
+          description: ''
+      tags:
+      - organizations
+    delete:
+      operationId: destroyServiceAccount
+      description: Remove a service account from an organization, revoking its access and API token.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/deployment-keys/:
+    get:
+      operationId: listDeploymentKeys
+      description: Return the deployment keys for an organization, each with its label and authentication token.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentKey'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DeploymentKey'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployment-keys/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployment-keys/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployment-keys/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployment-keys/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createDeploymentKey
+      description: Create a deployment key for an organization from the provided label and return it with its newly issued authentication token.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentKey'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentKey'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentKey'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentKey'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentKey'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/deployment-keys/{id}/:
+    get:
+      operationId: retrieveDeploymentKey
+      description: Return a single deployment key for an organization, including its label and authentication token.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentKey'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DeploymentKey'
+          description: ''
+      tags:
+      - organizations
+    delete:
+      operationId: destroyDeploymentKey
+      description: Delete a deployment key from an organization, revoking its authentication token.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/groups/:
+    get:
+      operationId: listGroups
+      description: Return the team's groups, each annotated with its member count, ordered by name.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Group'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/groups/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/groups/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/groups/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/groups/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createGroup
+      description: Create a new group within the team.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Group'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Group'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Group'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Group'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Group'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/deployments/:
+    get:
+      operationId: listDeployments
+      description: View for admins to list/create deployments.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Deployment'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployments/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployments/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployments/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/deployments/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createDeployment
+      description: View for admins to list/create deployments.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeploymentTelemetry'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Deployment'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/bricks/:
+    get:
+      operationId: listOrganizationBricks
+      description: Return the packages (bricks) visible to the team, including private packages shared with it, searchable by name.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageMeta'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageMeta'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/bricks/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/bricks/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/bricks/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/bricks/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/blueprints/:
+    get:
+      operationId: listOrganizationBlueprints
+      description: Return the mod versions available for an organization to deploy.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionHeavy'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageVersionHeavy'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/blueprints/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/blueprints/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/blueprints/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/blueprints/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/blueprints/{id}/:
+    get:
+      operationId: retrieveOrganizationBlueprints
+      description: Return a single mod version available for an organization to deploy.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PackageVersionHeavy'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PackageVersionHeavy'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/integrations/:
+    get:
+      operationId: listServiceAuthMeta
+      description: Return the team's shared integration configurations (metadata only, without secrets), searchable by label or integration name.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceAuthMeta'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceAuthMeta'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/integrations/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/integrations/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/integrations/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/integrations/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/memberships/:
+    get:
+      operationId: listMemberships
+      description: List view of an organization's memberships.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: user__service_account
+        required: false
+        in: query
+        description: user__service_account
+        schema:
+          type: string
+      - name: user__deployment_key_account
+        required: false
+        in: query
+        description: user__deployment_key_account
+        schema:
+          type: string
+      - name: role
+        required: false
+        in: query
+        description: role (1 = Member, 2 = Admin, 3 = Developer, 4 = Restricted, 5 = Manager)
+        schema:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+      - name: role__in
+        required: false
+        in: query
+        description: role__in
+        schema:
+          type: string
+      - name: user__id
+        required: false
+        in: query
+        description: user__id
+        schema:
+          type: string
+      - name: groups
+        required: false
+        in: query
+        description: Comma-separated group ids; returns members in any of the groups.
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Membership'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Membership'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/memberships/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/memberships/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/memberships/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/memberships/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/databases/{id}/:
+    get:
+      operationId: retrieveDatabase
+      description: Return a single database belonging to the specified organization, including its name, type, and record statistics.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - organizations
+    put:
+      operationId: updateDatabase
+      description: Replace all editable fields of a database owned by the specified organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Database'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Database'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Database'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - organizations
+    patch:
+      operationId: partialUpdateDatabase
+      description: Update selected fields of a database owned by the specified organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Database'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Database'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Database'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - organizations
+    delete:
+      operationId: destroyDatabase
+      description: Permanently delete a database, and all of its records, from the specified organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/databases/{database_pk}/schema/:
+    get:
+      operationId: retrieveDatabaseSchema
+      description: Return the stored JSON Schema for a database's records, or a schema inferred from recent records when the method query parameter is set to infer.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseSchema'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseSchema'
+          description: ''
+      tags:
+      - organizations
+    put:
+      operationId: updateDatabaseSchema
+      description: Replace the stored JSON Schema that describes the structure of a database's records.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseSchema'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DatabaseSchema'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DatabaseSchema'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseSchema'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/DatabaseSchema'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/databases/{database_pk}/record-archives/:
+    get:
+      operationId: listDatabaseRecordsArchives
+      description: List the archived snapshots of a team database's records, newest first, each with a downloadable file capturing the database contents at the time it was archived.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: database_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabaseRecordsArchive'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabaseRecordsArchive'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/{database_pk}/record-archives/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/{database_pk}/record-archives/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/{database_pk}/record-archives/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/{database_pk}/record-archives/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/databases/:
+    get:
+      operationId: listDatabases
+      description: Return the databases owned by the specified organization that the caller is allowed to manage.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: q
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Database'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/databases/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createDatabase
+      description: Create a new database owned by the specified organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Database'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Database'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Database'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/Database'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/subscriptions/:
+    get:
+      operationId: listSubscriptions
+      description: Return the subscriptions for an organization, including each subscription's seat pricing, session-hour limits, and recent daily seat-utilization history.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Subscription'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/backup/:
+    get:
+      operationId: exportOrganizationBackup
+      description: Return a JSON snapshot of an organization's data for backup, including its members, memberships, groups, contacts, integration configurations, packages and package versions, and deployments.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/errors/:
+    get:
+      operationId: listOrganizationErrors
+      description: Return recent error telemetry for an organization, grouped by error and limited to the deployments the requesting manager can access.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/events/:
+    get:
+      operationId: listEventIntervals
+      description: List per-deployment event counts over time for the organization's visible deployments, with each entry reporting the number of events recorded for a deployment within an interval ending at a given timestamp.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventInterval'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EventInterval'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/contacts/:
+    get:
+      operationId: listOrganizationContacts
+      description: Return the organization's notification contacts (email recipients alerted when a new user joins or when a deployment reports new errors), sorted by email.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationContact'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationContact'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/contacts/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/contacts/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/contacts/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/contacts/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+    post:
+      operationId: createOrganizationContact
+      description: Add a notification contact to the organization, including which alerts (new user joins, deployment errors) it should receive.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/contacts/{id}/:
+    get:
+      operationId: retrieveOrganizationContact
+      description: Return a single notification contact for the organization by id.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+          description: ''
+      tags:
+      - organizations
+    put:
+      operationId: updateOrganizationContact
+      description: Replace all fields of an existing organization notification contact.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+          description: ''
+      tags:
+      - organizations
+    patch:
+      operationId: partialUpdateOrganizationContact
+      description: Update selected fields of an existing organization notification contact.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationContact'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationContact'
+          description: ''
+      tags:
+      - organizations
+    delete:
+      operationId: destroyOrganizationContact
+      description: Remove a notification contact from the organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/assets/:
+    get:
+      operationId: listStaticAssets
+      description: Return the static file assets belonging to an organization, oldest first, each including its file name, type, and most recent version.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StaticAsset'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StaticAsset'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/organizations/{organization_pk}/assets/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/assets/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/assets/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/organizations/{organization_pk}/assets/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/assets/{id}/:
+    get:
+      operationId: retrieveStaticAsset
+      description: Return a single static file asset for an organization, including its file name, type, and most recent version.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/StaticAsset'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/StaticAsset'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/assets/{id}/upload/:
+    get:
+      operationId: uploadStaticAssetUploadUrl
+      description: Get pre-signed URL to update the S3 bucket with the asset.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/StaticAssetUploadUrl'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/StaticAssetUploadUrl'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/assets/{id}/versions/:
+    get:
+      operationId: listStaticAssetVersions
+      description: Return the version history for a static file asset in an organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StaticAssetVersion'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/StaticAssetVersion'
+          description: ''
+      tags:
+      - organizations
+    post:
+      operationId: createStaticAssetVersion
+      description: Record a new version of a static file asset in an organization after the underlying file has been uploaded.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaticAssetVersion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/StaticAssetVersion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/StaticAssetVersion'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/StaticAssetVersion'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/StaticAssetVersion'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/auth-url-patterns/:
+    get:
+      operationId: listOrganizationAuthUrlPatterns
+      description: Return the URL patterns that automatically log the team's members into the extension on matching pages.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationAuthUrlPattern'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationAuthUrlPattern'
+          description: ''
+      tags:
+      - organizations
+    put:
+      operationId: updateOrganizationAuthUrlPatterns
+      description: Replace the team's entire set of automatic-login URL patterns with the provided list.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/extension-deny-patterns/:
+    get:
+      operationId: listOrganizationExtensionDenyPatterns
+      description: Return the URL patterns on which the extension is disabled for the team's members.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationExtensionDenyPattern'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrganizationExtensionDenyPattern'
+          description: ''
+      tags:
+      - organizations
+    put:
+      operationId: updateOrganizationExtensionDenyPatterns
+      description: Replace the team's entire set of extension deny patterns with the provided list.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema: {}
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/theme/:
+    get:
+      operationId: retrieveOrganizationTheme
+      description: Return the team's branding theme (logo and colors) used to customize the extension's appearance.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationTheme'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationTheme'
+          description: ''
+      tags:
+      - organizations
+    patch:
+      operationId: partialUpdateOrganizationTheme
+      description: Update selected fields of the team's branding theme.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrganizationTheme'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrganizationTheme'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrganizationTheme'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationTheme'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationTheme'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/report/:
+    get:
+      operationId: retrieveOrganizationReport
+      description: Return a signed URL for embedding the organization's analytics report dashboard, accessible only to its managers and admins.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationReport'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/OrganizationReport'
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/invitations/{id}/:
+    delete:
+      operationId: destroyOrganizationInvitation
+      description: Revoke a single pending team invitation by id so the invitee can no longer accept it.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/members/{id}/cache/:
+    delete:
+      operationId: destroyOrganizationMemberCache
+      description: 'Clear the cached user permissions for a member of the organization.
+
+
+        Used by team admins to force a member''s device to refetch up-to-date
+
+        settings/content on the next request, instead of waiting for the
+
+        signal-driven invalidations to fire.'
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+  /api/organizations/{organization_pk}/me/tour-runs/:
+    delete:
+      operationId: destroyTourRun
+      description: Delete all of the current user's tour runs within the specified organization.
+      parameters:
+      - name: organization_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - organizations
+components:
+  schemas:
+    ServiceAuthMeta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        service_id:
+          type: string
+        service_name:
+          type: string
+      required:
+      - service_id
+      - service_name
+    OrganizationInstalledExtension:
+      type: object
+      properties:
+        extension_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+        user_count:
+          type: integer
+        is_managed:
+          type: boolean
+        install_types:
+          type: array
+          items:
+            type: object
+            properties:
+              install_type:
+                enum:
+                - admin
+                - normal
+                - development
+                - sideload
+                - other
+                type: string
+              is_managed:
+                type: boolean
+              user_count:
+                type: integer
+            required:
+            - install_type
+            - is_managed
+            - user_count
+        last_seen:
+          type: string
+          format: date-time
+      required:
+      - extension_id
+      - name
+      - version
+      - user_count
+      - is_managed
+      - install_types
+      - last_seen
+    ServiceAccountWithToken:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          default: 4
+        created_at:
+          type: string
+          format: date-time
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+        token:
+          type: string
+          readOnly: true
+      required:
+      - name
+    PackageMeta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sharing:
+          type: object
+          properties:
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
+      required:
+      - name
+      - kind
+      - sharing
+    DatabaseRecordsArchive:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        database:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 256
+          required:
+          - name
+        date:
+          type: string
+          format: date
+        file:
+          type: string
+          format: binary
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - database
+      - date
+      - file
+    Database:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        organization_id:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        enforce_schema:
+          type: boolean
+          description: Enforce the JSON Schema for database records
+        owner_field:
+          type:
+          - string
+          - 'null'
+          description: Field indicating the record owner
+          maxLength: 256
+        user:
+          type: string
+          writeOnly: true
+        type:
+          enum:
+          - Key-Value
+          - Asset
+          type: string
+          default: Key-Value
+        last_write_at:
+          type: string
+          format: date-time
+          readOnly: true
+        num_records:
+          type: integer
+          readOnly: true
+      required:
+      - name
+    OrganizationTheme:
+      type: object
+      properties:
+        show_sidebar_logo:
+          type: boolean
+        logo:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The image URL of a custom logo. Image format must be SVG or PNG.
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        toolbar_icon:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The image URL of the icon displayed in the browser toolbar. Image format must be PNG.
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        fab_logo:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The image URL of the icon displayed in the floating action button (FAB) in the browser extension. Image format must be SVG or PNG.
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        whitelabel_theme_name:
+          type: string
+          description: The name of the theme to use for white-labeling.
+          maxLength: 128
+      required:
+      - whitelabel_theme_name
+    StaticAssetVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        version_id:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - version_id
+    OrganizationAuthUrlPattern:
+      type: object
+      properties:
+        url_pattern:
+          type: string
+          description: A chrome-style url match pattern, see https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns
+          maxLength: 512
+      required:
+      - url_pattern
+    OrganizationContact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        notify_install:
+          type: boolean
+          description: Notify when a new user joins your organization
+        notify_error:
+          type: boolean
+          description: Notify when a deployment has new errors
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - email
+    Campaign:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    DeploymentKey:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        token:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - name
+    StaticAsset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        file:
+          type: string
+          readOnly: true
+        asset_type:
+          enum:
+          - stylesheet
+          - font
+          - icon
+          - image
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        latest_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            version_id:
+              type: string
+              maxLength: 255
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+          required:
+          - version_id
+      required:
+      - asset_type
+      - latest_version
+    PackageVersionHeavy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
+          type: string
+          description: Optional commit/changelog message for version
+      required:
+      - id
+      - package_id
+      - name
+      - updated_by
+    Group:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        num_members:
+          type: integer
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    EventInterval:
+      type: object
+      properties:
+        deployment_id:
+          type: string
+          format: uuid
+        end_timestamp:
+          type: integer
+        event_count:
+          type: integer
+      required:
+      - deployment_id
+      - end_timestamp
+      - event_count
+    UserDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              group_id:
+                type: string
+              group_name:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - group_id
+            - group_name
+        last_used_mod_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last time the user utilized a mod
+        last_login:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        date_joined:
+          type: string
+          format: date-time
+        membership:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            role:
+              enum:
+              - 1
+              - 2
+              - 3
+              - 4
+              - 5
+              type: integer
+              minimum: 0
+              maximum: 32767
+          required:
+          - role
+          readOnly: true
+      required:
+      - groups
+    PendingInvitation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        inviter:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+      required:
+      - email
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        concurrent:
+          type: boolean
+        seat_price_usd:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 1000000
+          minimum: -1000000
+        seat_session_hours:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        utilization:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - seat_price_usd
+    DatabaseSchema:
+      type: object
+      properties:
+        database_id:
+          type: string
+          readOnly: true
+        schema_text:
+          type: string
+      required:
+      - schema_text
+    MemberDeployment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        active:
+          type: boolean
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        status:
+          enum:
+          - effective
+          - paused
+          - superseded
+          type: string
+          readOnly: true
+        superseded_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+          readOnly: true
+    StaticAssetUploadUrl:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          format: uri
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - upload_url
+    ServiceAccount:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          default: 4
+        created_at:
+          type: string
+          format: date-time
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+      required:
+      - name
+    Membership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          minimum: 0
+          maximum: 32767
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - id
+            - name
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+        last_login_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - role
+    CampaignMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 128
+        data:
+          type: object
+          additionalProperties: true
+        account:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
+        latest_client:
+          type: object
+          properties:
+            extension_version:
+              type: string
+              pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+              maxLength: 64
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+            active_deployments:
+              type: array
+              items:
+                type: string
+                format: uuid
+              readOnly: true
+          required:
+          - extension_version
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        assigned_deployments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+            required:
+            - id
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - email
+      - data
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  name:
+                    type: string
+                    readOnly: true
+                  email:
+                    type: string
+                    format: email
+                    maxLength: 254
+                  service_account:
+                    type: boolean
+                    readOnly: true
+                  deployment_key_account:
+                    type: boolean
+                    readOnly: true
+                  date_joined:
+                    type: string
+                    format: date-time
+                readOnly: true
+              role:
+                enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                type: integer
+                minimum: 0
+                maximum: 32767
+              groups:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                      maxLength: 256
+                  required:
+                  - id
+                  - name
+                readOnly: true
+              last_active_at:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+              last_login_at:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+            required:
+            - role
+          readOnly: true
+        scope:
+          type:
+          - string
+          - 'null'
+          pattern: ^@[a-z0-9][a-z0-9._-]*$
+          maxLength: 128
+        default_role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+        partner:
+          type: string
+          writeOnly: true
+        enforce_update_millis:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          description: The number of milliseconds restricted team members have to apply manual deployments or browser extension update.
+          minimum: 0
+        session_idle_timeout_minutes:
+          type: integer
+          maximum: 20160
+          minimum: 1
+          description: Log out sessions after this many minutes of inactivity
+        trial_end_timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the Business Plan trial ends. None if not on trial.
+        enable_invitations:
+          type: boolean
+          readOnly: true
+          description: Toggle on to enable inviting users to the organization.
+        ai_default_chat_copilot:
+          type: boolean
+          default: true
+      required:
+      - name
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
+    Deployment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+        user:
+          type: string
+          writeOnly: true
+      required:
+      - name
+      - package_version
+      - services
+    OrganizationExtensionDenyPattern:
+      type: object
+      properties:
+        match_pattern:
+          type: string
+          description: A chrome-style url match pattern, see https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns
+          maxLength: 512
+      required:
+      - match_pattern
+    UserBrowserExtension:
+      type: object
+      properties:
+        extension_id:
+          type: string
+          maxLength: 64
+        name:
+          type: string
+        version:
+          type: string
+          maxLength: 64
+        enabled:
+          type: boolean
+        install_type:
+          enum:
+          - admin
+          - normal
+          - development
+          - sideload
+          - other
+          type: string
+        extension_type:
+          type: string
+          maxLength: 32
+        is_managed:
+          type: boolean
+          readOnly: true
+        first_seen:
+          type: string
+          format: date-time
+          readOnly: true
+        last_seen:
+          type: string
+          format: date-time
+      required:
+      - extension_id
+      - name
+      - version
+      - enabled
+      - install_type
+      - extension_type
+    OrganizationReport:
+      type: object
+      properties:
+        metabase_iframe_url:
+          type: string
+      required:
+      - metabase_iframe_url
+    DeploymentTelemetry:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
+          type: string
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
+          type: array
+          items:
+            type: object
+            properties:
+              deployment:
+                type: string
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+      required:
+      - uid
+      - version

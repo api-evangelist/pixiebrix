@@ -1,0 +1,68 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Platforms API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: platforms
+paths:
+  /api/platforms/:
+    get:
+      operationId: listPlatforms
+      description: List the supported platforms, each with its unique identifier and display name, ordered by name.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Platform'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Platform'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/platforms/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/platforms/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/platforms/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/platforms/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - platforms
+components:
+  schemas:
+    Platform:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique platform identifier
+          maxLength: 50
+        display_name:
+          type: string
+          description: Display name
+          maxLength: 255
+      required:
+      - name
+      - display_name

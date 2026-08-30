@@ -1,0 +1,141 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Permissions API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: permissions
+paths:
+  /api/permissions/{id}/:
+    get:
+      operationId: retrieveGroupPackagePermission
+      description: Return a single group package permission by id, which grants a group access to a package.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+          description: ''
+      tags:
+      - permissions
+    put:
+      operationId: updateGroupPackagePermission
+      description: Replace a group package permission by id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+          description: ''
+      tags:
+      - permissions
+    patch:
+      operationId: partialUpdateGroupPackagePermission
+      description: Update selected fields of a group package permission by id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+          description: ''
+      tags:
+      - permissions
+    delete:
+      operationId: destroyGroupPackagePermission
+      description: Delete a group package permission by id, revoking the group's access to that package.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - permissions
+components:
+  schemas:
+    GroupPackagePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package_name:
+          type: string
+      required:
+      - package_name

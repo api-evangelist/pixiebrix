@@ -1,0 +1,1011 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Groups API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: groups
+paths:
+  /api/groups/{group_pk}/memberships/:
+    get:
+      operationId: listGroupMemberships
+      description: Add, remove, and list users to/from a group
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupMembership'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupMembership'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/groups/{group_pk}/memberships/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/groups/{group_pk}/memberships/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/groups/{group_pk}/memberships/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/groups/{group_pk}/memberships/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - groups
+    post:
+      operationId: createGroupMembership
+      description: Add, remove, and list users to/from a group
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupMembership'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/GroupMembership'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/GroupMembership'
+          description: ''
+      tags:
+      - groups
+    put:
+      operationId: updateGroupMembership
+      description: Add, remove, and list users to/from a group
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: require_campaign
+        in: query
+        required: false
+        description: Ignore emails that are not associated with a campaign
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupMembership'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupMembership'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupMembership'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/GroupMembership'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/GroupMembership'
+          description: ''
+      tags:
+      - groups
+  /api/groups/{id}/permissions/:
+    get:
+      operationId: listGroupPackagePermissions
+      description: Return the package permissions granted to a group, listing which packages the group can access.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupPackagePermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GroupPackagePermission'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/groups/{id}/permissions/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/groups/{id}/permissions/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/groups/{id}/permissions/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/groups/{id}/permissions/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - groups
+    post:
+      operationId: createGroupPackagePermission
+      description: Grant a group access to one or more packages, optionally including their dependencies.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupPackagePermission'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/GroupPackagePermission'
+          description: ''
+      tags:
+      - groups
+  /api/groups/{id}/integrations/:
+    get:
+      operationId: listServiceAuthPermissions
+      description: Return the integration configurations a group has been granted access to.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceAuthPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ServiceAuthPermission'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/groups/{id}/integrations/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/groups/{id}/integrations/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/groups/{id}/integrations/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/groups/{id}/integrations/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - groups
+    post:
+      operationId: createServiceAuthPermission
+      description: Grant a group access to one or more of the team's shared integration configurations.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+          description: ''
+      tags:
+      - groups
+  /api/groups/{group_pk}/integrations/{id}/:
+    get:
+      operationId: retrieveServiceAuthPermission
+      description: Return a single group integration permission by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+          description: ''
+      tags:
+      - groups
+    put:
+      operationId: updateServiceAuthPermission
+      description: Replace a group integration permission by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+          description: ''
+      tags:
+      - groups
+    patch:
+      operationId: partialUpdateServiceAuthPermission
+      description: Update selected fields of a group integration permission by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ServiceAuthPermission'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/ServiceAuthPermission'
+          description: ''
+      tags:
+      - groups
+    delete:
+      operationId: destroyServiceAuthPermission
+      description: Revoke a group's access to an integration configuration by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - groups
+  /api/groups/{id}/:
+    get:
+      operationId: retrieveGroup
+      description: Return a single group by id, including its deployments.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this group.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupDetail'
+          description: ''
+      tags:
+      - groups
+    put:
+      operationId: updateGroup
+      description: Replace a group by id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this group.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupDetail'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupDetail'
+          description: ''
+      tags:
+      - groups
+    patch:
+      operationId: partialUpdateGroup
+      description: Update selected fields of a group by id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this group.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GroupDetail'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/GroupDetail'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/GroupDetail'
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupDetail'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/GroupDetail'
+          description: ''
+      tags:
+      - groups
+    delete:
+      operationId: destroyGroup
+      description: Delete a group by id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A UUID string identifying this group.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - groups
+  /api/groups/{group_pk}/databases/:
+    get:
+      operationId: listDatabasePermissions
+      description: Return the database permissions granted to a group, listing which databases the group can access.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabasePermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DatabasePermission'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/groups/{group_pk}/databases/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/groups/{group_pk}/databases/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/groups/{group_pk}/databases/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/groups/{group_pk}/databases/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - groups
+    post:
+      operationId: createList
+      description: Grant a group access to one or more databases.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: {}
+          application/x-www-form-urlencoded:
+            schema: {}
+          multipart/form-data:
+            schema: {}
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema: {}
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema: {}
+          description: ''
+      tags:
+      - groups
+  /api/groups/{group_pk}/databases/{id}/:
+    get:
+      operationId: retrieveDatabasePermission
+      description: Return a single group database permission by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DatabasePermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DatabasePermission'
+          description: ''
+      tags:
+      - groups
+    patch:
+      operationId: partialUpdateDatabasePermission
+      description: Update selected fields of a group database permission by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabasePermission'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DatabasePermission'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DatabasePermission'
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DatabasePermission'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/DatabasePermission'
+          description: ''
+      tags:
+      - groups
+    delete:
+      operationId: destroyDatabasePermission
+      description: Revoke a group's access to a database by id.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - groups
+  /api/groups/{group_pk}/errors/:
+    get:
+      operationId: listGroupErrors
+      description: Return recent error telemetry for the members of a team group, grouped by error.
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ErrorItemGroup'
+          description: ''
+      tags:
+      - groups
+  /api/groups/{group_pk}/memberships/{id}/:
+    delete:
+      operationId: destroyGroupMembership
+      description: Add, remove, and list users to/from a group
+      parameters:
+      - name: group_pk
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - groups
+components:
+  schemas:
+    ServiceAuthPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        label:
+          type: string
+        service_id:
+          type: string
+      required:
+      - label
+      - service_id
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
+    GroupPackagePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package_name:
+          type: string
+      required:
+      - package_name
+    GroupDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        deployments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+            required:
+            - id
+            - name
+          readOnly: true
+      required:
+      - name
+    GroupMembership:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        email:
+          type: string
+          format: email
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        campaigns:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - name
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+    DatabasePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        database_name:
+          type: string
+          readOnly: true
+        database:
+          type: string
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - database

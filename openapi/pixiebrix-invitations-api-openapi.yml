@@ -1,0 +1,179 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Invitations API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: invitations
+paths:
+  /api/invitations/me/:
+    get:
+      operationId: listMeInvitations
+      description: Return the pending team membership invitations addressed to the authenticated user, including the team, role, and inviter.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PendingInvitation'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PendingInvitation'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/invitations/me/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/invitations/me/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/invitations/me/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/invitations/me/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - invitations
+  /api/invitations/{id}/accept/:
+    post:
+      operationId: acceptMeInvitation
+      description: Accept one of the authenticated user's pending team invitations by id, joining the team.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PendingInvitation'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PendingInvitation'
+          description: ''
+      tags:
+      - invitations
+  /api/invitations/{id}/reject/:
+    post:
+      operationId: rejectMeInvitation
+      description: Decline one of the authenticated user's pending team invitations by id.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PendingInvitation'
+      responses:
+        '201':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PendingInvitation'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PendingInvitation'
+          description: ''
+      tags:
+      - invitations
+components:
+  schemas:
+    PendingInvitation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        inviter:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+      required:
+      - email

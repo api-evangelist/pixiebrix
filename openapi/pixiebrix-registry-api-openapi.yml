@@ -1,0 +1,172 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Registry API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: registry
+paths:
+  /api/registry/bricks/:
+    get:
+      operationId: listRegistryBricks
+      description: Registry view of current version of each package.
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: kind
+        required: false
+        in: query
+        description: kind (1 = Block, 2 = Foundation, 3 = Service, 4 = Blueprint, 5 = Reader)
+        schema:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+      - name: kind__in
+        required: false
+        in: query
+        description: kind__in
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageConfigList'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PackageConfigList'
+          description: ''
+          headers:
+            Link:
+              schema:
+                type: string
+              example: '&lt;https://app.pixiebrix.com/registry/bricks/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/registry/bricks/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/registry/bricks/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/registry/bricks/?page=11&gt;; rel=&quot;last&quot;'
+              description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
+      tags:
+      - registry
+  /api/registry/bricks/{name}/:
+    get:
+      operationId: retrieveRegistryBricks
+      description: Registry view of current version of each package.
+      parameters:
+      - name: name
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: kind
+        required: false
+        in: query
+        description: kind (1 = Block, 2 = Foundation, 3 = Service, 4 = Blueprint, 5 = Reader)
+        schema:
+          type: integer
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+      - name: kind__in
+        required: false
+        in: query
+        description: kind__in
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PackageConfig'
+            application/vnd.pixiebrix.api+json; version=2.0:
+              schema:
+                $ref: '#/components/schemas/PackageConfig'
+          description: ''
+      tags:
+      - registry
+components:
+  schemas:
+    PackageConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sharing:
+          type: object
+          properties:
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
+        config:
+          type: object
+          additionalProperties: true
+          readOnly: true
+      required:
+      - name
+      - kind
+      - sharing
+    PackageConfigList:
+      type: object
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+      required:
+      - apiVersion
+      - kind
+      - metadata

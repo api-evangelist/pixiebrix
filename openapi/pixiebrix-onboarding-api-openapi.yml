@@ -1,0 +1,46 @@
+openapi: 3.2.0
+info:
+  title: PixieBrix Onboarding API
+  version: 1.0.0
+  description: PixieBrix admin and package registry API
+  contact:
+    name: PixieBrix Support
+    email: support@pixiebrix.com
+servers:
+- url: https://app.pixiebrix.com
+tags:
+- name: onboarding
+paths:
+  /api/onboarding/:
+    post:
+      operationId: createOnboarding
+      description: Mark the current user as having completed onboarding, recording the onboarding timestamp the first time it is called.
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Onboarding'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Onboarding'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Onboarding'
+      responses:
+        '201':
+          content:
+            application/json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Onboarding'
+            application/vnd.pixiebrix.api+json; version=1.0:
+              schema:
+                $ref: '#/components/schemas/Onboarding'
+          description: ''
+      tags:
+      - onboarding
+components:
+  schemas:
+    Onboarding:
+      type: object
+      properties: {}
