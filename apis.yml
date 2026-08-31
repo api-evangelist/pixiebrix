@@ -36,6 +36,17 @@ tags:
 - Low-Code
 - Automation
 - Artificial Intelligence
+- Customer-Support
+- Enterprise Operations
+- Workflow-Automation
+- Agent Governance
+- Robotic Process Automation
+tags_raw:
+- Company
+- Browser Extensions
+- Low-Code
+- Automation
+- Artificial Intelligence
 - Customer Support
 - Enterprise Operations
 - Workflow Automation
@@ -48,6 +59,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Activity
+  tags_raw:
   - activity
   properties:
   - type: OpenAPI
@@ -74,6 +87,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Audit
+  tags_raw:
   - audit
   properties:
   - type: OpenAPI
@@ -100,6 +115,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Bricks
+  tags_raw:
   - bricks
   properties:
   - type: OpenAPI
@@ -126,6 +143,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Campaigns
+  tags_raw:
   - campaigns
   properties:
   - type: OpenAPI
@@ -152,6 +171,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Config
+  tags_raw:
   - config
   properties:
   - type: OpenAPI
@@ -204,6 +225,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Copilot
+  tags_raw:
   - copilot
   properties:
   - type: OpenAPI
@@ -230,6 +253,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Databases
+  tags_raw:
   - databases
   properties:
   - type: OpenAPI
@@ -256,6 +281,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Deployment
+  tags_raw:
   - deployments
   properties:
   - type: OpenAPI
@@ -282,6 +309,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Event
+  tags_raw:
   - events
   properties:
   - type: OpenAPI
@@ -308,6 +337,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Group
+  tags_raw:
   - groups
   properties:
   - type: OpenAPI
@@ -334,6 +365,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Health
+  tags_raw:
   - health
   properties:
   - type: OpenAPI
@@ -360,6 +393,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Identify
+  tags_raw:
   - identify
   properties:
   - type: OpenAPI
@@ -386,6 +421,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Invitations
+  tags_raw:
   - invitations
   properties:
   - type: OpenAPI
@@ -412,6 +449,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Magic Link
+  tags_raw:
   - magic-link
   properties:
   - type: OpenAPI
@@ -438,6 +477,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Marketplace
+  tags_raw:
   - marketplace
   properties:
   - type: OpenAPI
@@ -464,6 +505,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Me
+  tags_raw:
   - me
   properties:
   - type: OpenAPI
@@ -490,6 +533,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Memberships
+  tags_raw:
   - memberships
   properties:
   - type: OpenAPI
@@ -516,6 +561,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Onboarding
+  tags_raw:
   - onboarding
   properties:
   - type: OpenAPI
@@ -542,6 +589,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Organization
+  tags_raw:
   - organizations
   properties:
   - type: OpenAPI
@@ -568,6 +617,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Permissions
+  tags_raw:
   - permissions
   properties:
   - type: OpenAPI
@@ -594,6 +645,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Pipelines
+  tags_raw:
   - pipelines
   properties:
   - type: OpenAPI
@@ -620,6 +673,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Platforms
+  tags_raw:
   - platforms
   properties:
   - type: OpenAPI
@@ -646,6 +701,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Proxy
+  tags_raw:
   - proxy
   properties:
   - type: OpenAPI
@@ -672,6 +729,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Registry
+  tags_raw:
   - registry
   properties:
   - type: OpenAPI
@@ -698,6 +757,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Services
+  tags_raw:
   - services
   properties:
   - type: OpenAPI
@@ -724,6 +785,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Settings
+  tags_raw:
   - settings
   properties:
   - type: OpenAPI
@@ -750,6 +813,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Support
+  tags_raw:
   - support
   properties:
   - type: OpenAPI
@@ -776,6 +841,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Telemetry
+  tags_raw:
   - telemetry
   properties:
   - type: OpenAPI
@@ -802,6 +869,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Tests
+  tags_raw:
   - tests
   properties:
   - type: OpenAPI
@@ -828,6 +897,8 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
+  - Tours
+  tags_raw:
   - tours
   properties:
   - type: OpenAPI
