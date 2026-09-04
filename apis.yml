@@ -23,6 +23,22 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
+accessModel:
+  pricing: freemium
+  onboarding: self-serve
+  trial: false
+  try_now: true
+  public: false
+  label: Freemium · Self-serve signup
+  confidence: high
+  source:
+  - plans
+  - authentication
+  - rate-limits
+  - security
+  - sandbox
+  generated: '2026-09-03'
+  method: derived
 image: https://cdn.prod.website-files.com/627def74bc73d85070c65929/697cf1b5cee0b7370cdc763a_pixiebrixog.png
 url: https://raw.githubusercontent.com/api-evangelist/pixiebrix/refs/heads/main/apis.yml
 x-type: company
@@ -925,6 +941,9 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: CapabilityMap
+  url: capabilities/pixiebrix-capability-edges.yml
+  name: PixieBrix Business Capability Map
 - type: Overlay
   url: overlays/pixiebrix-developer-api-overlay.yaml
 - type: Website
