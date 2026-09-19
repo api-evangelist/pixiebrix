@@ -48,7 +48,7 @@ created: '2026-08-26'
 modified: '2026-08-26'
 tags:
 - Company
-- Browser Extensions
+- Browser Extension
 - Low-Code
 - Automation
 - Artificial Intelligence
@@ -269,7 +269,7 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
-  - Databases
+  - Database
   tags_raw:
   - databases
   properties:
@@ -549,7 +549,7 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
-  - Memberships
+  - Membership
   tags_raw:
   - memberships
   properties:
@@ -689,7 +689,7 @@ apis:
   humanURL: https://docs.pixiebrix.com/developer-api
   baseURL: https://app.pixiebrix.com/api/
   tags:
-  - Platforms
+  - Platform
   tags_raw:
   - platforms
   properties:
