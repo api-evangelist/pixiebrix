@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: campaigns
+- name: Campaigns
 paths:
   /api/campaigns/{campaign_pk}/jobs/{id}/:
     get:
@@ -39,7 +39,9 @@ paths:
                 $ref: '#/components/schemas/Job'
           description: ''
       tags:
-      - campaigns
+      - Campaigns
+      summary: Retrieve campaign engagement job
+      x-summary-source: derived
   /api/campaigns/{campaign_pk}/databases/:
     get:
       operationId: listCampaignDatabases
@@ -84,7 +86,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/campaigns/{campaign_pk}/databases/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - campaigns
+      - Campaigns
+      summary: List campaign databases
+      x-summary-source: derived
   /api/campaigns/{campaign_pk}/jobs/:
     post:
       operationId: createCampaignEngagementJob
@@ -118,7 +122,9 @@ paths:
                 $ref: '#/components/schemas/Job'
           description: ''
       tags:
-      - campaigns
+      - Campaigns
+      summary: Create campaign engagement job
+      x-summary-source: derived
   /api/campaigns/{campaign_pk}/emails/jobs/:
     post:
       operationId: createCampaignEmailJob
@@ -147,24 +153,11 @@ paths:
               schema: {}
           description: ''
       tags:
-      - campaigns
+      - Campaigns
+      summary: Create campaign email job
+      x-summary-source: derived
 components:
   schemas:
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
-          type: string
-      required:
-      - id
     CampaignDatabase:
       type: object
       properties:
@@ -223,3 +216,18 @@ components:
           readOnly: true
       required:
       - name
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+      required:
+      - id

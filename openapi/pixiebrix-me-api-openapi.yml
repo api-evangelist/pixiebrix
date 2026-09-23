@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: me
+- name: Me
 paths:
   /api/me/:
     get:
@@ -27,7 +27,9 @@ paths:
                 $ref: '#/components/schemas/Me'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Retrieve me
+      x-summary-source: derived
     delete:
       operationId: destroyMe
       description: Permanently delete the current user's account.
@@ -36,7 +38,9 @@ paths:
         '204':
           description: ''
       tags:
-      - me
+      - Me
+      summary: Destroy me
+      x-summary-source: derived
   /api/me/partner-principals/:
     get:
       operationId: listControlRoomPrincipals
@@ -75,7 +79,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/me/partner-principals/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/me/partner-principals/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/me/partner-principals/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/me/partner-principals/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - me
+      - Me
+      summary: List control room principals
+      x-summary-source: derived
   /api/me/token/:
     get:
       operationId: retrieveAuthToken
@@ -92,7 +98,9 @@ paths:
                 $ref: '#/components/schemas/AuthToken'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Retrieve auth token
+      x-summary-source: derived
   /api/me/settings/webextension/:
     get:
       operationId: retrieveUserExtensionSettings
@@ -109,7 +117,9 @@ paths:
                 $ref: '#/components/schemas/UserExtensionSettings'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Retrieve user extension settings
+      x-summary-source: derived
     patch:
       operationId: partialUpdateUserExtensionSettings
       description: Update one or more of the authenticated user's browser extension UI preferences, such as text selection menu and floating action button settings and their per-site denylists.
@@ -136,7 +146,9 @@ paths:
                 $ref: '#/components/schemas/UserExtensionSettings'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Partial update user extension settings
+      x-summary-source: derived
   /api/me/milestones/:
     get:
       operationId: listMilestones
@@ -157,7 +169,9 @@ paths:
                   $ref: '#/components/schemas/Milestone'
           description: ''
       tags:
-      - me
+      - Me
+      summary: List milestones
+      x-summary-source: derived
     post:
       operationId: createMilestone
       description: Record an onboarding milestone for the current user, replacing the metadata if a milestone with the same key already exists.
@@ -184,7 +198,9 @@ paths:
                 $ref: '#/components/schemas/Milestone'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Create milestone
+      x-summary-source: derived
   /api/me/deployments/{id}/:
     get:
       operationId: retrieveUserDeployment
@@ -207,7 +223,9 @@ paths:
                 $ref: '#/components/schemas/Deployment'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Retrieve user deployment
+      x-summary-source: derived
     delete:
       operationId: destroyUserDeployment
       description: View to create, get and delete user deployments.
@@ -222,7 +240,9 @@ paths:
         '204':
           description: ''
       tags:
-      - me
+      - Me
+      summary: Destroy user deployment
+      x-summary-source: derived
   /api/me/deployments/:
     post:
       operationId: createUserDeployment
@@ -250,33 +270,11 @@ paths:
                 $ref: '#/components/schemas/Deployment'
           description: ''
       tags:
-      - me
+      - Me
+      summary: Create user deployment
+      x-summary-source: derived
 components:
   schemas:
-    UserExtensionSettings:
-      type: object
-      properties:
-        is_text_selection_menu_enabled:
-          type: boolean
-        is_floating_action_button_enabled:
-          type: boolean
-        text_selection_menu_orientation:
-          enum:
-          - horizontal
-          - vertical
-          type: string
-        text_selection_menu_site_denylist:
-          type: array
-          items:
-            type: string
-        floating_action_button_site_denylist:
-          type: array
-          items:
-            type: string
-      required:
-      - is_text_selection_menu_enabled
-      - is_floating_action_button_enabled
-      - text_selection_menu_orientation
     Me:
       type: object
       properties:
@@ -635,12 +633,6 @@ components:
       - name
       - package_version
       - services
-    AuthToken:
-      type: object
-      properties:
-        token:
-          type: string
-          readOnly: true
     Milestone:
       type: object
       properties:
@@ -656,22 +648,36 @@ components:
           description: Optional additional information to provide context about the Milestone.
       required:
       - key
-    ControlRoomPrincipal:
+    AuthToken:
       type: object
       properties:
-        control_room_user_id:
-          type: integer
-          maximum: 9223372036854775807
-          format: int64
-          description: AA unique identifier used to interact with the Control Room user via the AA API
-          minimum: 0
-        control_room_url:
+        token:
           type: string
-          format: uri
           readOnly: true
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+    UserExtensionSettings:
+      type: object
+      properties:
+        is_text_selection_menu_enabled:
+          type: boolean
+        is_floating_action_button_enabled:
+          type: boolean
+        text_selection_menu_orientation:
+          enum:
+          - horizontal
+          - vertical
+          type: string
+        text_selection_menu_site_denylist:
+          type: array
+          items:
+            type: string
+        floating_action_button_site_denylist:
+          type: array
+          items:
+            type: string
       required:
-      - control_room_user_id
+      - is_text_selection_menu_enabled
+      - is_floating_action_button_enabled
+      - text_selection_menu_orientation
     DeploymentTelemetry:
       type: object
       properties:
@@ -740,3 +746,19 @@ components:
       required:
       - uid
       - version
+    ControlRoomPrincipal:
+      type: object
+      properties:
+        control_room_user_id:
+          type: integer
+          maximum: 9223372036854775807
+          format: int64
+          description: AA unique identifier used to interact with the Control Room user via the AA API
+          minimum: 0
+        control_room_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - control_room_user_id

@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: tours
+- name: Tours
 paths:
   /api/tours/:
     get:
@@ -31,7 +31,9 @@ paths:
                   $ref: '#/components/schemas/Tour'
           description: ''
       tags:
-      - tours
+      - Tours
+      summary: List tours
+      x-summary-source: derived
   /api/tours/{tour_pk}/runs/:
     post:
       operationId: createTourRun
@@ -65,7 +67,9 @@ paths:
                 $ref: '#/components/schemas/TourRun'
           description: ''
       tags:
-      - tours
+      - Tours
+      summary: Create tour run
+      x-summary-source: derived
   /api/tours/{tour_pk}/runs/{id}/:
     patch:
       operationId: partialUpdateTourRun
@@ -105,50 +109,11 @@ paths:
                 $ref: '#/components/schemas/TourRun'
           description: ''
       tags:
-      - tours
+      - Tours
+      summary: Partial update tour run
+      x-summary-source: derived
 components:
   schemas:
-    TourRun:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        tour:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 254
-          required:
-          - name
-          readOnly: true
-        status:
-          enum:
-          - IN_PROGRESS
-          - COMPLETED
-          - SKIPPED
-          type: string
-        tour_version:
-          type: string
-          description: Version of the tour that was run (provided by the frontend)
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-          maxLength: 254
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - tour_version
     Tour:
       type: object
       properties:
@@ -244,3 +209,44 @@ components:
           readOnly: true
       required:
       - name
+    TourRun:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        tour:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 254
+          required:
+          - name
+          readOnly: true
+        status:
+          enum:
+          - IN_PROGRESS
+          - COMPLETED
+          - SKIPPED
+          type: string
+        tour_version:
+          type: string
+          description: Version of the tour that was run (provided by the frontend)
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 254
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - tour_version

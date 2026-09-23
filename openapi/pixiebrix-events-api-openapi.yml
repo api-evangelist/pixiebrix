@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: events
+- name: Events
 paths:
   /api/events/:
     post:
@@ -38,7 +38,9 @@ paths:
                 $ref: '#/components/schemas/EventList'
           description: ''
       tags:
-      - events
+      - Events
+      summary: Create event list
+      x-summary-source: derived
 components:
   schemas:
     EventList:

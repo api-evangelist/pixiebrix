@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: identify
+- name: Identify
 paths:
   /api/identify/:
     post:
@@ -38,7 +38,9 @@ paths:
                 $ref: '#/components/schemas/Identify'
           description: ''
       tags:
-      - identify
+      - Identify
+      summary: Create identify
+      x-summary-source: derived
 components:
   schemas:
     Identify:

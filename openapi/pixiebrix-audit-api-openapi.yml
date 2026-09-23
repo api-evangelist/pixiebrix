@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: audit
+- name: Audit
 paths:
   /api/audit/organizations/{id}/:
     get:
@@ -55,7 +55,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/audit/organizations/{id}/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/audit/organizations/{id}/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/audit/organizations/{id}/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/audit/organizations/{id}/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - audit
+      - Audit
+      summary: List audit events
+      x-summary-source: derived
   /api/audit/groups/{id}/:
     get:
       operationId: listAuditGroups
@@ -100,7 +102,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/audit/groups/{id}/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/audit/groups/{id}/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/audit/groups/{id}/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/audit/groups/{id}/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - audit
+      - Audit
+      summary: List audit groups
+      x-summary-source: derived
   /api/audit/deployments/{id}/:
     get:
       operationId: listAuditDeployments
@@ -145,7 +149,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/audit/deployments/{id}/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/audit/deployments/{id}/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/audit/deployments/{id}/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/audit/deployments/{id}/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - audit
+      - Audit
+      summary: List audit deployments
+      x-summary-source: derived
 components:
   schemas:
     AuditEvent:

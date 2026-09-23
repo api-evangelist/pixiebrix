@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: services
+- name: Services
 paths:
   /api/services/shared/:
     get:
@@ -49,7 +49,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/services/shared/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/services/shared/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/services/shared/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/services/shared/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - services
+      - Services
+      summary: List sanitized auths
+      x-summary-source: derived
     post:
       operationId: createEditableAuth
       description: Create a new integration configuration owned by the caller or by an organization they administer.
@@ -76,7 +78,9 @@ paths:
                 $ref: '#/components/schemas/EditableAuth'
           description: ''
       tags:
-      - services
+      - Services
+      summary: Create editable auth
+      x-summary-source: derived
   /api/services/shared/{id}/:
     get:
       operationId: retrieveEditableAuth
@@ -99,7 +103,9 @@ paths:
                 $ref: '#/components/schemas/EditableAuth'
           description: ''
       tags:
-      - services
+      - Services
+      summary: Retrieve editable auth
+      x-summary-source: derived
     put:
       operationId: updateEditableAuth
       description: Replace an existing integration configuration with the provided values.
@@ -132,7 +138,9 @@ paths:
                 $ref: '#/components/schemas/EditableAuth'
           description: ''
       tags:
-      - services
+      - Services
+      summary: Update editable auth
+      x-summary-source: derived
     patch:
       operationId: partialUpdateEditableAuth
       description: Update selected fields of an existing integration configuration.
@@ -165,7 +173,9 @@ paths:
                 $ref: '#/components/schemas/EditableAuth'
           description: ''
       tags:
-      - services
+      - Services
+      summary: Partial update editable auth
+      x-summary-source: derived
     delete:
       operationId: destroyEditableAuth
       description: Delete an integration configuration.
@@ -180,7 +190,9 @@ paths:
         '204':
           description: ''
       tags:
-      - services
+      - Services
+      summary: Destroy editable auth
+      x-summary-source: derived
   /api/services/link/:
     post:
       operationId: createCreateLinkToken
@@ -213,7 +225,9 @@ paths:
                 $ref: '#/components/schemas/LinkTokenResponse'
           description: ''
       tags:
-      - services
+      - Services
+      summary: Create create link token
+      x-summary-source: derived
 components:
   schemas:
     LinkTokenResponse:

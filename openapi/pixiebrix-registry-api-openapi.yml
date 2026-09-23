@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: registry
+- name: Registry
 paths:
   /api/registry/bricks/:
     get:
@@ -67,7 +67,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/registry/bricks/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/registry/bricks/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/registry/bricks/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/registry/bricks/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - registry
+      - Registry
+      summary: List registry bricks
+      x-summary-source: derived
   /api/registry/bricks/{name}/:
     get:
       operationId: retrieveRegistryBricks
@@ -108,7 +110,9 @@ paths:
                 $ref: '#/components/schemas/PackageConfig'
           description: ''
       tags:
-      - registry
+      - Registry
+      summary: Retrieve registry bricks
+      x-summary-source: derived
 components:
   schemas:
     PackageConfig:

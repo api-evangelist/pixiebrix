@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: platforms
+- name: Platforms
 paths:
   /api/platforms/:
     get:
@@ -49,7 +49,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/platforms/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/platforms/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/platforms/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/platforms/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - platforms
+      - Platforms
+      summary: List platforms
+      x-summary-source: derived
 components:
   schemas:
     Platform:

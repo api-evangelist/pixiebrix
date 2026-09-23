@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: tests
+- name: Tests
 paths:
   /api/tests/accounts/social/:
     delete:
@@ -20,7 +20,9 @@ paths:
         '204':
           description: ''
       tags:
-      - tests
+      - Tests
+      summary: Destroy delete test social account
+      x-summary-source: derived
   /api/tests/accounts/rainforest/:
     delete:
       operationId: destroyDeleteRainforestAccount
@@ -30,4 +32,6 @@ paths:
         '204':
           description: ''
       tags:
-      - tests
+      - Tests
+      summary: Destroy delete rainforest account
+      x-summary-source: derived

@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: magic-link
+- name: Magic Link
 paths:
   /api/magic-link/:
     get:
@@ -25,7 +25,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - magic-link
+      - Magic Link
+      summary: Login magic link
+      x-summary-source: derived
     post:
       operationId: createMagicLink
       description: Request a passwordless magic link for the given email, sending it by email (creating the account if needed), or returning the single sign-on location for enterprise email domains.
@@ -47,4 +49,6 @@ paths:
               schema: {}
           description: ''
       tags:
-      - magic-link
+      - Magic Link
+      summary: Create magic link
+      x-summary-source: derived

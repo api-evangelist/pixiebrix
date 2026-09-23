@@ -28,6 +28,8 @@ paths:
           description: ''
       tags:
       - control-rooms
+      summary: Retrieve control room
+      x-summary-source: derived
   /api/control-rooms/configurations/{id}/:
     get:
       operationId: retrieveControlRoomConfiguration
@@ -51,6 +53,8 @@ paths:
           description: ''
       tags:
       - control-rooms
+      summary: Retrieve control room configuration
+      x-summary-source: derived
     patch:
       operationId: partialUpdateControlRoomConfiguration
       description: Update fields on an existing control room configuration, re-linking it to the control room when the URL changes.
@@ -84,6 +88,8 @@ paths:
           description: ''
       tags:
       - control-rooms
+      summary: Partial update control room configuration
+      x-summary-source: derived
     delete:
       operationId: destroyControlRoomConfiguration
       description: Delete a control room configuration.
@@ -99,6 +105,8 @@ paths:
           description: ''
       tags:
       - control-rooms
+      summary: Destroy control room configuration
+      x-summary-source: derived
   /api/control-rooms/configurations/:
     post:
       operationId: createControlRoomConfiguration
@@ -127,6 +135,8 @@ paths:
           description: ''
       tags:
       - control-rooms
+      summary: Create control room configuration
+      x-summary-source: derived
 components:
   schemas:
     ControlRoom:

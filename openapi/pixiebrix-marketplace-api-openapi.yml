@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: marketplace
+- name: Marketplace
 paths:
   /api/marketplace/listings/:
     get:
@@ -61,7 +61,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/marketplace/listings/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/marketplace/listings/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/marketplace/listings/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/marketplace/listings/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - marketplace
+      - Marketplace
+      summary: List marketplace listings
+      x-summary-source: derived
   /api/marketplace/listings/{id}/:
     get:
       operationId: retrieveMarketplaceListing
@@ -96,7 +98,9 @@ paths:
                 $ref: '#/components/schemas/MarketplaceListing'
           description: ''
       tags:
-      - marketplace
+      - Marketplace
+      summary: Retrieve marketplace listing
+      x-summary-source: derived
   /api/marketplace/tags/:
     get:
       operationId: listTags
@@ -135,56 +139,11 @@ paths:
               example: '&lt;https://app.pixiebrix.com/marketplace/tags/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/marketplace/tags/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/marketplace/tags/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/marketplace/tags/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - marketplace
+      - Marketplace
+      summary: List tags
+      x-summary-source: derived
 components:
   schemas:
-    Tag:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Surrogate key for the tag
-        name:
-          type: string
-          description: The name/caption to show in the tag
-          maxLength: 128
-        slug:
-          type: string
-          description: The URL slug for the tag
-          maxLength: 128
-          pattern: ^[-a-zA-Z0-9_]+$
-        fa_icon:
-          type:
-          - string
-          - 'null'
-          description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
-          pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
-          maxLength: 32
-        subtype:
-          enum:
-          - generic
-          - role
-          - service
-          - category
-          - persona
-          - pixie_picks
-          - use_case
-          - other
-          type: string
-          default: generic
-          description: The sub-type/category of the tag
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - name
     MarketplaceListing:
       type: object
       properties:
@@ -382,3 +341,50 @@ components:
       - assets
       - tags
       - image
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate key for the tag
+        name:
+          type: string
+          description: The name/caption to show in the tag
+          maxLength: 128
+        slug:
+          type: string
+          description: The URL slug for the tag
+          maxLength: 128
+          pattern: ^[-a-zA-Z0-9_]+$
+        fa_icon:
+          type:
+          - string
+          - 'null'
+          description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
+          pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
+          maxLength: 32
+        subtype:
+          enum:
+          - generic
+          - role
+          - service
+          - category
+          - persona
+          - pixie_picks
+          - use_case
+          - other
+          type: string
+          default: generic
+          description: The sub-type/category of the tag
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name

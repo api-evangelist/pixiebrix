@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: deployments
+- name: Deployments
 paths:
   /api/deployments/:
     get:
@@ -56,7 +56,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/deployments/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/deployments/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/deployments/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/deployments/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - deployments
+      - Deployments
+      summary: List user heartbeats
+      x-summary-source: derived
     post:
       operationId: telemetryListUserHeartbeat
       description: Record which deployments the user has installed, and return list of available deployments.
@@ -90,7 +92,9 @@ paths:
                 $ref: '#/components/schemas/Deployment'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Telemetry list user heartbeat
+      x-summary-source: derived
   /api/deployments/dependencies/:
     get:
       operationId: retrieveDeploymentDependenciesBatch
@@ -113,7 +117,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentDependenciesBatch'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Retrieve deployment dependencies batch
+      x-summary-source: derived
   /api/deployments/{id}/:
     get:
       operationId: retrieveDeploymentDetail
@@ -136,7 +142,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentDetail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Retrieve deployment detail
+      x-summary-source: derived
     put:
       operationId: updateDeploymentDetail
       description: View for admins to get/update/delete a single deployment.
@@ -169,7 +177,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentDetail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Update deployment detail
+      x-summary-source: derived
     patch:
       operationId: partialUpdateDeploymentDetail
       description: View for admins to get/update/delete a single deployment.
@@ -202,7 +212,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentDetail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Partial update deployment detail
+      x-summary-source: derived
     delete:
       operationId: destroyDeploymentDetail
       description: View for admins to get/update/delete a single deployment.
@@ -217,7 +229,9 @@ paths:
         '204':
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Destroy deployment detail
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/dependencies/:
     get:
       operationId: retrieveDeploymentDependencies
@@ -240,7 +254,9 @@ paths:
                 $ref: '#/components/schemas/DependencyTree'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Retrieve deployment dependencies
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/reports/:
     get:
       operationId: listDeploymentReportMetadata
@@ -267,7 +283,9 @@ paths:
                   $ref: '#/components/schemas/DeploymentReportMetadata'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: List deployment report metadata
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/reports/{id}/:
     get:
       operationId: retrieveDeploymentReport
@@ -296,7 +314,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentReport'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Retrieve deployment report
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/reports/{report_pk}/jobs/{id}/:
     get:
       operationId: retrieveDeploymentReportJob
@@ -331,7 +351,9 @@ paths:
                 $ref: '#/components/schemas/Job'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Retrieve deployment report job
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/users/:
     get:
       operationId: listActiveDeploymentGroups
@@ -358,7 +380,9 @@ paths:
                   $ref: '#/components/schemas/ActiveDeploymentGroup'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: List active deployment groups
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/errors/:
     get:
       operationId: listDeploymentErrors
@@ -385,7 +409,9 @@ paths:
                   $ref: '#/components/schemas/ErrorItemGroup'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: List deployment errors
+      x-summary-source: derived
     delete:
       operationId: destroyDeploymentErrors
       description: Delete all error telemetry recorded for a single deployment, returning no content.
@@ -400,7 +426,9 @@ paths:
         '204':
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Destroy deployment errors
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/groups/:
     get:
       operationId: listDeploymentPermissions
@@ -445,7 +473,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/groups/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - deployments
+      - Deployments
+      summary: List deployment permissions
+      x-summary-source: derived
     post:
       operationId: createDeploymentPermission
       description: Grant a group permission to a deployment so its members receive the deployment.
@@ -478,7 +508,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentPermission'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Create deployment permission
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/managers/:
     get:
       operationId: listDeploymentManagerPermissions
@@ -523,7 +555,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/deployments/{deployment_pk}/managers/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - deployments
+      - Deployments
+      summary: List deployment manager permissions
+      x-summary-source: derived
     post:
       operationId: createDeploymentManagerPermission
       description: Grant a group manager permission over a deployment.
@@ -556,7 +590,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentManagerPermission'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Create deployment manager permission
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/contacts/:
     get:
       operationId: listDeploymentAlertEmails
@@ -583,7 +619,9 @@ paths:
                   $ref: '#/components/schemas/DeploymentAlertEmail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: List deployment alert emails
+      x-summary-source: derived
     post:
       operationId: createDeploymentAlertEmail
       description: Add an alert-notification contact email to a deployment.
@@ -616,7 +654,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentAlertEmail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Create deployment alert email
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/contacts/{id}/:
     get:
       operationId: retrieveDeploymentAlertEmail
@@ -645,7 +685,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentAlertEmail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Retrieve deployment alert email
+      x-summary-source: derived
     put:
       operationId: updateDeploymentAlertEmail
       description: Replace an existing alert-notification contact email for a deployment.
@@ -684,7 +726,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentAlertEmail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Update deployment alert email
+      x-summary-source: derived
     patch:
       operationId: partialUpdateDeploymentAlertEmail
       description: Partially update an existing alert-notification contact email for a deployment.
@@ -723,7 +767,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentAlertEmail'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Partial update deployment alert email
+      x-summary-source: derived
     delete:
       operationId: destroyDeploymentAlertEmail
       description: Remove an alert-notification contact email from a deployment.
@@ -744,7 +790,9 @@ paths:
         '204':
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Destroy deployment alert email
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/messages/:
     post:
       operationId: createDeploymentMessage
@@ -778,7 +826,9 @@ paths:
                 $ref: '#/components/schemas/DeploymentMessage'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Create deployment message
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/reports/{report_pk}/jobs/:
     post:
       operationId: createDeploymentReportJob
@@ -818,7 +868,9 @@ paths:
                 $ref: '#/components/schemas/Job'
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Create deployment report job
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/alerts/:
     post:
       operationId: createDeploymentAlert
@@ -847,7 +899,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Create deployment alert
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/my-bindings/:
     put:
       operationId: updateUserDeploymentBindings
@@ -876,7 +930,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Update user deployment bindings
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/groups/{id}/:
     delete:
       operationId: destroyDeploymentPermission
@@ -898,7 +954,9 @@ paths:
         '204':
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Destroy deployment permission
+      x-summary-source: derived
   /api/deployments/{deployment_pk}/managers/{id}/:
     delete:
       operationId: destroyDeploymentManagerPermission
@@ -920,254 +978,69 @@ paths:
         '204':
           description: ''
       tags:
-      - deployments
+      - Deployments
+      summary: Destroy deployment manager permission
+      x-summary-source: derived
 components:
   schemas:
-    DeploymentAlertEmail:
+    DeploymentReport:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          readOnly: true
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        notify_error:
-          type: boolean
-        notify_uninstall:
-          type: boolean
-      required:
-      - email
-    DeploymentDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
+          description: The id of the report
         name:
           type: string
-          maxLength: 128
-        active:
-          type: boolean
-        options_config:
-          type: object
-          additionalProperties: true
-        created_at:
+          description: The name of the report
+        timestamp:
           type: string
           format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        package:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-          readOnly: true
-        package_version:
-          type: string
-          writeOnly: true
-        organization:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 128
-          required:
-          - name
-          readOnly: true
-        bindings:
+          description: Report generation timestamp
+        data:
           type: array
           items:
             type: object
             properties:
-              id:
+              email:
                 type: string
-                format: uuid
-                readOnly: true
-              created_at:
-                type: string
-                format: date-time
-                readOnly: true
-              key:
-                type:
-                - string
-                - 'null'
-                description: Output key for integration dependency
-                maxLength: 128
-              auth:
-                type:
-                - object
-                - 'null'
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    readOnly: true
-                  service_id:
-                    type: string
-                  label:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 128
-                required:
-                - service_id
-              binding_type:
-                type: string
-                readOnly: true
-            required:
-            - auth
-          readOnly: true
-        services:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type:
-                - string
-                - 'null'
-                description: Output key for integration dependency
-                maxLength: 128
-              auth:
-                type:
-                - string
-                - 'null'
-          writeOnly: true
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-        platform_names:
-          type: array
-          items:
-            type: string
-          writeOnly: true
-      required:
-      - name
-      - package_version
-      - services
-      - platform_names
-    DeploymentMessage:
-      type: object
-      properties:
-        recipient:
-          type: string
-          format: email
-        subject:
-          type: string
-        message:
-          type: string
-      required:
-      - recipient
-      - subject
-      - message
-    DeploymentManagerPermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        group_id:
-          type: string
-        group_name:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - group_id
-    DeploymentPermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        group_id:
-          type: string
-          format: uuid
-        group_name:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - group_id
-    ActiveDeploymentGroup:
-      type: object
-      properties:
-        email:
-          type: string
-        version:
-          type: string
-        client_version:
-          type: string
-        known_versions:
-          type: array
-          items:
-            type: object
-            properties:
-              version:
-                type: string
+                format: email
               timestamp:
                 type: string
-                format: date-time
+                format: date
+              event_name:
+                type: string
+              event_label:
+                type: string
+              value:
+                type: integer
             required:
-            - version
+            - email
             - timestamp
+            - event_name
+            - event_label
+            - value
       required:
-      - email
-      - version
-      - client_version
-      - known_versions
+      - id
+      - name
+      - timestamp
+      - data
+    DeploymentReportMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: A human-readable name/label for the report
+          maxLength: 256
+        timezone:
+          type: string
+      required:
+      - id
+      - name
+      - timezone
     DependencyTree:
       type: object
       properties:
@@ -1187,128 +1060,20 @@ components:
       - id
       - registry_id
       - database_id
-    ErrorItemGroup:
+    DeploymentMessage:
       type: object
       properties:
-        request_url:
-          type:
-          - string
-          - 'null'
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-        deployment:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-          required:
-          - id
-          - name
-        package_version:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-        extension_label:
-          type:
-          - string
-          - 'null'
-        last_occurrence_timestamp:
+        recipient:
           type: string
-          format: date-time
+          format: email
+        subject:
+          type: string
         message:
           type: string
-        occurrence_count:
-          type: integer
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-            required:
-            - id
-            - email
-        step_label:
-          type:
-          - string
-          - 'null'
-        user_agent_extension_version:
-          type: string
-        user_agent_extension_full_version:
-          type: string
-        error_item_ids:
-          type: array
-          items:
-            type: integer
       required:
-      - request_url
-      - extension_label
-      - last_occurrence_timestamp
+      - recipient
+      - subject
       - message
-      - occurrence_count
-      - users
-      - step_label
-      - user_agent_extension_version
-      - user_agent_extension_full_version
-      - error_item_ids
-    DeploymentReportMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          description: A human-readable name/label for the report
-          maxLength: 256
-        timezone:
-          type: string
-      required:
-      - id
-      - name
-      - timezone
     Deployment:
       type: object
       properties:
@@ -1461,6 +1226,139 @@ components:
       - name
       - package_version
       - services
+    ActiveDeploymentGroup:
+      type: object
+      properties:
+        email:
+          type: string
+        version:
+          type: string
+        client_version:
+          type: string
+        known_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+            required:
+            - version
+            - timestamp
+      required:
+      - email
+      - version
+      - client_version
+      - known_versions
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
     Job:
       type: object
       properties:
@@ -1476,48 +1374,212 @@ components:
           type: string
       required:
       - id
-    DeploymentReport:
+    DeploymentDetail:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          description: The id of the report
+          readOnly: true
         name:
           type: string
-          description: The name of the report
-        timestamp:
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
           type: string
           format: date-time
-          description: Report generation timestamp
-        data:
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
           type: array
           items:
             type: object
             properties:
-              email:
+              id:
                 type: string
-                format: email
-              timestamp:
+                format: uuid
+                readOnly: true
+              created_at:
                 type: string
-                format: date
-              event_name:
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
                 type: string
-              event_label:
-                type: string
-              value:
-                type: integer
+                readOnly: true
             required:
-            - email
-            - timestamp
-            - event_name
-            - event_label
-            - value
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
       required:
-      - id
       - name
-      - timestamp
-      - data
+      - package_version
+      - services
+      - platform_names
+    DeploymentManagerPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        group_id:
+          type: string
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - group_id
+    DeploymentAlertEmail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        notify_error:
+          type: boolean
+        notify_uninstall:
+          type: boolean
+      required:
+      - email
+    DeploymentDependenciesBatch:
+      type: object
+      properties:
+        dependencies:
+          type: array
+          items:
+            type: object
+            properties:
+              package_id:
+                type: string
+              version:
+                type: string
+              updated_at:
+                type: string
+                format: date-time
+            required:
+            - package_id
+            - version
+            - updated_at
+      required:
+      - dependencies
     DeploymentTelemetry:
       type: object
       properties:
@@ -1586,24 +1648,22 @@ components:
       required:
       - uid
       - version
-    DeploymentDependenciesBatch:
+    DeploymentPermission:
       type: object
       properties:
-        dependencies:
-          type: array
-          items:
-            type: object
-            properties:
-              package_id:
-                type: string
-              version:
-                type: string
-              updated_at:
-                type: string
-                format: date-time
-            required:
-            - package_id
-            - version
-            - updated_at
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        group_id:
+          type: string
+          format: uuid
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
-      - dependencies
+      - group_id

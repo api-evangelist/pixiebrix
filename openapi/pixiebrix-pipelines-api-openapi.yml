@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: pipelines
+- name: Pipelines
 paths:
   /api/pipelines/:
     get:
@@ -31,7 +31,9 @@ paths:
                   $ref: '#/components/schemas/PackagePromotionPipeline'
           description: ''
       tags:
-      - pipelines
+      - Pipelines
+      summary: List package promotion pipelines
+      x-summary-source: derived
   /api/pipelines/{id}/promote/:
     post:
       operationId: promotePackagePromotionPipeline
@@ -65,7 +67,9 @@ paths:
                 $ref: '#/components/schemas/PackagePromotionPipeline'
           description: ''
       tags:
-      - pipelines
+      - Pipelines
+      summary: Promote package promotion pipeline
+      x-summary-source: derived
 components:
   schemas:
     PackagePromotionPipeline:

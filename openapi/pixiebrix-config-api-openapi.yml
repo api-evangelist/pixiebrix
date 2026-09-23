@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: config
+- name: Config
 paths:
   /api/config/{key}/:
     get:
@@ -33,7 +33,9 @@ paths:
                 $ref: '#/components/schemas/Config'
           description: ''
       tags:
-      - config
+      - Config
+      summary: Retrieve config
+      x-summary-source: derived
 components:
   schemas:
     Config:

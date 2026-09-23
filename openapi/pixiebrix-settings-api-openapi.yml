@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: settings
+- name: Settings
 paths:
   /api/settings/:
     put:
@@ -38,7 +38,9 @@ paths:
                 $ref: '#/components/schemas/UserSettings'
           description: ''
       tags:
-      - settings
+      - Settings
+      summary: Update user settings
+      x-summary-source: derived
     patch:
       operationId: partialUpdateUserSettings
       description: Update one or more of the authenticated user's account settings, such as their publishing scope.
@@ -65,7 +67,9 @@ paths:
                 $ref: '#/components/schemas/UserSettings'
           description: ''
       tags:
-      - settings
+      - Settings
+      summary: Partial update user settings
+      x-summary-source: derived
 components:
   schemas:
     UserSettings:

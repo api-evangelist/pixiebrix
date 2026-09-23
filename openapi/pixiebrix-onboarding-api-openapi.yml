@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: onboarding
+- name: Onboarding
 paths:
   /api/onboarding/:
     post:
@@ -38,7 +38,9 @@ paths:
                 $ref: '#/components/schemas/Onboarding'
           description: ''
       tags:
-      - onboarding
+      - Onboarding
+      summary: Create onboarding
+      x-summary-source: derived
 components:
   schemas:
     Onboarding:

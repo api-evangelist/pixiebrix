@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: telemetry
+- name: Telemetry
 paths:
   /api/telemetry/errors/public-blueprints/:
     get:
@@ -31,7 +31,9 @@ paths:
                   $ref: '#/components/schemas/PublicBlueprintErrorItemGroup'
           description: ''
       tags:
-      - telemetry
+      - Telemetry
+      summary: List public blueprint error item groups
+      x-summary-source: derived
   /api/telemetry/errors/{id}/:
     get:
       operationId: retrieveErrorDetail
@@ -54,7 +56,9 @@ paths:
                 $ref: '#/components/schemas/ErrorItem'
           description: ''
       tags:
-      - telemetry
+      - Telemetry
+      summary: Retrieve error detail
+      x-summary-source: derived
   /api/telemetry/errors/:
     post:
       operationId: createErrorItem
@@ -82,7 +86,9 @@ paths:
                 $ref: '#/components/schemas/ErrorItem'
           description: ''
       tags:
-      - telemetry
+      - Telemetry
+      summary: Create error item
+      x-summary-source: derived
   /api/telemetry/external/events/:
     post:
       operationId: createExternalEvent
@@ -110,82 +116,11 @@ paths:
                 $ref: '#/components/schemas/ExternalEvent'
           description: ''
       tags:
-      - telemetry
+      - Telemetry
+      summary: Create external event
+      x-summary-source: derived
 components:
   schemas:
-    PublicBlueprintErrorItemGroup:
-      type: object
-      properties:
-        blueprint_name:
-          type: string
-        blueprint_version:
-          type: string
-        extension_label:
-          type:
-          - string
-          - 'null'
-        step_label:
-          type:
-          - string
-          - 'null'
-        brick_version:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-        occurrence_count:
-          type: integer
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-            required:
-            - id
-            - email
-        last_occurrence_timestamp:
-          type: string
-          format: date-time
-        user_agent_extension_versions:
-          type: array
-          items:
-            type: string
-        request_urls:
-          type: array
-          items:
-            type: string
-      required:
-      - blueprint_name
-      - blueprint_version
-      - extension_label
-      - step_label
-      - brick_version
-      - message
-      - occurrence_count
-      - users
-      - last_occurrence_timestamp
-      - user_agent_extension_versions
-      - request_urls
-    ExternalEvent:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        data:
-          type: object
-          additionalProperties: true
-        event:
-          type: string
-      required:
-      - email
-      - event
     ErrorItem:
       type: object
       properties:
@@ -326,3 +261,76 @@ components:
       - extension_uuid
       - user_agent
       - platform_name
+    PublicBlueprintErrorItemGroup:
+      type: object
+      properties:
+        blueprint_name:
+          type: string
+        blueprint_version:
+          type: string
+        extension_label:
+          type:
+          - string
+          - 'null'
+        step_label:
+          type:
+          - string
+          - 'null'
+        brick_version:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        user_agent_extension_versions:
+          type: array
+          items:
+            type: string
+        request_urls:
+          type: array
+          items:
+            type: string
+      required:
+      - blueprint_name
+      - blueprint_version
+      - extension_label
+      - step_label
+      - brick_version
+      - message
+      - occurrence_count
+      - users
+      - last_occurrence_timestamp
+      - user_agent_extension_versions
+      - request_urls
+    ExternalEvent:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        data:
+          type: object
+          additionalProperties: true
+        event:
+          type: string
+      required:
+      - email
+      - event

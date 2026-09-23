@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: copilot
+- name: Copilot
 paths:
   /api/copilot/skills/{skill_id}/:
     get:
@@ -31,7 +31,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Retrieve skill detail
+      x-summary-source: derived
   /api/copilot/suggested-mod-prompts/:
     get:
       operationId: listSuggestedModPrompts
@@ -70,7 +72,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/copilot/suggested-mod-prompts/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - copilot
+      - Copilot
+      summary: List suggested mod prompts
+      x-summary-source: derived
     post:
       operationId: createSuggestedModPromptBulkUpload
       description: Bulk upsert prompts (shared-token auth for CI / automation).
@@ -97,7 +101,9 @@ paths:
                 $ref: '#/components/schemas/SuggestedModPromptBulkUpload'
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create suggested mod prompt bulk upload
+      x-summary-source: derived
   /api/copilot/mod-generation/:
     post:
       operationId: createModGeneration
@@ -120,7 +126,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create mod generation
+      x-summary-source: derived
   /api/copilot/mod-edit/:
     post:
       operationId: createModEdit
@@ -148,7 +156,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create mod edit
+      x-summary-source: derived
   /api/copilot/chat/completions/:
     post:
       operationId: createChatCompletion
@@ -171,7 +181,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create chat completion
+      x-summary-source: derived
   /api/copilot/mod-generation/sessions/{id}/feedback/:
     post:
       operationId: createModCopilotSessionFeedback
@@ -205,7 +217,9 @@ paths:
                 $ref: '#/components/schemas/ModCopilotSessionFeedback'
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create mod copilot session feedback
+      x-summary-source: derived
   /api/copilot/extract-from-page/:
     post:
       operationId: createExtractFromPage
@@ -228,7 +242,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create extract from page
+      x-summary-source: derived
   /api/copilot/custom-prompt/:
     post:
       operationId: createCustomPrompt
@@ -251,7 +267,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create custom prompt
+      x-summary-source: derived
   /api/copilot/verify-mod/:
     post:
       operationId: createVerifyMod
@@ -274,7 +292,9 @@ paths:
               schema: {}
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Create verify mod
+      x-summary-source: derived
   /api/copilot/mod-generation/sessions/{id}/:
     put:
       operationId: updateModCopilotSession
@@ -308,7 +328,9 @@ paths:
                 $ref: '#/components/schemas/ModCopilotSession'
           description: ''
       tags:
-      - copilot
+      - Copilot
+      summary: Update mod copilot session
+      x-summary-source: derived
 components:
   schemas:
     SuggestedModPromptBulkUpload:
@@ -333,6 +355,81 @@ components:
             - user_message
       required:
       - prompts
+    ModCopilotSessionFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        session:
+          type: string
+          description: The session being reviewed
+        rating:
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: 'User rating: -1 for negative, 1 for positive'
+          minimum: -32768
+          maximum: 32767
+        comment:
+          type: string
+          description: User's feedback comment
+        message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional message ID for feedback on a specific message
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - session
+      - rating
+      - comment
+    SuggestedModPrompt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: Short prompt name shown to users
+          maxLength: 255
+        user_message:
+          type: string
+          description: Initial user message for the prompt
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - title
+      - user_message
     ModCopilotSession:
       type: object
       properties:
@@ -466,78 +563,3 @@ components:
           readOnly: true
       required:
       - data
-    ModCopilotSessionFeedback:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        session:
-          type: string
-          description: The session being reviewed
-        rating:
-          enum:
-          - -1
-          - 1
-          type: integer
-          description: 'User rating: -1 for negative, 1 for positive'
-          minimum: -32768
-          maximum: 32767
-        comment:
-          type: string
-          description: User's feedback comment
-        message_id:
-          type:
-          - string
-          - 'null'
-          description: Optional message ID for feedback on a specific message
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - session
-      - rating
-      - comment
-    SuggestedModPrompt:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          description: Short prompt name shown to users
-          maxLength: 255
-        user_message:
-          type: string
-          description: Initial user message for the prompt
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - title
-      - user_message

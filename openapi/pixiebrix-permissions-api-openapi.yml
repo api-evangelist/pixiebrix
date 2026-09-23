@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: permissions
+- name: Permissions
 paths:
   /api/permissions/{id}/:
     get:
@@ -33,7 +33,9 @@ paths:
                 $ref: '#/components/schemas/GroupPackagePermission'
           description: ''
       tags:
-      - permissions
+      - Permissions
+      summary: Retrieve group package permission
+      x-summary-source: derived
     put:
       operationId: updateGroupPackagePermission
       description: Replace a group package permission by id.
@@ -66,7 +68,9 @@ paths:
                 $ref: '#/components/schemas/GroupPackagePermission'
           description: ''
       tags:
-      - permissions
+      - Permissions
+      summary: Update group package permission
+      x-summary-source: derived
     patch:
       operationId: partialUpdateGroupPackagePermission
       description: Update selected fields of a group package permission by id.
@@ -99,7 +103,9 @@ paths:
                 $ref: '#/components/schemas/GroupPackagePermission'
           description: ''
       tags:
-      - permissions
+      - Permissions
+      summary: Partial update group package permission
+      x-summary-source: derived
     delete:
       operationId: destroyGroupPackagePermission
       description: Delete a group package permission by id, revoking the group's access to that package.
@@ -114,7 +120,9 @@ paths:
         '204':
           description: ''
       tags:
-      - permissions
+      - Permissions
+      summary: Destroy group package permission
+      x-summary-source: derived
 components:
   schemas:
     GroupPackagePermission:

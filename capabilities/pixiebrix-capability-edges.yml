@@ -1,0 +1,50 @@
+slug: pixiebrix
+provider: PixieBrix
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: groups
+  spec_file: pixiebrix-groups-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.75
+  evidence: listGroupMemberships; createGroupPackagePermission; GroupPackagePermission, ServiceAuthPermission,
+    DatabasePermission
+  reason: Operations manage group membership and grant package, integration-auth and database permissions
+    — group-based access control administration, i.e. Identity & Access Management. Some chance this is
+    better read as tenant-level configuration, hence 0.75.
+- tag: copilot
+  spec_file: pixiebrix-copilot-api-openapi.yml
+  capability_id: BC-610.60
+  capability_id_l1: BC-610
+  capability_name: Artificial Intelligence Management
+  confidence: 0.7
+  evidence: POST /api/copilot/chat/completions/ createChatCompletion; POST /api/copilot/mod-generation/
+    createModGeneration; listSuggestedModPrompts
+  reason: Operations expose an LLM-based assistant that generates and edits automation 'mods' from prompts,
+    plus prompt libraries and session feedback — an applied AI/generative-assistant surface, best fitted
+    to Artificial Intelligence Management. Moderate confidence as it could alternatively be read as product
+    engineering tooling.
+- tag: organizations
+  spec_file: pixiebrix-organizations-api-openapi.yml
+  capability_id: BC-4230
+  capability_id_l1: BC-4230
+  capability_name: SaaS Tenant Management
+  confidence: 0.7
+  evidence: listOrganizations / createOrganization; listOrganizationInvitations; schemas `OrganizationTheme`,
+    `DeploymentKey`, `Subscription`, `Group`
+  reason: 'Administration of customer organisations (tenants) in PixieBrix''s multi-tenant service: creating
+    organisations, inviting members, per-org theming and deployment keys. Spans provisioning and configuration
+    sub-capabilities, so L1 only; the tag also carries unrelated sub-resources (campaigns, databases)
+    which caps confidence.'

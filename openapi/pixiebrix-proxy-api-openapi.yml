@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: proxy
+- name: Proxy
 paths:
   /api/proxy/:
     post:
@@ -33,4 +33,6 @@ paths:
               schema: {}
           description: ''
       tags:
-      - proxy
+      - Proxy
+      summary: Create request proxy
+      x-summary-source: derived

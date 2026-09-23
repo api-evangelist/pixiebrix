@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: memberships
+- name: Memberships
 paths:
   /api/memberships/{id}/:
     get:
@@ -33,7 +33,9 @@ paths:
                 $ref: '#/components/schemas/Membership'
           description: ''
       tags:
-      - memberships
+      - Memberships
+      summary: Retrieve organization membership
+      x-summary-source: derived
     put:
       operationId: updateOrganizationMembership
       description: Detail view for an organization's memberships.
@@ -66,7 +68,9 @@ paths:
                 $ref: '#/components/schemas/Membership'
           description: ''
       tags:
-      - memberships
+      - Memberships
+      summary: Update organization membership
+      x-summary-source: derived
     patch:
       operationId: partialUpdateOrganizationMembership
       description: Detail view for an organization's memberships.
@@ -99,7 +103,9 @@ paths:
                 $ref: '#/components/schemas/Membership'
           description: ''
       tags:
-      - memberships
+      - Memberships
+      summary: Partial update organization membership
+      x-summary-source: derived
     delete:
       operationId: destroyOrganizationMembership
       description: Detail view for an organization's memberships.
@@ -114,7 +120,9 @@ paths:
         '204':
           description: ''
       tags:
-      - memberships
+      - Memberships
+      summary: Destroy organization membership
+      x-summary-source: derived
 components:
   schemas:
     Membership:

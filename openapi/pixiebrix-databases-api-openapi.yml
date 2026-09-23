@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://app.pixiebrix.com
 tags:
-- name: databases
+- name: Databases
 paths:
   /api/databases/:
     get:
@@ -49,7 +49,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/databases/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - databases
+      - Databases
+      summary: List user databases
+      x-summary-source: derived
     post:
       operationId: createUserDatabase
       description: Create a new database owned by the authenticated user.
@@ -76,7 +78,9 @@ paths:
                 $ref: '#/components/schemas/Database'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Create user database
+      x-summary-source: derived
   /api/databases/records/jobs/{id}/:
     get:
       operationId: retrieveDatabaseExportJob
@@ -99,7 +103,9 @@ paths:
                 $ref: '#/components/schemas/DatabaseExportJob'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Retrieve database export job
+      x-summary-source: derived
   /api/databases/{id}/:
     get:
       operationId: retrieveUserDatabase
@@ -122,7 +128,9 @@ paths:
                 $ref: '#/components/schemas/Database'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Retrieve user database
+      x-summary-source: derived
     patch:
       operationId: partialUpdateUserDatabase
       description: Update selected fields of a database the authenticated user owns, such as its name.
@@ -155,7 +163,9 @@ paths:
                 $ref: '#/components/schemas/Database'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Partial update user database
+      x-summary-source: derived
     delete:
       operationId: destroyUserDatabase
       description: Permanently delete a database, and all of its records, owned by the authenticated user.
@@ -170,7 +180,9 @@ paths:
         '204':
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Destroy user database
+      x-summary-source: derived
   /api/databases/{id}/permissions/:
     get:
       operationId: retrieveUserDatabasePermission
@@ -193,7 +205,9 @@ paths:
                 $ref: '#/components/schemas/UserDatabasePermission'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Retrieve user database permission
+      x-summary-source: derived
   /api/databases/{database_pk}/records/:
     get:
       operationId: listRecords
@@ -248,7 +262,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/records/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/records/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/records/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/records/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - databases
+      - Databases
+      summary: List records
+      x-summary-source: derived
     post:
       operationId: createRecord
       description: Add one record, or several records in a single request, to the database, merging data into any existing record with the same key according to the chosen merge strategy.
@@ -287,7 +303,9 @@ paths:
                 $ref: '#/components/schemas/Record'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Create record
+      x-summary-source: derived
     put:
       operationId: updateRecord
       description: Replace or merge a record in the database (creating it if it does not yet exist), targeting a single record when a key is provided in the path or one or more records supplied in the request body.
@@ -326,7 +344,9 @@ paths:
                 $ref: '#/components/schemas/Record'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Update record
+      x-summary-source: derived
     delete:
       operationId: clearRecord
       description: Delete every record in the database, optionally limited by query filters.
@@ -341,7 +361,9 @@ paths:
         '204':
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Clear record
+      x-summary-source: derived
   /api/databases/{database_pk}/records/{key}/:
     get:
       operationId: retrieveRecordDetail
@@ -376,7 +398,9 @@ paths:
                 $ref: '#/components/schemas/Record'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Retrieve record detail
+      x-summary-source: derived
     put:
       operationId: updateRecordDetail
       description: Replace or merge a record in the database (creating it if it does not yet exist), targeting a single record when a key is provided in the path or one or more records supplied in the request body.
@@ -421,7 +445,9 @@ paths:
                 $ref: '#/components/schemas/Record'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Update record detail
+      x-summary-source: derived
     delete:
       operationId: destroyRecordDetail
       description: Delete a single record from the database identified by its key.
@@ -442,7 +468,9 @@ paths:
         '204':
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Destroy record detail
+      x-summary-source: derived
   /api/databases/{database_pk}/assets/:
     get:
       operationId: listAssets
@@ -487,7 +515,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/assets/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/assets/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/assets/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/assets/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - databases
+      - Databases
+      summary: List assets
+      x-summary-source: derived
     post:
       operationId: createAssetPreUpload
       description: Register a new file asset on a database and return a presigned URL the client uses to upload the file directly to cloud storage.
@@ -520,7 +550,9 @@ paths:
                 $ref: '#/components/schemas/AssetPreUpload'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Create asset pre upload
+      x-summary-source: derived
   /api/databases/{database_pk}/assets/{id}/:
     get:
       operationId: retrieveAsset
@@ -549,7 +581,9 @@ paths:
                 $ref: '#/components/schemas/Asset'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Retrieve asset
+      x-summary-source: derived
     patch:
       operationId: partialUpdateAsset
       description: Update an existing database asset, for example to mark it as uploaded after the file has been stored.
@@ -588,7 +622,9 @@ paths:
                 $ref: '#/components/schemas/Asset'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Partial update asset
+      x-summary-source: derived
   /api/databases/{database_pk}/references/:
     get:
       operationId: listDatabaseReferences
@@ -633,7 +669,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/references/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/references/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/references/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/references/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - databases
+      - Databases
+      summary: List database references
+      x-summary-source: derived
   /api/databases/{database_pk}/deployments/:
     get:
       operationId: listDatabaseDeployments
@@ -678,7 +716,9 @@ paths:
               example: '&lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/&gt;; rel=&quot;first&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/?page=3&gt;; rel=&quot;prev&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/?page=5&gt;; rel=&quot;next&quot;, &lt;https://app.pixiebrix.com/databases/{database_pk}/deployments/?page=11&gt;; rel=&quot;last&quot;'
               description: See https://datatracker.ietf.org/doc/html/rfc8288 for more information.
       tags:
-      - databases
+      - Databases
+      summary: List database deployments
+      x-summary-source: derived
   /api/databases/records/jobs/:
     post:
       operationId: createDatabaseExportJob
@@ -706,7 +746,9 @@ paths:
                 $ref: '#/components/schemas/DatabaseExportRequest'
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Create database export job
+      x-summary-source: derived
   /api/databases/{database_pk}/queue/assign/:
     post:
       operationId: createQueueAssign
@@ -738,38 +780,52 @@ paths:
               schema: {}
           description: ''
       tags:
-      - databases
+      - Databases
+      summary: Create queue assign
+      x-summary-source: derived
 components:
   schemas:
-    DatabaseExportJob:
+    AssetPreUpload:
       type: object
       properties:
-        id:
+        asset:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            download_url:
+              type: string
+              format: uri
+              readOnly: true
+              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+            filename:
+              type: string
+              description: The original filename. Note this is different than the cloud storage filename.
+              maxLength: 255
+            is_uploaded:
+              type: boolean
+              description: True if the file is uploaded to cloud storage
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+              readOnly: true
+        upload_url:
           type: string
-          format: uuid
-        status:
-          enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        data:
-          type:
-          - string
-          - 'null'
-          format: binary
-        error_message:
-          type:
-          - string
-          - 'null'
+          format: uri
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        fields:
+          type: object
+          additionalProperties: true
       required:
-      - id
+      - asset
+      - upload_url
+      - fields
     Database:
       type: object
       properties:
@@ -813,71 +869,60 @@ components:
           readOnly: true
       required:
       - name
-    AssetPreUpload:
-      type: object
-      properties:
-        asset:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            download_url:
-              type: string
-              format: uri
-              readOnly: true
-              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-            filename:
-              type: string
-              description: The original filename. Note this is different than the cloud storage filename.
-              maxLength: 255
-            is_uploaded:
-              type: boolean
-              description: True if the file is uploaded to cloud storage
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-        upload_url:
-          type: string
-          format: uri
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        fields:
-          type: object
-          additionalProperties: true
-      required:
-      - asset
-      - upload_url
-      - fields
-    PackageVersionSlim:
+    DatabaseExportJob:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        package_id:
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
           type: string
-        name:
-          type: string
-        version:
-          type: string
-          readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
-        updated_at:
-          type: string
-          format: date-time
+        data:
+          type:
+          - string
+          - 'null'
+          format: binary
+        error_message:
+          type:
+          - string
+          - 'null'
       required:
       - id
-      - package_id
-      - name
+    Record:
+      type: object
+      properties:
+        id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
+          type: string
+          writeOnly: true
+          default: replace
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - data
     Deployment:
       type: object
       properties:
@@ -1030,6 +1075,67 @@ components:
       - name
       - package_version
       - services
+    UserDatabasePermission:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            enum:
+            - 1
+            - 2
+            type: integer
+          readOnly: true
+          description: Array of permissions for the database.
+    PackageVersionSlim:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - package_id
+      - name
+    DatabaseExportRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 1024
+        databases:
+          type: array
+          items:
+            type: string
+            format: uuid
+        media_type:
+          enum:
+          - application/xlsx
+          - application/json
+          - text/csv
+          type: string
+          default: application/json
+        filters:
+          type: object
+          additionalProperties: true
+          default: {}
+      required:
+      - name
+      - databases
     Asset:
       type: object
       properties:
@@ -1057,65 +1163,3 @@ components:
           type: string
           format: date-time
           readOnly: true
-    Record:
-      type: object
-      properties:
-        id:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-        merge_strategy:
-          enum:
-          - replace
-          - deep
-          - deep_append
-          - shallow
-          - ''
-          type: string
-          writeOnly: true
-          default: replace
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - id
-      - data
-    DatabaseExportRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 1024
-        databases:
-          type: array
-          items:
-            type: string
-            format: uuid
-        media_type:
-          enum:
-          - application/xlsx
-          - application/json
-          - text/csv
-          type: string
-          default: application/json
-        filters:
-          type: object
-          additionalProperties: true
-          default: {}
-      required:
-      - name
-      - databases
-    UserDatabasePermission:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            enum:
-            - 1
-            - 2
-            type: integer
-          readOnly: true
-          description: Array of permissions for the database.
