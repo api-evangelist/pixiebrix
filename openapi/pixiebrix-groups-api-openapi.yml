@@ -774,6 +774,179 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    GroupPackagePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package_name:
+          type: string
+      required:
+      - package_name
+    GroupDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        deployments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+            required:
+            - id
+            - name
+          readOnly: true
+      required:
+      - name
+    DatabasePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        database_name:
+          type: string
+          readOnly: true
+        database:
+          type: string
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - database
+    GroupMembership:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
+        user_id:
+          type: string
+          format: uuid
+          writeOnly: true
+        email:
+          type: string
+          format: email
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        campaigns:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - name
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+    ServiceAuthPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        label:
+          type: string
+        service_id:
+          type: string
+      required:
+      - label
+      - service_id
     ErrorItemGroup:
       type: object
       properties:
@@ -880,176 +1053,3 @@ components:
       - user_agent_extension_version
       - user_agent_extension_full_version
       - error_item_ids
-    ServiceAuthPermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        permission:
-          enum:
-          - 1
-          - 2
-          type: integer
-          minimum: 0
-          maximum: 32767
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        label:
-          type: string
-        service_id:
-          type: string
-      required:
-      - label
-      - service_id
-    GroupPackagePermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        permission:
-          enum:
-          - 1
-          - 2
-          type: integer
-          minimum: 0
-          maximum: 32767
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        package_name:
-          type: string
-      required:
-      - package_name
-    GroupMembership:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            service_account:
-              type: boolean
-              readOnly: true
-            deployment_key_account:
-              type: boolean
-              readOnly: true
-            date_joined:
-              type: string
-              format: date-time
-          readOnly: true
-        user_id:
-          type: string
-          format: uuid
-          writeOnly: true
-        email:
-          type: string
-          format: email
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        campaigns:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-              created_at:
-                type: string
-                format: date-time
-                readOnly: true
-              updated_at:
-                type: string
-                format: date-time
-                readOnly: true
-            required:
-            - name
-          readOnly: true
-        last_active_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-    DatabasePermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        database_name:
-          type: string
-          readOnly: true
-        database:
-          type: string
-        permission:
-          enum:
-          - 1
-          - 2
-          type: integer
-          minimum: 0
-          maximum: 32767
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - database
-    GroupDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        deployments:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              name:
-                type: string
-            required:
-            - id
-            - name
-          readOnly: true
-      required:
-      - name

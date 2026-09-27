@@ -275,6 +275,80 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          readOnly: true
+    DeploymentTelemetry:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
+          type: string
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
+          type: array
+          items:
+            type: object
+            properties:
+              deployment:
+                type: string
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+      required:
+      - uid
+      - version
     Me:
       type: object
       properties:
@@ -481,6 +555,61 @@ components:
           items:
             type: string
           readOnly: true
+    UserExtensionSettings:
+      type: object
+      properties:
+        is_text_selection_menu_enabled:
+          type: boolean
+        is_floating_action_button_enabled:
+          type: boolean
+        text_selection_menu_orientation:
+          enum:
+          - horizontal
+          - vertical
+          type: string
+        text_selection_menu_site_denylist:
+          type: array
+          items:
+            type: string
+        floating_action_button_site_denylist:
+          type: array
+          items:
+            type: string
+      required:
+      - is_text_selection_menu_enabled
+      - is_floating_action_button_enabled
+      - text_selection_menu_orientation
+    ControlRoomPrincipal:
+      type: object
+      properties:
+        control_room_user_id:
+          type: integer
+          maximum: 9223372036854775807
+          format: int64
+          description: AA unique identifier used to interact with the Control Room user via the AA API
+          minimum: 0
+        control_room_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - control_room_user_id
+    Milestone:
+      type: object
+      properties:
+        key:
+          type: string
+          pattern: '[a-z\d]+(?:_[a-z\d]+)*'
+          maxLength: 128
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Optional additional information to provide context about the Milestone.
+      required:
+      - key
     Deployment:
       type: object
       properties:
@@ -633,132 +762,3 @@ components:
       - name
       - package_version
       - services
-    Milestone:
-      type: object
-      properties:
-        key:
-          type: string
-          pattern: '[a-z\d]+(?:_[a-z\d]+)*'
-          maxLength: 128
-        metadata:
-          type:
-          - object
-          - 'null'
-          additionalProperties: true
-          description: Optional additional information to provide context about the Milestone.
-      required:
-      - key
-    AuthToken:
-      type: object
-      properties:
-        token:
-          type: string
-          readOnly: true
-    UserExtensionSettings:
-      type: object
-      properties:
-        is_text_selection_menu_enabled:
-          type: boolean
-        is_floating_action_button_enabled:
-          type: boolean
-        text_selection_menu_orientation:
-          enum:
-          - horizontal
-          - vertical
-          type: string
-        text_selection_menu_site_denylist:
-          type: array
-          items:
-            type: string
-        floating_action_button_site_denylist:
-          type: array
-          items:
-            type: string
-      required:
-      - is_text_selection_menu_enabled
-      - is_floating_action_button_enabled
-      - text_selection_menu_orientation
-    DeploymentTelemetry:
-      type: object
-      properties:
-        uid:
-          type: string
-          format: uuid
-          writeOnly: true
-          description: The UID of the PixieBrix extension instance (varies by install)
-        version:
-          type: string
-          writeOnly: true
-          description: The version of the PixieBrix extension
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-        active:
-          type: array
-          items:
-            type: object
-            properties:
-              deployment:
-                type: string
-                format: uuid
-              blueprint:
-                type: string
-              blueprintVersion:
-                type: string
-              updatedAt:
-                type: string
-                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
-            required:
-            - deployment
-            - blueprint
-            - blueprintVersion
-          writeOnly: true
-        extensions:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                maxLength: 64
-              name:
-                type: string
-              version:
-                type: string
-                maxLength: 64
-              enabled:
-                type: boolean
-              installType:
-                type: string
-                description: Raw chrome.management installType (admin/normal/development/sideload/other)
-              type:
-                type: string
-                maxLength: 32
-            required:
-            - id
-            - name
-            - version
-            - enabled
-            - installType
-            - type
-          writeOnly: true
-          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
-      required:
-      - uid
-      - version
-    ControlRoomPrincipal:
-      type: object
-      properties:
-        control_room_user_id:
-          type: integer
-          maximum: 9223372036854775807
-          format: int64
-          description: AA unique identifier used to interact with the Control Room user via the AA API
-          minimum: 0
-        control_room_url:
-          type: string
-          format: uri
-          readOnly: true
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-      required:
-      - control_room_user_id

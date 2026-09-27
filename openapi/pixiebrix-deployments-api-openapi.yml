@@ -983,83 +983,120 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    DeploymentReport:
+    DeploymentPermission:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          description: The id of the report
-        name:
+          readOnly: true
+        group_id:
           type: string
-          description: The name of the report
-        timestamp:
+          format: uuid
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
           type: string
           format: date-time
-          description: Report generation timestamp
-        data:
+          readOnly: true
+      required:
+      - group_id
+    DeploymentTelemetry:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
+          type: string
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
           type: array
           items:
             type: object
             properties:
-              email:
+              deployment:
                 type: string
-                format: email
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+      required:
+      - uid
+      - version
+    ActiveDeploymentGroup:
+      type: object
+      properties:
+        email:
+          type: string
+        version:
+          type: string
+        client_version:
+          type: string
+        known_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: string
               timestamp:
                 type: string
-                format: date
-              event_name:
-                type: string
-              event_label:
-                type: string
-              value:
-                type: integer
+                format: date-time
             required:
-            - email
+            - version
             - timestamp
-            - event_name
-            - event_label
-            - value
       required:
-      - id
-      - name
-      - timestamp
-      - data
-    DeploymentReportMetadata:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        name:
-          type: string
-          description: A human-readable name/label for the report
-          maxLength: 256
-        timezone:
-          type: string
-      required:
-      - id
-      - name
-      - timezone
-    DependencyTree:
-      type: object
-      properties:
-        name:
-          type: string
-        kind:
-          type: string
-        id:
-          type: string
-        registry_id:
-          type: string
-        database_id:
-          type: string
-      required:
-      - name
-      - kind
-      - id
-      - registry_id
-      - database_id
+      - email
+      - version
+      - client_version
+      - known_versions
     DeploymentMessage:
       type: object
       properties:
@@ -1226,139 +1263,6 @@ components:
       - name
       - package_version
       - services
-    ActiveDeploymentGroup:
-      type: object
-      properties:
-        email:
-          type: string
-        version:
-          type: string
-        client_version:
-          type: string
-        known_versions:
-          type: array
-          items:
-            type: object
-            properties:
-              version:
-                type: string
-              timestamp:
-                type: string
-                format: date-time
-            required:
-            - version
-            - timestamp
-      required:
-      - email
-      - version
-      - client_version
-      - known_versions
-    ErrorItemGroup:
-      type: object
-      properties:
-        request_url:
-          type:
-          - string
-          - 'null'
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-        deployment:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-          required:
-          - id
-          - name
-        package_version:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-        extension_label:
-          type:
-          - string
-          - 'null'
-        last_occurrence_timestamp:
-          type: string
-          format: date-time
-        message:
-          type: string
-        occurrence_count:
-          type: integer
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-            required:
-            - id
-            - email
-        step_label:
-          type:
-          - string
-          - 'null'
-        user_agent_extension_version:
-          type: string
-        user_agent_extension_full_version:
-          type: string
-        error_item_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - request_url
-      - extension_label
-      - last_occurrence_timestamp
-      - message
-      - occurrence_count
-      - users
-      - step_label
-      - user_agent_extension_version
-      - user_agent_extension_full_version
-      - error_item_ids
     Job:
       type: object
       properties:
@@ -1374,6 +1278,40 @@ components:
           type: string
       required:
       - id
+    DeploymentReportMetadata:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          description: A human-readable name/label for the report
+          maxLength: 256
+        timezone:
+          type: string
+      required:
+      - id
+      - name
+      - timezone
+    DeploymentManagerPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        group_id:
+          type: string
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - group_id
     DeploymentDetail:
       type: object
       properties:
@@ -1524,24 +1462,48 @@ components:
       - package_version
       - services
       - platform_names
-    DeploymentManagerPermission:
+    DeploymentReport:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          readOnly: true
-        group_id:
+          description: The id of the report
+        name:
           type: string
-        group_name:
-          type: string
-          readOnly: true
-        created_at:
+          description: The name of the report
+        timestamp:
           type: string
           format: date-time
-          readOnly: true
+          description: Report generation timestamp
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              timestamp:
+                type: string
+                format: date
+              event_name:
+                type: string
+              event_label:
+                type: string
+              value:
+                type: integer
+            required:
+            - email
+            - timestamp
+            - event_name
+            - event_label
+            - value
       required:
-      - group_id
+      - id
+      - name
+      - timestamp
+      - data
     DeploymentAlertEmail:
       type: object
       properties:
@@ -1559,6 +1521,131 @@ components:
           type: boolean
       required:
       - email
+    DependencyTree:
+      type: object
+      properties:
+        name:
+          type: string
+        kind:
+          type: string
+        id:
+          type: string
+        registry_id:
+          type: string
+        database_id:
+          type: string
+      required:
+      - name
+      - kind
+      - id
+      - registry_id
+      - database_id
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
     DeploymentDependenciesBatch:
       type: object
       properties:
@@ -1580,90 +1667,3 @@ components:
             - updated_at
       required:
       - dependencies
-    DeploymentTelemetry:
-      type: object
-      properties:
-        uid:
-          type: string
-          format: uuid
-          writeOnly: true
-          description: The UID of the PixieBrix extension instance (varies by install)
-        version:
-          type: string
-          writeOnly: true
-          description: The version of the PixieBrix extension
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-        active:
-          type: array
-          items:
-            type: object
-            properties:
-              deployment:
-                type: string
-                format: uuid
-              blueprint:
-                type: string
-              blueprintVersion:
-                type: string
-              updatedAt:
-                type: string
-                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
-            required:
-            - deployment
-            - blueprint
-            - blueprintVersion
-          writeOnly: true
-        extensions:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                maxLength: 64
-              name:
-                type: string
-              version:
-                type: string
-                maxLength: 64
-              enabled:
-                type: boolean
-              installType:
-                type: string
-                description: Raw chrome.management installType (admin/normal/development/sideload/other)
-              type:
-                type: string
-                maxLength: 32
-            required:
-            - id
-            - name
-            - version
-            - enabled
-            - installType
-            - type
-          writeOnly: true
-          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
-      required:
-      - uid
-      - version
-    DeploymentPermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        group_id:
-          type: string
-          format: uuid
-        group_name:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - group_id

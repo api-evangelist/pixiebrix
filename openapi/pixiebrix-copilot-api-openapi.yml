@@ -333,103 +333,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SuggestedModPromptBulkUpload:
-      type: object
-      properties:
-        prompts:
-          type: array
-          items:
-            type: object
-            properties:
-              title:
-                type: string
-                maxLength: 255
-              user_message:
-                type: string
-              hostname:
-                type:
-                - string
-                - 'null'
-            required:
-            - title
-            - user_message
-      required:
-      - prompts
-    ModCopilotSessionFeedback:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        session:
-          type: string
-          description: The session being reviewed
-        rating:
-          enum:
-          - -1
-          - 1
-          type: integer
-          description: 'User rating: -1 for negative, 1 for positive'
-          minimum: -32768
-          maximum: 32767
-        comment:
-          type: string
-          description: User's feedback comment
-        message_id:
-          type:
-          - string
-          - 'null'
-          description: Optional message ID for feedback on a specific message
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - session
-      - rating
-      - comment
-    SuggestedModPrompt:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          description: Short prompt name shown to users
-          maxLength: 255
-        user_message:
-          type: string
-          description: Initial user message for the prompt
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - title
-      - user_message
     ModCopilotSession:
       type: object
       properties:
@@ -563,3 +466,100 @@ components:
           readOnly: true
       required:
       - data
+    SuggestedModPromptBulkUpload:
+      type: object
+      properties:
+        prompts:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+                maxLength: 255
+              user_message:
+                type: string
+              hostname:
+                type:
+                - string
+                - 'null'
+            required:
+            - title
+            - user_message
+      required:
+      - prompts
+    ModCopilotSessionFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        session:
+          type: string
+          description: The session being reviewed
+        rating:
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: 'User rating: -1 for negative, 1 for positive'
+          minimum: -32768
+          maximum: 32767
+        comment:
+          type: string
+          description: User's feedback comment
+        message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional message ID for feedback on a specific message
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - session
+      - rating
+      - comment
+    SuggestedModPrompt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: Short prompt name shown to users
+          maxLength: 255
+        user_message:
+          type: string
+          description: Initial user message for the prompt
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - title
+      - user_message

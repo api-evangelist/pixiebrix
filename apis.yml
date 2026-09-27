@@ -52,11 +52,11 @@ tags:
 - Low-Code
 - Automation
 - Artificial Intelligence
-- Customer-Support
+- Customer Support
 - Enterprise Operations
-- Workflow-Automation
+- Workflow Automation
 - Agent Governance
-- Robotic Process Automation
+- RPA
 tags_raw:
 - Company
 - Browser Extensions
@@ -68,6 +68,8 @@ tags_raw:
 - Workflow Automation
 - Agent Governance
 - Robotic Process Automation
+- Customer-Support
+- Workflow-Automation
 apis:
 - aid: pixiebrix:pixiebrix-activity-api
   name: PixieBrix Activity API

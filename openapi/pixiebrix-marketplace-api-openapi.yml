@@ -144,6 +144,53 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate key for the tag
+        name:
+          type: string
+          description: The name/caption to show in the tag
+          maxLength: 128
+        slug:
+          type: string
+          description: The URL slug for the tag
+          maxLength: 128
+          pattern: ^[-a-zA-Z0-9_]+$
+        fa_icon:
+          type:
+          - string
+          - 'null'
+          description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
+          pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
+          maxLength: 32
+        subtype:
+          enum:
+          - generic
+          - role
+          - service
+          - category
+          - persona
+          - pixie_picks
+          - use_case
+          - other
+          type: string
+          default: generic
+          description: The sub-type/category of the tag
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
     MarketplaceListing:
       type: object
       properties:
@@ -341,50 +388,3 @@ components:
       - assets
       - tags
       - image
-    Tag:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Surrogate key for the tag
-        name:
-          type: string
-          description: The name/caption to show in the tag
-          maxLength: 128
-        slug:
-          type: string
-          description: The URL slug for the tag
-          maxLength: 128
-          pattern: ^[-a-zA-Z0-9_]+$
-        fa_icon:
-          type:
-          - string
-          - 'null'
-          description: Font Awesome 5 icon and css class to show with the tag, e.g., fas fa-coffee
-          pattern: ^fa[r|b|s]\sfa\-[a-z\d\-]+$
-          maxLength: 32
-        subtype:
-          enum:
-          - generic
-          - role
-          - service
-          - category
-          - persona
-          - pixie_picks
-          - use_case
-          - other
-          type: string
-          default: generic
-          description: The sub-type/category of the tag
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - name
