@@ -158,6 +158,21 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+      required:
+      - id
     CampaignDatabase:
       type: object
       properties:
@@ -216,18 +231,3 @@ components:
           readOnly: true
       required:
       - name
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
-          type: string
-      required:
-      - id

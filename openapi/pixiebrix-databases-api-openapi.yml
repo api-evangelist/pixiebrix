@@ -785,31 +785,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Record:
-      type: object
-      properties:
-        id:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-        merge_strategy:
-          enum:
-          - replace
-          - deep
-          - deep_append
-          - shallow
-          - ''
-          type: string
-          writeOnly: true
-          default: replace
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - id
-      - data
     Database:
       type: object
       properties:
@@ -853,59 +828,6 @@ components:
           readOnly: true
       required:
       - name
-    AssetPreUpload:
-      type: object
-      properties:
-        asset:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            download_url:
-              type: string
-              format: uri
-              readOnly: true
-              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-            filename:
-              type: string
-              description: The original filename. Note this is different than the cloud storage filename.
-              maxLength: 255
-            is_uploaded:
-              type: boolean
-              description: True if the file is uploaded to cloud storage
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-              readOnly: true
-        upload_url:
-          type: string
-          format: uri
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        fields:
-          type: object
-          additionalProperties: true
-      required:
-      - asset
-      - upload_url
-      - fields
-    UserDatabasePermission:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            enum:
-            - 1
-            - 2
-            type: integer
-          readOnly: true
-          description: Array of permissions for the database.
     PackageVersionSlim:
       type: object
       properties:
@@ -930,58 +852,31 @@ components:
       - id
       - package_id
       - name
-    Asset:
+    Record:
       type: object
       properties:
         id:
           type: string
-          format: uuid
-          readOnly: true
-        download_url:
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
           type: string
-          format: uri
-          readOnly: true
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        filename:
-          type: string
-          description: The original filename. Note this is different than the cloud storage filename.
-          maxLength: 255
-        is_uploaded:
-          type: boolean
-          description: True if the file is uploaded to cloud storage
+          writeOnly: true
+          default: replace
         created_at:
           type: string
           format: date-time
           readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    DatabaseExportRequest:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 1024
-        databases:
-          type: array
-          items:
-            type: string
-            format: uuid
-        media_type:
-          enum:
-          - application/xlsx
-          - application/json
-          - text/csv
-          type: string
-          default: application/json
-        filters:
-          type: object
-          additionalProperties: true
-          default: {}
       required:
-      - name
-      - databases
+      - id
+      - data
     Deployment:
       type: object
       properties:
@@ -1134,6 +1029,31 @@ components:
       - name
       - package_version
       - services
+    DatabaseExportRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 1024
+        databases:
+          type: array
+          items:
+            type: string
+            format: uuid
+        media_type:
+          enum:
+          - application/xlsx
+          - application/json
+          - text/csv
+          type: string
+          default: application/json
+        filters:
+          type: object
+          additionalProperties: true
+          default: {}
+      required:
+      - name
+      - databases
     DatabaseExportJob:
       type: object
       properties:
@@ -1163,3 +1083,83 @@ components:
           - 'null'
       required:
       - id
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        download_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        filename:
+          type: string
+          description: The original filename. Note this is different than the cloud storage filename.
+          maxLength: 255
+        is_uploaded:
+          type: boolean
+          description: True if the file is uploaded to cloud storage
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    UserDatabasePermission:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            enum:
+            - 1
+            - 2
+            type: integer
+          readOnly: true
+          description: Array of permissions for the database.
+    AssetPreUpload:
+      type: object
+      properties:
+        asset:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            download_url:
+              type: string
+              format: uri
+              readOnly: true
+              pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+            filename:
+              type: string
+              description: The original filename. Note this is different than the cloud storage filename.
+              maxLength: 255
+            is_uploaded:
+              type: boolean
+              description: True if the file is uploaded to cloud storage
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+              readOnly: true
+        upload_url:
+          type: string
+          format: uri
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        fields:
+          type: object
+          additionalProperties: true
+      required:
+      - asset
+      - upload_url
+      - fields

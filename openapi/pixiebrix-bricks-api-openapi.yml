@@ -361,64 +361,55 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    PackageVersionConfig:
+    CommitMessageRequest:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        version:
-          type: string
-          readOnly: true
         config:
-          type: object
-          additionalProperties: true
-        raw_config:
           type: string
+          description: The YAML configuration of the package to generate a commit message for
       required:
       - config
-    PackageVersionHeavy:
+    PackageMeta:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        package_id:
-          type: string
+          readOnly: true
+          description: Surrogate primary key
         name:
           type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
         version:
           type: string
           readOnly: true
-        created_at:
+        kind:
           type: string
-          format: date-time
-          readOnly: true
         updated_at:
           type: string
           format: date-time
-        updated_by:
-          type:
-          - object
-          - 'null'
+          readOnly: true
+        sharing:
+          type: object
           properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        message:
-          type: string
-          description: Optional commit/changelog message for version
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
       required:
-      - id
-      - package_id
       - name
-      - updated_by
+      - kind
+      - sharing
     PackageVersionDeprecated:
       type: object
       properties:
@@ -461,14 +452,47 @@ components:
       - config
       - updated_by
       deprecated: true
-    CommitMessageRequest:
+    PackageVersionHeavy:
       type: object
       properties:
-        config:
+        id:
           type: string
-          description: The YAML configuration of the package to generate a commit message for
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
+          type: string
+          description: Optional commit/changelog message for version
       required:
-      - config
+      - id
+      - package_id
+      - name
+      - updated_by
     CommitMessageResponse:
       type: object
       properties:
@@ -477,6 +501,23 @@ components:
           description: The generated commit message describing the changes
       required:
       - message
+    PackageVersionConfig:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        version:
+          type: string
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+        raw_config:
+          type: string
+      required:
+      - config
     Package:
       type: object
       properties:
@@ -548,47 +589,6 @@ components:
       required:
       - kind
       - config
-    PackageMeta:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Surrogate primary key
-        name:
-          type: string
-          description: Unique package identifier, including the scope and collection
-          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
-          maxLength: 214
-        verbose_name:
-          type:
-          - string
-          - 'null'
-          description: Human-readable name
-          maxLength: 128
-        version:
-          type: string
-          readOnly: true
-        kind:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        sharing:
-          type: object
-          properties:
-            public:
-              type: boolean
-            organizations:
-              type: array
-              items:
-                type: string
-      required:
-      - name
-      - kind
-      - sharing
     PackageLockCreate:
       type: object
       properties:

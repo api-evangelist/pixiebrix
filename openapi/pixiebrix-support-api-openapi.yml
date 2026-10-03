@@ -1273,582 +1273,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    SupportDeploymentList:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        active:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-        package:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-          readOnly: true
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-      required:
-      - name
-    AuditEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        actor:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            service_account:
-              type: boolean
-              readOnly: true
-            deployment_key_account:
-              type: boolean
-              readOnly: true
-            date_joined:
-              type: string
-              format: date-time
-        target_object:
-          type: object
-          properties:
-            id:
-              type: string
-            content_type:
-              type: string
-              readOnly: true
-            label:
-              type: string
-              readOnly: true
-          required:
-          - id
-        action_object:
-          type: object
-          properties:
-            id:
-              type: string
-            content_type:
-              type: string
-              readOnly: true
-            label:
-              type: string
-              readOnly: true
-          required:
-          - id
-        action_type:
-          type: string
-          maxLength: 256
-        data:
-          type:
-          - object
-          - 'null'
-          additionalProperties: true
-        timestamp:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - actor
-      - target_object
-      - action_object
-      - action_type
-    SupportUserDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        service_account:
-          type: boolean
-          readOnly: true
-        deployment_key_account:
-          type: boolean
-          readOnly: true
-        date_joined:
-          type: string
-          format: date-time
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+\z
-          maxLength: 150
-        organizations:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 128
-              trial_end_timestamp:
-                type:
-                - string
-                - 'null'
-                format: date-time
-                readOnly: true
-                description: Timestamp when the Business Plan trial ends. null if not on trial.
-            required:
-            - name
-          readOnly: true
-      required:
-      - username
-    SupportActivityPolicyDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        version:
-          type: integer
-          readOnly: true
-        assigned_groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - name
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        organization:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 128
-          required:
-          - name
-          readOnly: true
-        config:
-          type: object
-          additionalProperties: true
-          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
-      required:
-      - name
-    SupportUserEvent:
-      type: object
-      properties:
-        name:
-          type: string
-        time:
-          type: string
-          format: date-time
-        id:
-          type: string
-        blueprintId:
-          type: string
-        blueprintVersion:
-          type: string
-        extensionPointId:
-          type: string
-        label:
-          type: string
-      required:
-      - name
-      - time
-      - id
-    SupportActivitySeedResult:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          format: uuid
-        weeks:
-          type: integer
-        spans:
-          type: integer
-          description: Activity spans created.
-        events:
-          type: integer
-          description: Activity events created.
-        deleted_spans:
-          type: integer
-          description: Prior spans removed for this user in this org before seeding.
-        deleted_events:
-          type: integer
-          description: Prior events removed for this user in this org before seeding.
-      required:
-      - organization_id
-      - weeks
-      - spans
-      - events
-      - deleted_spans
-      - deleted_events
-    SupportActivitySeedRequest:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          format: uuid
-          description: Organization to generate the activity data in. Must be one the user is an active member of, with activity tracking already enabled.
-        weeks:
-          type: integer
-          maximum: 12
-          minimum: 1
-          default: 4
-          description: Weeks of history to generate, ending today.
-        seed:
-          type: integer
-          description: Optional RNG seed for reproducible data. Omit to derive a stable per-user seed.
-      required:
-      - organization_id
-    SupportServiceAccountSummary:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        label:
-          type: string
-          readOnly: true
-        prefix:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        last_active_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The last time the user was active. Currently only set for service accounts and support service accounts.
-    SupportOrganization:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        scope:
-          type:
-          - string
-          - 'null'
-          pattern: ^@[a-z0-9][a-z0-9._-]*$
-          maxLength: 128
-        restricted:
-          type: boolean
-          description: Apply restrictions to the PixieBrix extension interface
-        partner:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-        member_count:
-          type: integer
-          readOnly: true
-        trial_end_timestamp:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: Timestamp when the Business Plan trial ends. null if not on trial.
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - name
-    PackageVersionHeavy:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        package_id:
-          type: string
-        name:
-          type: string
-        version:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-        updated_by:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        message:
-          type: string
-          description: Optional commit/changelog message for version
-      required:
-      - id
-      - package_id
-      - name
-      - updated_by
-    Record:
-      type: object
-      properties:
-        id:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-        merge_strategy:
-          enum:
-          - replace
-          - deep
-          - deep_append
-          - shallow
-          - ''
-          type: string
-          writeOnly: true
-          default: replace
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - id
-      - data
-    ModCopilotSessionFeedback:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        session:
-          type: string
-          description: The session being reviewed
-        rating:
-          enum:
-          - -1
-          - 1
-          type: integer
-          description: 'User rating: -1 for negative, 1 for positive'
-          minimum: -32768
-          maximum: 32767
-        comment:
-          type: string
-          description: User's feedback comment
-        message_id:
-          type:
-          - string
-          - 'null'
-          description: Optional message ID for feedback on a specific message
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - session
-      - rating
-      - comment
-    SupportGroup:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        member_count:
-          type: integer
-          readOnly: true
-      required:
-      - name
-    Package:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Surrogate primary key
-        name:
-          type: string
-          readOnly: true
-        kind:
-          type: string
-        version:
-          type: string
-          readOnly: true
-        share_dependencies:
-          type: boolean
-          writeOnly: true
-          default: false
-        config:
-          type: string
-        public:
-          type: boolean
-          default: false
-        organizations:
-          type: array
-          items:
-            type: string
-        owner_organization:
-          type: string
-          readOnly: true
-        message:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        verbose_name:
-          type:
-          - string
-          - 'null'
-          description: Human-readable name
-          maxLength: 128
-        is_locked:
-          type: boolean
-          readOnly: true
-        lock_owner:
-          type: object
-          properties:
-            user:
-              type: object
-              properties:
-                id:
-                  type: string
-                  format: uuid
-                  readOnly: true
-                email:
-                  type: string
-                  format: email
-                  maxLength: 254
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - user
-          readOnly: true
-      required:
-      - kind
-      - config
     SupportDeploymentDetail:
       type: object
       properties:
@@ -1986,267 +1410,6 @@ components:
           readOnly: true
       required:
       - name
-    UserErrorItem:
-      type: object
-      properties:
-        extension_label:
-          type:
-          - string
-          - 'null'
-          description: Label of the extension, depends on the extension's telemetry settings
-        id:
-          type: integer
-          readOnly: true
-        message:
-          type: string
-          description: Just the error message, not the complete traceback
-        step_label:
-          type:
-          - string
-          - 'null'
-          description: Step of the extension, depends on the extension's telemetry settings
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp the error occurred, not the time the record is added to the db
-        platform:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Unique platform identifier
-              maxLength: 50
-            display_name:
-              type: string
-              description: Display name
-              maxLength: 255
-          required:
-          - name
-          - display_name
-          readOnly: true
-        user_agent_extension_version:
-          type: string
-          description: Browser extension semantic version
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-          maxLength: 64
-        user_agent_extension_full_version:
-          type: string
-          description: Browser extension version including any pre-release suffix, e.g. 3.2.10-hotfix.2. Blank for the web app and for extension builds older than the field
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-          maxLength: 255
-      required:
-      - message
-      - timestamp
-    ErrorItemGroup:
-      type: object
-      properties:
-        request_url:
-          type:
-          - string
-          - 'null'
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-        deployment:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-          required:
-          - id
-          - name
-        package_version:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-        extension_label:
-          type:
-          - string
-          - 'null'
-        last_occurrence_timestamp:
-          type: string
-          format: date-time
-        message:
-          type: string
-        occurrence_count:
-          type: integer
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-            required:
-            - id
-            - email
-        step_label:
-          type:
-          - string
-          - 'null'
-        user_agent_extension_version:
-          type: string
-        user_agent_extension_full_version:
-          type: string
-        error_item_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - request_url
-      - extension_label
-      - last_occurrence_timestamp
-      - message
-      - occurrence_count
-      - users
-      - step_label
-      - user_agent_extension_version
-      - user_agent_extension_full_version
-      - error_item_ids
-    SupportMemberActivityPolicy:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        version:
-          type: integer
-          readOnly: true
-        assigned_groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - name
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        organization:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 128
-          required:
-          - name
-          readOnly: true
-        matching_groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - name
-          readOnly: true
-      required:
-      - name
-    SupportActivityPolicyList:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        version:
-          type: integer
-          readOnly: true
-        assigned_groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - name
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - name
     ModCopilotSession:
       type: object
       properties:
@@ -2380,6 +1543,98 @@ components:
           readOnly: true
       required:
       - data
+    PackageVersionHeavy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        package_id:
+          type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        updated_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
+          type: string
+          description: Optional commit/changelog message for version
+      required:
+      - id
+      - package_id
+      - name
+      - updated_by
+    SupportUserEvent:
+      type: object
+      properties:
+        name:
+          type: string
+        time:
+          type: string
+          format: date-time
+        id:
+          type: string
+        blueprintId:
+          type: string
+        blueprintVersion:
+          type: string
+        extensionPointId:
+          type: string
+        label:
+          type: string
+      required:
+      - name
+      - time
+      - id
+    SupportServiceAccountWithToken:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          default: Support Agent
+          description: Human-readable name to identify this agent.
+          maxLength: 30
+        prefix:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+        token:
+          type: string
+          readOnly: true
     PackageMeta:
       type: object
       properties:
@@ -2421,6 +1676,99 @@ components:
       - name
       - kind
       - sharing
+    SupportActivitySeedResult:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+        weeks:
+          type: integer
+        spans:
+          type: integer
+          description: Activity spans created.
+        events:
+          type: integer
+          description: Activity events created.
+        deleted_spans:
+          type: integer
+          description: Prior spans removed for this user in this org before seeding.
+        deleted_events:
+          type: integer
+          description: Prior events removed for this user in this org before seeding.
+      required:
+      - organization_id
+      - weeks
+      - spans
+      - events
+      - deleted_spans
+      - deleted_events
+    SupportMemberActivityPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        matching_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+      required:
+      - name
     SupportPackageDetail:
       type: object
       properties:
@@ -2459,35 +1807,489 @@ components:
       required:
       - name
       - kind
-    SupportServiceAccountWithToken:
+    SupportActivityPolicyDetail:
       type: object
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-        label:
+        name:
           type: string
-          default: Support Agent
-          description: Human-readable name to identify this agent.
-          maxLength: 30
-        prefix:
-          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
           readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
-        last_active_at:
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
+      required:
+      - name
+    Package:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        version:
+          type: string
+          readOnly: true
+        share_dependencies:
+          type: boolean
+          writeOnly: true
+          default: false
+        config:
+          type: string
+        public:
+          type: boolean
+          default: false
+        organizations:
+          type: array
+          items:
+            type: string
+        owner_organization:
+          type: string
+          readOnly: true
+        message:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        is_locked:
+          type: boolean
+          readOnly: true
+        lock_owner:
+          type: object
+          properties:
+            user:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                  readOnly: true
+                email:
+                  type: string
+                  format: email
+                  maxLength: 254
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+          required:
+          - user
+          readOnly: true
+      required:
+      - kind
+      - config
+    AuditEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        actor:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        target_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_type:
+          type: string
+          maxLength: 256
+        data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - actor
+      - target_object
+      - action_object
+      - action_type
+    SupportUserDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        service_account:
+          type: boolean
+          readOnly: true
+        deployment_key_account:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        organizations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 128
+              trial_end_timestamp:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+                description: Timestamp when the Business Plan trial ends. null if not on trial.
+            required:
+            - name
+          readOnly: true
+      required:
+      - username
+    SupportActivityPolicyList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    SupportGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        member_count:
+          type: integer
+          readOnly: true
+      required:
+      - name
+    SupportDeploymentList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+      required:
+      - name
+    UserErrorItem:
+      type: object
+      properties:
+        extension_label:
+          type:
+          - string
+          - 'null'
+          description: Label of the extension, depends on the extension's telemetry settings
+        id:
+          type: integer
+          readOnly: true
+        message:
+          type: string
+          description: Just the error message, not the complete traceback
+        step_label:
+          type:
+          - string
+          - 'null'
+          description: Step of the extension, depends on the extension's telemetry settings
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp the error occurred, not the time the record is added to the db
+        platform:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Unique platform identifier
+              maxLength: 50
+            display_name:
+              type: string
+              description: Display name
+              maxLength: 255
+          required:
+          - name
+          - display_name
+          readOnly: true
+        user_agent_extension_version:
+          type: string
+          description: Browser extension semantic version
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 64
+        user_agent_extension_full_version:
+          type: string
+          description: Browser extension version including any pre-release suffix, e.g. 3.2.10-hotfix.2. Blank for the web app and for extension builds older than the field
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 255
+      required:
+      - message
+      - timestamp
+    Record:
+      type: object
+      properties:
+        id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
+          type: string
+          writeOnly: true
+          default: replace
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - data
+    SupportOrganization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        scope:
+          type:
+          - string
+          - 'null'
+          pattern: ^@[a-z0-9][a-z0-9._-]*$
+          maxLength: 128
+        restricted:
+          type: boolean
+          description: Apply restrictions to the PixieBrix extension interface
+        partner:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+        member_count:
+          type: integer
+          readOnly: true
+        trial_end_timestamp:
           type:
           - string
           - 'null'
           format: date-time
           readOnly: true
-          description: The last time the user was active. Currently only set for service accounts and support service accounts.
-        token:
+          description: Timestamp when the Business Plan trial ends. null if not on trial.
+        created_at:
           type: string
+          format: date-time
           readOnly: true
+      required:
+      - name
     SupportUserFlag:
       type: object
       properties:
@@ -2508,3 +2310,201 @@ components:
       - name
       - note
       - django_admin_url
+    SupportActivitySeedRequest:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: Organization to generate the activity data in. Must be one the user is an active member of, with activity tracking already enabled.
+        weeks:
+          type: integer
+          maximum: 12
+          minimum: 1
+          default: 4
+          description: Weeks of history to generate, ending today.
+        seed:
+          type: integer
+          description: Optional RNG seed for reproducible data. Omit to derive a stable per-user seed.
+      required:
+      - organization_id
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
+    SupportServiceAccountSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          readOnly: true
+        prefix:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+    ModCopilotSessionFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        session:
+          type: string
+          description: The session being reviewed
+        rating:
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: 'User rating: -1 for negative, 1 for positive'
+          minimum: -32768
+          maximum: 32767
+        comment:
+          type: string
+          description: User's feedback comment
+        message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional message ID for feedback on a specific message
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - session
+      - rating
+      - comment

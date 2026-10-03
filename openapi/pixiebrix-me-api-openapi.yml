@@ -275,12 +275,174 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AuthToken:
+    Deployment:
       type: object
       properties:
-        token:
+        id:
           type: string
+          format: uuid
           readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        options_config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        package_version:
+          type: string
+          writeOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        bindings:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - object
+                - 'null'
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  service_id:
+                    type: string
+                  label:
+                    type:
+                    - string
+                    - 'null'
+                    maxLength: 128
+                required:
+                - service_id
+              binding_type:
+                type: string
+                readOnly: true
+            required:
+            - auth
+          readOnly: true
+        services:
+          type: array
+          items:
+            type: object
+            properties:
+              key:
+                type:
+                - string
+                - 'null'
+                description: Output key for integration dependency
+                maxLength: 128
+              auth:
+                type:
+                - string
+                - 'null'
+          writeOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        platform_names:
+          type: array
+          items:
+            type: string
+          writeOnly: true
+        user:
+          type: string
+          writeOnly: true
+      required:
+      - name
+      - package_version
+      - services
+    ControlRoomPrincipal:
+      type: object
+      properties:
+        control_room_user_id:
+          type: integer
+          maximum: 9223372036854775807
+          format: int64
+          description: AA unique identifier used to interact with the Control Room user via the AA API
+          minimum: 0
+        control_room_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - control_room_user_id
     DeploymentTelemetry:
       type: object
       properties:
@@ -579,22 +741,12 @@ components:
       - is_text_selection_menu_enabled
       - is_floating_action_button_enabled
       - text_selection_menu_orientation
-    ControlRoomPrincipal:
+    AuthToken:
       type: object
       properties:
-        control_room_user_id:
-          type: integer
-          maximum: 9223372036854775807
-          format: int64
-          description: AA unique identifier used to interact with the Control Room user via the AA API
-          minimum: 0
-        control_room_url:
+        token:
           type: string
-          format: uri
           readOnly: true
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-      required:
-      - control_room_user_id
     Milestone:
       type: object
       properties:
@@ -610,155 +762,3 @@ components:
           description: Optional additional information to provide context about the Milestone.
       required:
       - key
-    Deployment:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        active:
-          type: boolean
-        options_config:
-          type: object
-          additionalProperties: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        package:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-          readOnly: true
-        package_version:
-          type: string
-          writeOnly: true
-        organization:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 128
-          required:
-          - name
-          readOnly: true
-        bindings:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              created_at:
-                type: string
-                format: date-time
-                readOnly: true
-              key:
-                type:
-                - string
-                - 'null'
-                description: Output key for integration dependency
-                maxLength: 128
-              auth:
-                type:
-                - object
-                - 'null'
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    readOnly: true
-                  service_id:
-                    type: string
-                  label:
-                    type:
-                    - string
-                    - 'null'
-                    maxLength: 128
-                required:
-                - service_id
-              binding_type:
-                type: string
-                readOnly: true
-            required:
-            - auth
-          readOnly: true
-        services:
-          type: array
-          items:
-            type: object
-            properties:
-              key:
-                type:
-                - string
-                - 'null'
-                description: Output key for integration dependency
-                maxLength: 128
-              auth:
-                type:
-                - string
-                - 'null'
-          writeOnly: true
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-        platform_names:
-          type: array
-          items:
-            type: string
-          writeOnly: true
-        user:
-          type: string
-          writeOnly: true
-      required:
-      - name
-      - package_version
-      - services

@@ -230,6 +230,44 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    EditableAuth:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type:
+          - string
+          - 'null'
+          maxLength: 128
+        organization:
+          type:
+          - string
+          - 'null'
+        config:
+          type: object
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        service:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        pushdown:
+          type: boolean
+          description: True to push down configuration secrets to the client
+        editable:
+          type: boolean
+          readOnly: true
+      required:
+      - config
+      - service
     LinkTokenResponse:
       type: object
       properties:
@@ -308,44 +346,6 @@ components:
           format: uuid
       required:
       - organization
-      - service
-    EditableAuth:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        label:
-          type:
-          - string
-          - 'null'
-          maxLength: 128
-        organization:
-          type:
-          - string
-          - 'null'
-        config:
-          type: object
-          additionalProperties: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        service:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        pushdown:
-          type: boolean
-          description: True to push down configuration secrets to the client
-        editable:
-          type: boolean
-          readOnly: true
-      required:
-      - config
       - service
     CreateLinkToken:
       type: object

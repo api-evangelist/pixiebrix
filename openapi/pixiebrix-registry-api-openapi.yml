@@ -115,6 +115,20 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    PackageConfigList:
+      type: object
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        metadata:
+          type: object
+          additionalProperties: true
+      required:
+      - apiVersion
+      - kind
+      - metadata
     PackageConfig:
       type: object
       properties:
@@ -160,17 +174,3 @@ components:
       - name
       - kind
       - sharing
-    PackageConfigList:
-      type: object
-      properties:
-        apiVersion:
-          type: string
-        kind:
-          type: string
-        metadata:
-          type: object
-          additionalProperties: true
-      required:
-      - apiVersion
-      - kind
-      - metadata
