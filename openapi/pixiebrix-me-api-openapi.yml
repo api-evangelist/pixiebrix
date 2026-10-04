@@ -427,6 +427,12 @@ components:
       - name
       - package_version
       - services
+    AuthToken:
+      type: object
+      properties:
+        token:
+          type: string
+          readOnly: true
     ControlRoomPrincipal:
       type: object
       properties:
@@ -443,74 +449,6 @@ components:
           pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
       required:
       - control_room_user_id
-    DeploymentTelemetry:
-      type: object
-      properties:
-        uid:
-          type: string
-          format: uuid
-          writeOnly: true
-          description: The UID of the PixieBrix extension instance (varies by install)
-        version:
-          type: string
-          writeOnly: true
-          description: The version of the PixieBrix extension
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-        active:
-          type: array
-          items:
-            type: object
-            properties:
-              deployment:
-                type: string
-                format: uuid
-              blueprint:
-                type: string
-              blueprintVersion:
-                type: string
-              updatedAt:
-                type: string
-                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
-            required:
-            - deployment
-            - blueprint
-            - blueprintVersion
-          writeOnly: true
-        extensions:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                maxLength: 64
-              name:
-                type: string
-              version:
-                type: string
-                maxLength: 64
-              enabled:
-                type: boolean
-              installType:
-                type: string
-                description: Raw chrome.management installType (admin/normal/development/sideload/other)
-              type:
-                type: string
-                maxLength: 32
-            required:
-            - id
-            - name
-            - version
-            - enabled
-            - installType
-            - type
-          writeOnly: true
-          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
-      required:
-      - uid
-      - version
     Me:
       type: object
       properties:
@@ -717,6 +655,21 @@ components:
           items:
             type: string
           readOnly: true
+    Milestone:
+      type: object
+      properties:
+        key:
+          type: string
+          pattern: '[a-z\d]+(?:_[a-z\d]+)*'
+          maxLength: 128
+        metadata:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+          description: Optional additional information to provide context about the Milestone.
+      required:
+      - key
     UserExtensionSettings:
       type: object
       properties:
@@ -741,24 +694,71 @@ components:
       - is_text_selection_menu_enabled
       - is_floating_action_button_enabled
       - text_selection_menu_orientation
-    AuthToken:
+    DeploymentTelemetry:
       type: object
       properties:
-        token:
+        uid:
           type: string
-          readOnly: true
-    Milestone:
-      type: object
-      properties:
-        key:
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
           type: string
-          pattern: '[a-z\d]+(?:_[a-z\d]+)*'
-          maxLength: 128
-        metadata:
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
+          type: array
+          items:
+            type: object
+            properties:
+              deployment:
+                type: string
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
           type:
-          - object
+          - array
           - 'null'
-          additionalProperties: true
-          description: Optional additional information to provide context about the Milestone.
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
       required:
-      - key
+      - uid
+      - version

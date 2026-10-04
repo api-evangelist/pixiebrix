@@ -983,38 +983,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    DeploymentManagerPermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        group_id:
-          type: string
-        group_name:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - group_id
-    DeploymentMessage:
-      type: object
-      properties:
-        recipient:
-          type: string
-          format: email
-        subject:
-          type: string
-        message:
-          type: string
-      required:
-      - recipient
-      - subject
-      - message
     Deployment:
       type: object
       properties:
@@ -1167,82 +1135,20 @@ components:
       - name
       - package_version
       - services
-    DependencyTree:
+    DeploymentMessage:
       type: object
       properties:
-        name:
+        recipient:
           type: string
-        kind:
+          format: email
+        subject:
           type: string
-        id:
-          type: string
-        registry_id:
-          type: string
-        database_id:
+        message:
           type: string
       required:
-      - name
-      - kind
-      - id
-      - registry_id
-      - database_id
-    Job:
-      type: object
-      properties:
-        id:
-          type: string
-        status:
-          enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
-          type: string
-      required:
-      - id
-    DeploymentReport:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The id of the report
-        name:
-          type: string
-          description: The name of the report
-        timestamp:
-          type: string
-          format: date-time
-          description: Report generation timestamp
-        data:
-          type: array
-          items:
-            type: object
-            properties:
-              email:
-                type: string
-                format: email
-              timestamp:
-                type: string
-                format: date
-              event_name:
-                type: string
-              event_label:
-                type: string
-              value:
-                type: integer
-            required:
-            - email
-            - timestamp
-            - event_name
-            - event_label
-            - value
-      required:
-      - id
-      - name
-      - timestamp
-      - data
+      - recipient
+      - subject
+      - message
     DeploymentDependenciesBatch:
       type: object
       properties:
@@ -1264,6 +1170,21 @@ components:
             - updated_at
       required:
       - dependencies
+    Job:
+      type: object
+      properties:
+        id:
+          type: string
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+      required:
+      - id
     DeploymentReportMetadata:
       type: object
       properties:
@@ -1280,74 +1201,62 @@ components:
       - id
       - name
       - timezone
-    DeploymentTelemetry:
+    DependencyTree:
       type: object
       properties:
-        uid:
+        name:
+          type: string
+        kind:
+          type: string
+        id:
+          type: string
+        registry_id:
+          type: string
+        database_id:
+          type: string
+      required:
+      - name
+      - kind
+      - id
+      - registry_id
+      - database_id
+    DeploymentPermission:
+      type: object
+      properties:
+        id:
           type: string
           format: uuid
-          writeOnly: true
-          description: The UID of the PixieBrix extension instance (varies by install)
-        version:
+          readOnly: true
+        group_id:
           type: string
-          writeOnly: true
-          description: The version of the PixieBrix extension
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-        active:
-          type: array
-          items:
-            type: object
-            properties:
-              deployment:
-                type: string
-                format: uuid
-              blueprint:
-                type: string
-              blueprintVersion:
-                type: string
-              updatedAt:
-                type: string
-                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
-            required:
-            - deployment
-            - blueprint
-            - blueprintVersion
-          writeOnly: true
-        extensions:
-          type:
-          - array
-          - 'null'
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                maxLength: 64
-              name:
-                type: string
-              version:
-                type: string
-                maxLength: 64
-              enabled:
-                type: boolean
-              installType:
-                type: string
-                description: Raw chrome.management installType (admin/normal/development/sideload/other)
-              type:
-                type: string
-                maxLength: 32
-            required:
-            - id
-            - name
-            - version
-            - enabled
-            - installType
-            - type
-          writeOnly: true
-          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+          format: uuid
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
       required:
-      - uid
-      - version
+      - group_id
+    DeploymentManagerPermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        group_id:
+          type: string
+        group_name:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - group_id
     DeploymentDetail:
       type: object
       properties:
@@ -1498,6 +1407,101 @@ components:
       - package_version
       - services
       - platform_names
+    ActiveDeploymentGroup:
+      type: object
+      properties:
+        email:
+          type: string
+        version:
+          type: string
+        client_version:
+          type: string
+        known_versions:
+          type: array
+          items:
+            type: object
+            properties:
+              version:
+                type: string
+              timestamp:
+                type: string
+                format: date-time
+            required:
+            - version
+            - timestamp
+      required:
+      - email
+      - version
+      - client_version
+      - known_versions
+    DeploymentTelemetry:
+      type: object
+      properties:
+        uid:
+          type: string
+          format: uuid
+          writeOnly: true
+          description: The UID of the PixieBrix extension instance (varies by install)
+        version:
+          type: string
+          writeOnly: true
+          description: The version of the PixieBrix extension
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+        active:
+          type: array
+          items:
+            type: object
+            properties:
+              deployment:
+                type: string
+                format: uuid
+              blueprint:
+                type: string
+              blueprintVersion:
+                type: string
+              updatedAt:
+                type: string
+                description: Last-known server PackageDeployment.updated_at (ISO-8601). Added in extension 3.2.3; omitted in earlier versions.
+            required:
+            - deployment
+            - blueprint
+            - blueprintVersion
+          writeOnly: true
+        extensions:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                maxLength: 64
+              name:
+                type: string
+              version:
+                type: string
+                maxLength: 64
+              enabled:
+                type: boolean
+              installType:
+                type: string
+                description: Raw chrome.management installType (admin/normal/development/sideload/other)
+              type:
+                type: string
+                maxLength: 32
+            required:
+            - id
+            - name
+            - version
+            - enabled
+            - installType
+            - type
+          writeOnly: true
+          description: 'Inventory of browser extensions installed on the device. Optional and backwards-compatible: only sent by managed/enterprise builds where the `management` permission is granted and the org has opted in.'
+      required:
+      - uid
+      - version
     ErrorItemGroup:
       type: object
       properties:
@@ -1604,6 +1608,48 @@ components:
       - user_agent_extension_version
       - user_agent_extension_full_version
       - error_item_ids
+    DeploymentReport:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id of the report
+        name:
+          type: string
+          description: The name of the report
+        timestamp:
+          type: string
+          format: date-time
+          description: Report generation timestamp
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+              timestamp:
+                type: string
+                format: date
+              event_name:
+                type: string
+              event_label:
+                type: string
+              value:
+                type: integer
+            required:
+            - email
+            - timestamp
+            - event_name
+            - event_label
+            - value
+      required:
+      - id
+      - name
+      - timestamp
+      - data
     DeploymentAlertEmail:
       type: object
       properties:
@@ -1621,49 +1667,3 @@ components:
           type: boolean
       required:
       - email
-    DeploymentPermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        group_id:
-          type: string
-          format: uuid
-        group_name:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - group_id
-    ActiveDeploymentGroup:
-      type: object
-      properties:
-        email:
-          type: string
-        version:
-          type: string
-        client_version:
-          type: string
-        known_versions:
-          type: array
-          items:
-            type: object
-            properties:
-              version:
-                type: string
-              timestamp:
-                type: string
-                format: date-time
-            required:
-            - version
-            - timestamp
-      required:
-      - email
-      - version
-      - client_version
-      - known_versions

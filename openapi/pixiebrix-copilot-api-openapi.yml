@@ -488,6 +488,31 @@ components:
             - user_message
       required:
       - prompts
+    SuggestedModPrompt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        title:
+          type: string
+          description: Short prompt name shown to users
+          maxLength: 255
+        user_message:
+          type: string
+          description: Initial user message for the prompt
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - title
+      - user_message
     ModCopilotSessionFeedback:
       type: object
       properties:
@@ -538,28 +563,3 @@ components:
       - session
       - rating
       - comment
-    SuggestedModPrompt:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        title:
-          type: string
-          description: Short prompt name shown to users
-          maxLength: 255
-        user_message:
-          type: string
-          description: Initial user message for the prompt
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - title
-      - user_message

@@ -135,6 +135,65 @@ components:
       required:
       - email
       - event
+    PublicBlueprintErrorItemGroup:
+      type: object
+      properties:
+        blueprint_name:
+          type: string
+        blueprint_version:
+          type: string
+        extension_label:
+          type:
+          - string
+          - 'null'
+        step_label:
+          type:
+          - string
+          - 'null'
+        brick_version:
+          type:
+          - string
+          - 'null'
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        user_agent_extension_versions:
+          type: array
+          items:
+            type: string
+        request_urls:
+          type: array
+          items:
+            type: string
+      required:
+      - blueprint_name
+      - blueprint_version
+      - extension_label
+      - step_label
+      - brick_version
+      - message
+      - occurrence_count
+      - users
+      - last_occurrence_timestamp
+      - user_agent_extension_versions
+      - request_urls
     ErrorItem:
       type: object
       properties:
@@ -275,62 +334,3 @@ components:
       - extension_uuid
       - user_agent
       - platform_name
-    PublicBlueprintErrorItemGroup:
-      type: object
-      properties:
-        blueprint_name:
-          type: string
-        blueprint_version:
-          type: string
-        extension_label:
-          type:
-          - string
-          - 'null'
-        step_label:
-          type:
-          - string
-          - 'null'
-        brick_version:
-          type:
-          - string
-          - 'null'
-        message:
-          type: string
-        occurrence_count:
-          type: integer
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-            required:
-            - id
-            - email
-        last_occurrence_timestamp:
-          type: string
-          format: date-time
-        user_agent_extension_versions:
-          type: array
-          items:
-            type: string
-        request_urls:
-          type: array
-          items:
-            type: string
-      required:
-      - blueprint_name
-      - blueprint_version
-      - extension_label
-      - step_label
-      - brick_version
-      - message
-      - occurrence_count
-      - users
-      - last_occurrence_timestamp
-      - user_agent_extension_versions
-      - request_urls

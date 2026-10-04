@@ -2567,6 +2567,629 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    OrganizationTheme:
+      type: object
+      properties:
+        show_sidebar_logo:
+          type: boolean
+        logo:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The image URL of a custom logo. Image format must be SVG or PNG.
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        toolbar_icon:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The image URL of the icon displayed in the browser toolbar. Image format must be PNG.
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        fab_logo:
+          type:
+          - string
+          - 'null'
+          format: uri
+          description: The image URL of the icon displayed in the floating action button (FAB) in the browser extension. Image format must be SVG or PNG.
+          maxLength: 200
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        whitelabel_theme_name:
+          type: string
+          description: The name of the theme to use for white-labeling.
+          maxLength: 128
+      required:
+      - whitelabel_theme_name
+    DatabaseRecordsArchive:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        database:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 256
+          required:
+          - name
+        date:
+          type: string
+          format: date
+        file:
+          type: string
+          format: binary
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - database
+      - date
+      - file
+    StaticAssetUploadUrl:
+      type: object
+      properties:
+        upload_url:
+          type: string
+          format: uri
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+      required:
+      - upload_url
+    Organization:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        members:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  name:
+                    type: string
+                    readOnly: true
+                  email:
+                    type: string
+                    format: email
+                    maxLength: 254
+                  service_account:
+                    type: boolean
+                    readOnly: true
+                  deployment_key_account:
+                    type: boolean
+                    readOnly: true
+                  date_joined:
+                    type: string
+                    format: date-time
+                readOnly: true
+              role:
+                enum:
+                - 1
+                - 2
+                - 3
+                - 4
+                - 5
+                type: integer
+                minimum: 0
+                maximum: 32767
+              groups:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    name:
+                      type: string
+                      maxLength: 256
+                  required:
+                  - id
+                  - name
+                readOnly: true
+              last_active_at:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+              last_login_at:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+            required:
+            - role
+          readOnly: true
+        scope:
+          type:
+          - string
+          - 'null'
+          pattern: ^@[a-z0-9][a-z0-9._-]*$
+          maxLength: 128
+        default_role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+        partner:
+          type: string
+          writeOnly: true
+        enforce_update_millis:
+          type:
+          - integer
+          - 'null'
+          maximum: 2147483647
+          description: The number of milliseconds restricted team members have to apply manual deployments or browser extension update.
+          minimum: 0
+        session_idle_timeout_minutes:
+          type: integer
+          maximum: 20160
+          minimum: 1
+          description: Log out sessions after this many minutes of inactivity
+        trial_end_timestamp:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when the Business Plan trial ends. None if not on trial.
+        enable_invitations:
+          type: boolean
+          readOnly: true
+          description: Toggle on to enable inviting users to the organization.
+        ai_default_chat_copilot:
+          type: boolean
+          default: true
+      required:
+      - name
+    ServiceAccountWithToken:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+          default: 4
+        created_at:
+          type: string
+          format: date-time
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+        token:
+          type: string
+          readOnly: true
+      required:
+      - name
+    MemberDeployment:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        active:
+          type: boolean
+          readOnly: true
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        status:
+          enum:
+          - effective
+          - paused
+          - superseded
+          type: string
+          readOnly: true
+        superseded_by:
+          type:
+          - object
+          - 'null'
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+          readOnly: true
+    OrganizationAuthUrlPattern:
+      type: object
+      properties:
+        url_pattern:
+          type: string
+          description: A chrome-style url match pattern, see https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns
+          maxLength: 512
+      required:
+      - url_pattern
+    EventInterval:
+      type: object
+      properties:
+        deployment_id:
+          type: string
+          format: uuid
+        end_timestamp:
+          type: integer
+        event_count:
+          type: integer
+      required:
+      - deployment_id
+      - end_timestamp
+      - event_count
+    PendingInvitation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        inviter:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        role:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+      required:
+      - email
+    PackageMeta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sharing:
+          type: object
+          properties:
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
+      required:
+      - name
+      - kind
+      - sharing
+    CampaignMember:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 128
+        data:
+          type: object
+          additionalProperties: true
+        account:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
+        latest_client:
+          type: object
+          properties:
+            extension_version:
+              type: string
+              pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+              maxLength: 64
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+            active_deployments:
+              type: array
+              items:
+                type: string
+                format: uuid
+              readOnly: true
+          required:
+          - extension_version
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+          readOnly: true
+        assigned_deployments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+            required:
+            - id
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+      required:
+      - email
+      - data
+    ErrorItemGroup:
+      type: object
+      properties:
+        request_url:
+          type:
+          - string
+          - 'null'
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
+          readOnly: true
+        deployment:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            name:
+              type: string
+          required:
+          - id
+          - name
+        package_version:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+        extension_label:
+          type:
+          - string
+          - 'null'
+        last_occurrence_timestamp:
+          type: string
+          format: date-time
+        message:
+          type: string
+        occurrence_count:
+          type: integer
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              email:
+                type: string
+            required:
+            - id
+            - email
+        step_label:
+          type:
+          - string
+          - 'null'
+        user_agent_extension_version:
+          type: string
+        user_agent_extension_full_version:
+          type: string
+        error_item_ids:
+          type: array
+          items:
+            type: integer
+      required:
+      - request_url
+      - extension_label
+      - last_occurrence_timestamp
+      - message
+      - occurrence_count
+      - users
+      - step_label
+      - user_agent_extension_version
+      - user_agent_extension_full_version
+      - error_item_ids
     UserBrowserExtension:
       type: object
       properties:
@@ -2694,137 +3317,6 @@ components:
       - is_managed
       - install_types
       - last_seen
-    Membership:
-      type: object
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            service_account:
-              type: boolean
-              readOnly: true
-            deployment_key_account:
-              type: boolean
-              readOnly: true
-            date_joined:
-              type: string
-              format: date-time
-          readOnly: true
-        role:
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-          minimum: 0
-          maximum: 32767
-        groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - id
-            - name
-          readOnly: true
-        last_active_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-        last_login_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-      required:
-      - role
-    Group:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        num_members:
-          type: integer
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - name
-    Database:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        organization_id:
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        enforce_schema:
-          type: boolean
-          description: Enforce the JSON Schema for database records
-        owner_field:
-          type:
-          - string
-          - 'null'
-          description: Field indicating the record owner
-          maxLength: 256
-        user:
-          type: string
-          writeOnly: true
-        type:
-          enum:
-          - Key-Value
-          - Asset
-          type: string
-          default: Key-Value
-        last_write_at:
-          type: string
-          format: date-time
-          readOnly: true
-        num_records:
-          type: integer
-          readOnly: true
-      required:
-      - name
     ServiceAccount:
       type: object
       properties:
@@ -2854,57 +3346,7 @@ components:
           description: The last time the user was active. Currently only set for service accounts and support service accounts.
       required:
       - name
-    PackageMeta:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Surrogate primary key
-        name:
-          type: string
-          description: Unique package identifier, including the scope and collection
-          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
-          maxLength: 214
-        verbose_name:
-          type:
-          - string
-          - 'null'
-          description: Human-readable name
-          maxLength: 128
-        version:
-          type: string
-          readOnly: true
-        kind:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        sharing:
-          type: object
-          properties:
-            public:
-              type: boolean
-            organizations:
-              type: array
-              items:
-                type: string
-      required:
-      - name
-      - kind
-      - sharing
-    OrganizationAuthUrlPattern:
-      type: object
-      properties:
-        url_pattern:
-          type: string
-          description: A chrome-style url match pattern, see https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns
-          maxLength: 512
-      required:
-      - url_pattern
-    MemberDeployment:
+    Group:
       type: object
       properties:
         id:
@@ -2913,113 +3355,14 @@ components:
           readOnly: true
         name:
           type: string
-          readOnly: true
-        active:
-          type: boolean
-          readOnly: true
-        package:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-          readOnly: true
-        status:
-          enum:
-          - effective
-          - paused
-          - superseded
-          type: string
-          readOnly: true
-        superseded_by:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-          required:
-          - id
-          - name
-          readOnly: true
-    OrganizationTheme:
-      type: object
-      properties:
-        show_sidebar_logo:
-          type: boolean
-        logo:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The image URL of a custom logo. Image format must be SVG or PNG.
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        toolbar_icon:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The image URL of the icon displayed in the browser toolbar. Image format must be PNG.
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        fab_logo:
-          type:
-          - string
-          - 'null'
-          format: uri
-          description: The image URL of the icon displayed in the floating action button (FAB) in the browser extension. Image format must be SVG or PNG.
-          maxLength: 200
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        whitelabel_theme_name:
-          type: string
-          description: The name of the theme to use for white-labeling.
-          maxLength: 128
-      required:
-      - whitelabel_theme_name
-    OrganizationReport:
-      type: object
-      properties:
-        metabase_iframe_url:
-          type: string
-      required:
-      - metabase_iframe_url
-    DeploymentKey:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-        token:
-          type: string
+          maxLength: 256
+        num_members:
+          type: integer
           readOnly: true
         created_at:
           type: string
           format: date-time
+          readOnly: true
       required:
       - name
     OrganizationExtensionDenyPattern:
@@ -3031,198 +3374,6 @@ components:
           maxLength: 512
       required:
       - match_pattern
-    StaticAssetVersion:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        version_id:
-          type: string
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - version_id
-    Subscription:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        concurrent:
-          type: boolean
-        seat_price_usd:
-          type: string
-          format: decimal
-          multipleOf: 0.01
-          maximum: 1000000
-          minimum: -1000000
-        seat_session_hours:
-          type: integer
-          maximum: 32767
-          minimum: 0
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        utilization:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - seat_price_usd
-    EventInterval:
-      type: object
-      properties:
-        deployment_id:
-          type: string
-          format: uuid
-        end_timestamp:
-          type: integer
-        event_count:
-          type: integer
-      required:
-      - deployment_id
-      - end_timestamp
-      - event_count
-    Organization:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        members:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                readOnly: true
-              user:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    readOnly: true
-                  name:
-                    type: string
-                    readOnly: true
-                  email:
-                    type: string
-                    format: email
-                    maxLength: 254
-                  service_account:
-                    type: boolean
-                    readOnly: true
-                  deployment_key_account:
-                    type: boolean
-                    readOnly: true
-                  date_joined:
-                    type: string
-                    format: date-time
-                readOnly: true
-              role:
-                enum:
-                - 1
-                - 2
-                - 3
-                - 4
-                - 5
-                type: integer
-                minimum: 0
-                maximum: 32767
-              groups:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                      format: uuid
-                    name:
-                      type: string
-                      maxLength: 256
-                  required:
-                  - id
-                  - name
-                readOnly: true
-              last_active_at:
-                type:
-                - string
-                - 'null'
-                format: date-time
-                readOnly: true
-              last_login_at:
-                type:
-                - string
-                - 'null'
-                format: date-time
-                readOnly: true
-            required:
-            - role
-          readOnly: true
-        scope:
-          type:
-          - string
-          - 'null'
-          pattern: ^@[a-z0-9][a-z0-9._-]*$
-          maxLength: 128
-        default_role:
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
-        partner:
-          type: string
-          writeOnly: true
-        enforce_update_millis:
-          type:
-          - integer
-          - 'null'
-          maximum: 2147483647
-          description: The number of milliseconds restricted team members have to apply manual deployments or browser extension update.
-          minimum: 0
-        session_idle_timeout_minutes:
-          type: integer
-          maximum: 20160
-          minimum: 1
-          description: Log out sessions after this many minutes of inactivity
-        trial_end_timestamp:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          description: Timestamp when the Business Plan trial ends. None if not on trial.
-        enable_invitations:
-          type: boolean
-          readOnly: true
-          description: Toggle on to enable inviting users to the organization.
-        ai_default_chat_copilot:
-          type: boolean
-          default: true
-      required:
-      - name
     UserDetail:
       type: object
       properties:
@@ -3292,87 +3443,69 @@ components:
           readOnly: true
       required:
       - groups
-    CampaignMember:
+    StaticAsset:
       type: object
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-        email:
+        file:
           type: string
-          format: email
-          maxLength: 128
-        data:
-          type: object
-          additionalProperties: true
-        account:
+          readOnly: true
+        asset_type:
+          enum:
+          - stylesheet
+          - font
+          - icon
+          - image
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        latest_version:
           type: object
           properties:
             id:
               type: string
               format: uuid
               readOnly: true
-            name:
+            version_id:
               type: string
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            service_account:
-              type: boolean
-              readOnly: true
-            deployment_key_account:
-              type: boolean
-              readOnly: true
-            date_joined:
-              type: string
-              format: date-time
-          readOnly: true
-        latest_client:
-          type: object
-          properties:
-            extension_version:
-              type: string
-              pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-              maxLength: 64
+              maxLength: 255
             created_at:
               type: string
               format: date-time
               readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-            active_deployments:
-              type: array
-              items:
-                type: string
-                format: uuid
-              readOnly: true
           required:
-          - extension_version
-          readOnly: true
-        groups:
-          type: array
-          items:
-            type: string
-            format: uuid
-          readOnly: true
-        assigned_deployments:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              name:
-                type: string
-            required:
-            - id
-            - name
-          readOnly: true
+          - version_id
+      required:
+      - asset_type
+      - latest_version
+    OrganizationReport:
+      type: object
+      properties:
+        metabase_iframe_url:
+          type: string
+      required:
+      - metabase_iframe_url
+    OrganizationContact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        notify_install:
+          type: boolean
+          description: Notify when a new user joins your organization
+        notify_error:
+          type: boolean
+          description: Notify when a deployment has new errors
         created_at:
           type: string
           format: date-time
@@ -3381,15 +3514,8 @@ components:
           type: string
           format: date-time
           readOnly: true
-        last_active_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
       required:
       - email
-      - data
     ServiceAuthMeta:
       type: object
       properties:
@@ -3409,63 +3535,33 @@ components:
       required:
       - service_id
       - service_name
-    PendingInvitation:
+    DeploymentKey:
       type: object
       properties:
         id:
           type: string
           format: uuid
           readOnly: true
-        email:
+        name:
           type: string
-          format: email
-          maxLength: 254
-        inviter:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            service_account:
-              type: boolean
-              readOnly: true
-            deployment_key_account:
-              type: boolean
-              readOnly: true
-            date_joined:
-              type: string
-              format: date-time
-        organization:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 128
-          required:
-          - name
+        token:
+          type: string
           readOnly: true
-        role:
-          enum:
-          - 1
-          - 2
-          - 3
-          - 4
-          - 5
-          type: integer
+        created_at:
+          type: string
+          format: date-time
       required:
-      - email
+      - name
+    DatabaseSchema:
+      type: object
+      properties:
+        database_id:
+          type: string
+          readOnly: true
+        schema_text:
+          type: string
+      required:
+      - schema_text
     Deployment:
       type: object
       properties:
@@ -3618,7 +3714,7 @@ components:
       - name
       - package_version
       - services
-    ServiceAccountWithToken:
+    Campaign:
       type: object
       properties:
         id:
@@ -3627,6 +3723,99 @@ components:
           readOnly: true
         name:
           type: string
+          maxLength: 256
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    StaticAssetVersion:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        version_id:
+          type: string
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - version_id
+    Subscription:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        concurrent:
+          type: boolean
+        seat_price_usd:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 1000000
+          minimum: -1000000
+        seat_session_hours:
+          type: integer
+          maximum: 32767
+          minimum: 0
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        utilization:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - seat_price_usd
+    Membership:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+          readOnly: true
         role:
           enum:
           - 1
@@ -3635,21 +3824,37 @@ components:
           - 4
           - 5
           type: integer
-          default: 4
-        created_at:
-          type: string
-          format: date-time
+          minimum: 0
+          maximum: 32767
+        groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - id
+            - name
+          readOnly: true
         last_active_at:
           type:
           - string
           - 'null'
           format: date-time
-          description: The last time the user was active. Currently only set for service accounts and support service accounts.
-        token:
-          type: string
+          readOnly: true
+        last_login_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
           readOnly: true
       required:
-      - name
+      - role
     DeploymentTelemetry:
       type: object
       properties:
@@ -3718,235 +3923,7 @@ components:
       required:
       - uid
       - version
-    OrganizationContact:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        notify_install:
-          type: boolean
-          description: Notify when a new user joins your organization
-        notify_error:
-          type: boolean
-          description: Notify when a deployment has new errors
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - email
-    StaticAssetUploadUrl:
-      type: object
-      properties:
-        upload_url:
-          type: string
-          format: uri
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-      required:
-      - upload_url
-    DatabaseRecordsArchive:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        database:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 256
-          required:
-          - name
-        date:
-          type: string
-          format: date
-        file:
-          type: string
-          format: binary
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - database
-      - date
-      - file
-    ErrorItemGroup:
-      type: object
-      properties:
-        request_url:
-          type:
-          - string
-          - 'null'
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-        deployment:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            name:
-              type: string
-          required:
-          - id
-          - name
-        package_version:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-        extension_label:
-          type:
-          - string
-          - 'null'
-        last_occurrence_timestamp:
-          type: string
-          format: date-time
-        message:
-          type: string
-        occurrence_count:
-          type: integer
-        users:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              email:
-                type: string
-            required:
-            - id
-            - email
-        step_label:
-          type:
-          - string
-          - 'null'
-        user_agent_extension_version:
-          type: string
-        user_agent_extension_full_version:
-          type: string
-        error_item_ids:
-          type: array
-          items:
-            type: integer
-      required:
-      - request_url
-      - extension_label
-      - last_occurrence_timestamp
-      - message
-      - occurrence_count
-      - users
-      - step_label
-      - user_agent_extension_version
-      - user_agent_extension_full_version
-      - error_item_ids
-    StaticAsset:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        file:
-          type: string
-          readOnly: true
-        asset_type:
-          enum:
-          - stylesheet
-          - font
-          - icon
-          - image
-          type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        latest_version:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            version_id:
-              type: string
-              maxLength: 255
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-          required:
-          - version_id
-      required:
-      - asset_type
-      - latest_version
-    DatabaseSchema:
-      type: object
-      properties:
-        database_id:
-          type: string
-          readOnly: true
-        schema_text:
-          type: string
-      required:
-      - schema_text
-    Campaign:
+    Database:
       type: object
       properties:
         id:
@@ -3956,13 +3933,36 @@ components:
         name:
           type: string
           maxLength: 256
+        organization_id:
+          type: string
         created_at:
           type: string
           format: date-time
           readOnly: true
-        updated_at:
+        enforce_schema:
+          type: boolean
+          description: Enforce the JSON Schema for database records
+        owner_field:
+          type:
+          - string
+          - 'null'
+          description: Field indicating the record owner
+          maxLength: 256
+        user:
+          type: string
+          writeOnly: true
+        type:
+          enum:
+          - Key-Value
+          - Asset
+          type: string
+          default: Key-Value
+        last_write_at:
           type: string
           format: date-time
+          readOnly: true
+        num_records:
+          type: integer
           readOnly: true
       required:
       - name

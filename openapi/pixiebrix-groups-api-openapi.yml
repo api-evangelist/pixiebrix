@@ -774,6 +774,28 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    GroupPackagePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        package_name:
+          type: string
+      required:
+      - package_name
     ServiceAuthPermission:
       type: object
       properties:
@@ -870,6 +892,31 @@ components:
           - 'null'
           format: date-time
           readOnly: true
+    DatabasePermission:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        database_name:
+          type: string
+          readOnly: true
+        database:
+          type: string
+        permission:
+          enum:
+          - 1
+          - 2
+          type: integer
+          minimum: 0
+          maximum: 32767
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - database
     ErrorItemGroup:
       type: object
       properties:
@@ -976,31 +1023,6 @@ components:
       - user_agent_extension_version
       - user_agent_extension_full_version
       - error_item_ids
-    DatabasePermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        database_name:
-          type: string
-          readOnly: true
-        database:
-          type: string
-        permission:
-          enum:
-          - 1
-          - 2
-          type: integer
-          minimum: 0
-          maximum: 32767
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - database
     GroupDetail:
       type: object
       properties:
@@ -1031,25 +1053,3 @@ components:
           readOnly: true
       required:
       - name
-    GroupPackagePermission:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        permission:
-          enum:
-          - 1
-          - 2
-          type: integer
-          minimum: 0
-          maximum: 32767
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        package_name:
-          type: string
-      required:
-      - package_name
