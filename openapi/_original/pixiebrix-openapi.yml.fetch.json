@@ -1,0 +1,12 @@
+{
+ "url": "https://app.pixiebrix.com/api/openapi/",
+ "requested_url": "https://app.pixiebrix.com/api/openapi/",
+ "status": 200,
+ "content_type": "application/vnd.oai.openapi",
+ "bytes": 556522,
+ "sha256": "c559a36fa75fcf8dfda44a3b2b18cd97fef7d8efc7775407ea3dc2e3fe738329",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "equivalent",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the provider's current document describes the same operations (Jaccard 0.939), but the bytes differ, so the archive is an earlier or reformatted copy."
+}
