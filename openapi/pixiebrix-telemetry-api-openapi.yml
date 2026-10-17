@@ -121,20 +121,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ExternalEvent:
-      type: object
-      properties:
-        email:
-          type: string
-          format: email
-        data:
-          type: object
-          additionalProperties: true
-        event:
-          type: string
-      required:
-      - email
-      - event
     PublicBlueprintErrorItemGroup:
       type: object
       properties:
@@ -194,6 +180,20 @@ components:
       - last_occurrence_timestamp
       - user_agent_extension_versions
       - request_urls
+    ExternalEvent:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        data:
+          type: object
+          additionalProperties: true
+        event:
+          type: string
+      required:
+      - email
+      - event
     ErrorItem:
       type: object
       properties:

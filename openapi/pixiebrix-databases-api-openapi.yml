@@ -785,6 +785,58 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    Record:
+      type: object
+      properties:
+        id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
+          type: string
+          writeOnly: true
+          default: replace
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - data
+    Asset:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        download_url:
+          type: string
+          format: uri
+          readOnly: true
+          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
+        filename:
+          type: string
+          description: The original filename. Note this is different than the cloud storage filename.
+          maxLength: 255
+        is_uploaded:
+          type: boolean
+          description: True if the file is uploaded to cloud storage
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     DatabaseExportRequest:
       type: object
       properties:
@@ -962,6 +1014,18 @@ components:
       - name
       - package_version
       - services
+    UserDatabasePermission:
+      type: object
+      properties:
+        permissions:
+          type: array
+          items:
+            enum:
+            - 1
+            - 2
+            type: integer
+          readOnly: true
+          description: Array of permissions for the database.
     AssetPreUpload:
       type: object
       properties:
@@ -1003,94 +1067,35 @@ components:
       - asset
       - upload_url
       - fields
-    Asset:
+    DatabaseExportJob:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          readOnly: true
-        download_url:
-          type: string
-          format: uri
-          readOnly: true
-          pattern: "^(?:[a-z0-9.+-]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)(?:\\.(?:0|25[0-5]|2[0-4][0-9]|1[0-9]?[0-9]?|[1-9][0-9]?)){3}|\\[[0-9a-f:.]+\\]|([a-z¡-\uFFFF0-9](?:[a-z¡-\uFFFF0-9-]{0,61}[a-z¡-\uFFFF0-9])?(?:\\.(?!-)[a-z¡-\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z¡-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::[0-9]{1,5})?(?:[/?#][^\\s]*)?\\z"
-        filename:
-          type: string
-          description: The original filename. Note this is different than the cloud storage filename.
-          maxLength: 255
-        is_uploaded:
-          type: boolean
-          description: True if the file is uploaded to cloud storage
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-    PackageVersionSlim:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        package_id:
-          type: string
-        name:
-          type: string
-        version:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-      required:
-      - id
-      - package_id
-      - name
-    Record:
-      type: object
-      properties:
-        id:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-        merge_strategy:
+        status:
           enum:
-          - replace
-          - deep
-          - deep_append
-          - shallow
-          - ''
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
           type: string
-          writeOnly: true
-          default: replace
         created_at:
           type: string
           format: date-time
           readOnly: true
+        data:
+          type:
+          - string
+          - 'null'
+          format: binary
+        error_message:
+          type:
+          - string
+          - 'null'
       required:
       - id
-      - data
-    UserDatabasePermission:
-      type: object
-      properties:
-        permissions:
-          type: array
-          items:
-            enum:
-            - 1
-            - 2
-            type: integer
-          readOnly: true
-          description: Array of permissions for the database.
     Database:
       type: object
       properties:
@@ -1134,32 +1139,27 @@ components:
           readOnly: true
       required:
       - name
-    DatabaseExportJob:
+    PackageVersionSlim:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        status:
-          enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
+        package_id:
           type: string
+        name:
+          type: string
+        version:
+          type: string
+          readOnly: true
         created_at:
           type: string
           format: date-time
           readOnly: true
-        data:
-          type:
-          - string
-          - 'null'
-          format: binary
-        error_message:
-          type:
-          - string
-          - 'null'
+        updated_at:
+          type: string
+          format: date-time
       required:
       - id
+      - package_id
+      - name

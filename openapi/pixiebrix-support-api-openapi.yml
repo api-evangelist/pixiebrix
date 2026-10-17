@@ -1273,6 +1273,82 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    SupportServiceAccountSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        label:
+          type: string
+          readOnly: true
+        prefix:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        last_active_at:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          readOnly: true
+          description: The last time the user was active. Currently only set for service accounts and support service accounts.
+    SupportUserDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          readOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        service_account:
+          type: boolean
+          readOnly: true
+        deployment_key_account:
+          type: boolean
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        organizations:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 128
+              trial_end_timestamp:
+                type:
+                - string
+                - 'null'
+                format: date-time
+                readOnly: true
+                description: Timestamp when the Business Plan trial ends. null if not on trial.
+            required:
+            - name
+          readOnly: true
+      required:
+      - username
     SupportUserEvent:
       type: object
       properties:
@@ -1295,202 +1371,6 @@ components:
       - name
       - time
       - id
-    ModCopilotSession:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        data:
-          type: object
-          properties:
-            messages:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                  role:
-                    type: string
-                  timestamp:
-                    type: string
-                  content:
-                    type:
-                    - string
-                    - 'null'
-                  toolCallId:
-                    type:
-                    - string
-                    - 'null'
-                  state:
-                    type:
-                    - object
-                    - 'null'
-                    additionalProperties: true
-                  response:
-                    type:
-                    - object
-                    - 'null'
-                    additionalProperties: true
-                required:
-                - id
-                - role
-                - timestamp
-            id:
-              type: string
-          required:
-          - messages
-          - id
-        source_version:
-          type:
-          - string
-          - 'null'
-          readOnly: true
-          description: Commit SHA of the app-service (backend) running when the session was created
-        platform_version:
-          type:
-          - string
-          - 'null'
-          description: The platform version that created the session
-          maxLength: 255
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        feedback:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              user:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                    readOnly: true
-                  email:
-                    type: string
-                    format: email
-                    maxLength: 254
-              session:
-                type: string
-                description: The session being reviewed
-              rating:
-                enum:
-                - -1
-                - 1
-                type: integer
-                description: 'User rating: -1 for negative, 1 for positive'
-                minimum: -32768
-                maximum: 32767
-              comment:
-                type: string
-                description: User's feedback comment
-              message_id:
-                type:
-                - string
-                - 'null'
-                description: Optional message ID for feedback on a specific message
-                maxLength: 255
-              created_at:
-                type: string
-                format: date-time
-                readOnly: true
-              updated_at:
-                type: string
-                format: date-time
-                readOnly: true
-            required:
-            - session
-            - rating
-            - comment
-          readOnly: true
-      required:
-      - data
-    SupportDeploymentList:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 128
-        active:
-          type: boolean
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-        package:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-            package_id:
-              type: string
-            name:
-              type: string
-            version:
-              type: string
-              readOnly: true
-            created_at:
-              type: string
-              format: date-time
-              readOnly: true
-            updated_at:
-              type: string
-              format: date-time
-          required:
-          - id
-          - package_id
-          - name
-          readOnly: true
-        platforms:
-          type: array
-          items:
-            type: object
-            properties:
-              name:
-                type: string
-                description: Unique platform identifier
-                maxLength: 50
-              display_name:
-                type: string
-                description: Display name
-                maxLength: 255
-            required:
-            - name
-            - display_name
-          readOnly: true
-      required:
-      - name
     Package:
       type: object
       properties:
@@ -1562,85 +1442,37 @@ components:
       required:
       - kind
       - config
-    PackageMeta:
+    SupportActivitySeedRequest:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: Organization to generate the activity data in. Must be one the user is an active member of, with activity tracking already enabled.
+        weeks:
+          type: integer
+          maximum: 12
+          minimum: 1
+          default: 4
+          description: Weeks of history to generate, ending today.
+        seed:
+          type: integer
+          description: Optional RNG seed for reproducible data. Omit to derive a stable per-user seed.
+      required:
+      - organization_id
+    PackageVersionHeavy:
       type: object
       properties:
         id:
           type: string
           format: uuid
-          readOnly: true
-          description: Surrogate primary key
+        package_id:
+          type: string
         name:
           type: string
-          description: Unique package identifier, including the scope and collection
-          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
-          maxLength: 214
-        verbose_name:
-          type:
-          - string
-          - 'null'
-          description: Human-readable name
-          maxLength: 128
         version:
           type: string
           readOnly: true
-        kind:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        sharing:
-          type: object
-          properties:
-            public:
-              type: boolean
-            organizations:
-              type: array
-              items:
-                type: string
-      required:
-      - name
-      - kind
-      - sharing
-    ModCopilotSessionFeedback:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        user:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        session:
-          type: string
-          description: The session being reviewed
-        rating:
-          enum:
-          - -1
-          - 1
-          type: integer
-          description: 'User rating: -1 for negative, 1 for positive'
-          minimum: -32768
-          maximum: 32767
-        comment:
-          type: string
-          description: User's feedback comment
-        message_id:
-          type:
-          - string
-          - 'null'
-          description: Optional message ID for feedback on a specific message
-          maxLength: 255
         created_at:
           type: string
           format: date-time
@@ -1648,123 +1480,27 @@ components:
         updated_at:
           type: string
           format: date-time
-          readOnly: true
-      required:
-      - session
-      - rating
-      - comment
-    AuditEvent:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        actor:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-            service_account:
-              type: boolean
-              readOnly: true
-            deployment_key_account:
-              type: boolean
-              readOnly: true
-            date_joined:
-              type: string
-              format: date-time
-        target_object:
-          type: object
-          properties:
-            id:
-              type: string
-            content_type:
-              type: string
-              readOnly: true
-            label:
-              type: string
-              readOnly: true
-          required:
-          - id
-        action_object:
-          type: object
-          properties:
-            id:
-              type: string
-            content_type:
-              type: string
-              readOnly: true
-            label:
-              type: string
-              readOnly: true
-          required:
-          - id
-        action_type:
-          type: string
-          maxLength: 256
-        data:
+        updated_by:
           type:
           - object
           - 'null'
-          additionalProperties: true
-        timestamp:
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        message:
           type: string
-          format: date-time
-          readOnly: true
+          description: Optional commit/changelog message for version
       required:
-      - actor
-      - target_object
-      - action_object
-      - action_type
-    SupportServiceAccountSummary:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        label:
-          type: string
-          readOnly: true
-        prefix:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        last_active_at:
-          type:
-          - string
-          - 'null'
-          format: date-time
-          readOnly: true
-          description: The last time the user was active. Currently only set for service accounts and support service accounts.
-    SupportGroup:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        member_count:
-          type: integer
-          readOnly: true
-      required:
+      - id
+      - package_id
       - name
+      - updated_by
     ErrorItemGroup:
       type: object
       properties:
@@ -1871,123 +1607,6 @@ components:
       - user_agent_extension_version
       - user_agent_extension_full_version
       - error_item_ids
-    PackageVersionHeavy:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        package_id:
-          type: string
-        name:
-          type: string
-        version:
-          type: string
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-        updated_by:
-          type:
-          - object
-          - 'null'
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            email:
-              type: string
-              format: email
-              maxLength: 254
-        message:
-          type: string
-          description: Optional commit/changelog message for version
-      required:
-      - id
-      - package_id
-      - name
-      - updated_by
-    SupportActivityPolicyList:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        version:
-          type: integer
-          readOnly: true
-        assigned_groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - name
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - name
-    SupportPackageDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-          description: Surrogate primary key
-        name:
-          type: string
-          description: Unique package identifier, including the scope and collection
-          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
-          maxLength: 214
-        verbose_name:
-          type:
-          - string
-          - 'null'
-          description: Human-readable name
-          maxLength: 128
-        version:
-          type: string
-          readOnly: true
-        kind:
-          type: string
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        config:
-          type: object
-          additionalProperties: true
-          readOnly: true
-        raw_config:
-          type: string
-          readOnly: true
-      required:
-      - name
-      - kind
     SupportMemberActivityPolicy:
       type: object
       properties:
@@ -2054,227 +1673,6 @@ components:
           readOnly: true
       required:
       - name
-    SupportUserFlag:
-      type: object
-      properties:
-        name:
-          type: string
-          description: The feature flag name.
-        note:
-          type:
-          - string
-          - 'null'
-          description: Description of the waffle flag. Null for computed flags.
-        django_admin_url:
-          type:
-          - string
-          - 'null'
-          description: URL to the waffle flag in Django Admin. Null for computed flags (e.g. restricted-* flags derived from organization settings).
-      required:
-      - name
-      - note
-      - django_admin_url
-    Record:
-      type: object
-      properties:
-        id:
-          type: string
-        data:
-          type: object
-          additionalProperties: true
-        merge_strategy:
-          enum:
-          - replace
-          - deep
-          - deep_append
-          - shallow
-          - ''
-          type: string
-          writeOnly: true
-          default: replace
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-      required:
-      - id
-      - data
-    UserErrorItem:
-      type: object
-      properties:
-        extension_label:
-          type:
-          - string
-          - 'null'
-          description: Label of the extension, depends on the extension's telemetry settings
-        id:
-          type: integer
-          readOnly: true
-        message:
-          type: string
-          description: Just the error message, not the complete traceback
-        step_label:
-          type:
-          - string
-          - 'null'
-          description: Step of the extension, depends on the extension's telemetry settings
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp the error occurred, not the time the record is added to the db
-        platform:
-          type: object
-          properties:
-            name:
-              type: string
-              description: Unique platform identifier
-              maxLength: 50
-            display_name:
-              type: string
-              description: Display name
-              maxLength: 255
-          required:
-          - name
-          - display_name
-          readOnly: true
-        user_agent_extension_version:
-          type: string
-          description: Browser extension semantic version
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-          maxLength: 64
-        user_agent_extension_full_version:
-          type: string
-          description: Browser extension version including any pre-release suffix, e.g. 3.2.10-hotfix.2. Blank for the web app and for extension builds older than the field
-          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
-          maxLength: 255
-      required:
-      - message
-      - timestamp
-    SupportActivitySeedRequest:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          format: uuid
-          description: Organization to generate the activity data in. Must be one the user is an active member of, with activity tracking already enabled.
-        weeks:
-          type: integer
-          maximum: 12
-          minimum: 1
-          default: 4
-          description: Weeks of history to generate, ending today.
-        seed:
-          type: integer
-          description: Optional RNG seed for reproducible data. Omit to derive a stable per-user seed.
-      required:
-      - organization_id
-    SupportUserDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          readOnly: true
-        email:
-          type: string
-          format: email
-          maxLength: 254
-        service_account:
-          type: boolean
-          readOnly: true
-        deployment_key_account:
-          type: boolean
-          readOnly: true
-        date_joined:
-          type: string
-          format: date-time
-        username:
-          type: string
-          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
-          pattern: ^[\w.@+-]+\z
-          maxLength: 150
-        organizations:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 128
-              trial_end_timestamp:
-                type:
-                - string
-                - 'null'
-                format: date-time
-                readOnly: true
-                description: Timestamp when the Business Plan trial ends. null if not on trial.
-            required:
-            - name
-          readOnly: true
-      required:
-      - username
-    SupportActivityPolicyDetail:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
-        name:
-          type: string
-          maxLength: 256
-        version:
-          type: integer
-          readOnly: true
-        assigned_groups:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-                readOnly: true
-              name:
-                type: string
-                maxLength: 256
-            required:
-            - name
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        organization:
-          type: object
-          properties:
-            id:
-              type: string
-              format: uuid
-              readOnly: true
-            name:
-              type: string
-              maxLength: 128
-          required:
-          - name
-          readOnly: true
-        config:
-          type: object
-          additionalProperties: true
-          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
-      required:
-      - name
     SupportActivitySeedResult:
       type: object
       properties:
@@ -2331,6 +1729,26 @@ components:
         token:
           type: string
           readOnly: true
+    SupportUserFlag:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The feature flag name.
+        note:
+          type:
+          - string
+          - 'null'
+          description: Description of the waffle flag. Null for computed flags.
+        django_admin_url:
+          type:
+          - string
+          - 'null'
+          description: URL to the waffle flag in Django Admin. Null for computed flags (e.g. restricted-* flags derived from organization settings).
+      required:
+      - name
+      - note
+      - django_admin_url
     SupportOrganization:
       type: object
       properties:
@@ -2366,6 +1784,44 @@ components:
           readOnly: true
           description: Timestamp when the Business Plan trial ends. null if not on trial.
         created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - name
+    SupportActivityPolicyList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
           type: string
           format: date-time
           readOnly: true
@@ -2505,6 +1961,550 @@ components:
                 maxLength: 256
             required:
             - name
+          readOnly: true
+      required:
+      - name
+    Record:
+      type: object
+      properties:
+        id:
+          type: string
+        data:
+          type: object
+          additionalProperties: true
+        merge_strategy:
+          enum:
+          - replace
+          - deep
+          - deep_append
+          - shallow
+          - ''
+          type: string
+          writeOnly: true
+          default: replace
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - id
+      - data
+    SupportPackageDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+          readOnly: true
+        raw_config:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - kind
+    PackageMeta:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+          description: Surrogate primary key
+        name:
+          type: string
+          description: Unique package identifier, including the scope and collection
+          pattern: ^((?<scope>@[a-z0-9-~][a-z0-9-._~]*)/)?((?<collection>[a-z0-9-~][a-z0-9-._~]*)/)?(?<name>[a-z0-9-~][a-z0-9-._~]*)$
+          maxLength: 214
+        verbose_name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name
+          maxLength: 128
+        version:
+          type: string
+          readOnly: true
+        kind:
+          type: string
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        sharing:
+          type: object
+          properties:
+            public:
+              type: boolean
+            organizations:
+              type: array
+              items:
+                type: string
+      required:
+      - name
+      - kind
+      - sharing
+    UserErrorItem:
+      type: object
+      properties:
+        extension_label:
+          type:
+          - string
+          - 'null'
+          description: Label of the extension, depends on the extension's telemetry settings
+        id:
+          type: integer
+          readOnly: true
+        message:
+          type: string
+          description: Just the error message, not the complete traceback
+        step_label:
+          type:
+          - string
+          - 'null'
+          description: Step of the extension, depends on the extension's telemetry settings
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp the error occurred, not the time the record is added to the db
+        platform:
+          type: object
+          properties:
+            name:
+              type: string
+              description: Unique platform identifier
+              maxLength: 50
+            display_name:
+              type: string
+              description: Display name
+              maxLength: 255
+          required:
+          - name
+          - display_name
+          readOnly: true
+        user_agent_extension_version:
+          type: string
+          description: Browser extension semantic version
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 64
+        user_agent_extension_full_version:
+          type: string
+          description: Browser extension version including any pre-release suffix, e.g. 3.2.10-hotfix.2. Blank for the web app and for extension builds older than the field
+          pattern: ^(?<major>[0-9]+)\.(?<minor>[0-9]+)\.(?<patch>[0-9]+)(-.*)?$
+          maxLength: 255
+      required:
+      - message
+      - timestamp
+    ModCopilotSession:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        data:
+          type: object
+          properties:
+            messages:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  role:
+                    type: string
+                  timestamp:
+                    type: string
+                  content:
+                    type:
+                    - string
+                    - 'null'
+                  toolCallId:
+                    type:
+                    - string
+                    - 'null'
+                  state:
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: true
+                  response:
+                    type:
+                    - object
+                    - 'null'
+                    additionalProperties: true
+                required:
+                - id
+                - role
+                - timestamp
+            id:
+              type: string
+          required:
+          - messages
+          - id
+        source_version:
+          type:
+          - string
+          - 'null'
+          readOnly: true
+          description: Commit SHA of the app-service (backend) running when the session was created
+        platform_version:
+          type:
+          - string
+          - 'null'
+          description: The platform version that created the session
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        feedback:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              user:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    readOnly: true
+                  email:
+                    type: string
+                    format: email
+                    maxLength: 254
+              session:
+                type: string
+                description: The session being reviewed
+              rating:
+                enum:
+                - -1
+                - 1
+                type: integer
+                description: 'User rating: -1 for negative, 1 for positive'
+                minimum: -32768
+                maximum: 32767
+              comment:
+                type: string
+                description: User's feedback comment
+              message_id:
+                type:
+                - string
+                - 'null'
+                description: Optional message ID for feedback on a specific message
+                maxLength: 255
+              created_at:
+                type: string
+                format: date-time
+                readOnly: true
+              updated_at:
+                type: string
+                format: date-time
+                readOnly: true
+            required:
+            - session
+            - rating
+            - comment
+          readOnly: true
+      required:
+      - data
+    AuditEvent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        actor:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            service_account:
+              type: boolean
+              readOnly: true
+            deployment_key_account:
+              type: boolean
+              readOnly: true
+            date_joined:
+              type: string
+              format: date-time
+        target_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_object:
+          type: object
+          properties:
+            id:
+              type: string
+            content_type:
+              type: string
+              readOnly: true
+            label:
+              type: string
+              readOnly: true
+          required:
+          - id
+        action_type:
+          type: string
+          maxLength: 256
+        data:
+          type:
+          - object
+          - 'null'
+          additionalProperties: true
+        timestamp:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - actor
+      - target_object
+      - action_object
+      - action_type
+    SupportGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        member_count:
+          type: integer
+          readOnly: true
+      required:
+      - name
+    ModCopilotSessionFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            email:
+              type: string
+              format: email
+              maxLength: 254
+        session:
+          type: string
+          description: The session being reviewed
+        rating:
+          enum:
+          - -1
+          - 1
+          type: integer
+          description: 'User rating: -1 for negative, 1 for positive'
+          minimum: -32768
+          maximum: 32767
+        comment:
+          type: string
+          description: User's feedback comment
+        message_id:
+          type:
+          - string
+          - 'null'
+          description: Optional message ID for feedback on a specific message
+          maxLength: 255
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - session
+      - rating
+      - comment
+    SupportActivityPolicyDetail:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        version:
+          type: integer
+          readOnly: true
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+                readOnly: true
+              name:
+                type: string
+                maxLength: 256
+            required:
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        organization:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+              readOnly: true
+            name:
+              type: string
+              maxLength: 128
+          required:
+          - name
+          readOnly: true
+        config:
+          type: object
+          additionalProperties: true
+          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
+      required:
+      - name
+    SupportDeploymentList:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 128
+        active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+        package:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+            package_id:
+              type: string
+            name:
+              type: string
+            version:
+              type: string
+              readOnly: true
+            created_at:
+              type: string
+              format: date-time
+              readOnly: true
+            updated_at:
+              type: string
+              format: date-time
+          required:
+          - id
+          - package_id
+          - name
+          readOnly: true
+        platforms:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Unique platform identifier
+                maxLength: 50
+              display_name:
+                type: string
+                description: Display name
+                maxLength: 255
+            required:
+            - name
+            - display_name
           readOnly: true
       required:
       - name

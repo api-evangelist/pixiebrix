@@ -1162,41 +1162,110 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    AddressListMatch:
+    CustomLanguageListEntry:
       type: object
       properties:
-        identifier:
+        term:
           type: string
-          description: Human reference surfaced in the risk report in place of the raw address (e.g. a fraud-case id or an employee id).
-          maxLength: 255
-        entry_type:
+        category:
           enum:
-          - fraud
-          - employee
+          - profanity
+          - slurs_hate
+          - sexual
+          - threats
+          - custom
           type: string
-          description: Whether the address is a known-fraud address or an employee's own.
-        level:
+        severity:
           enum:
-          - exact
-          - building
-          - street
+          - low
+          - medium
+          - high
           type: string
-          description: Granularity this hash row represents (exact / building / street). Set on-device at seed/upload time — the server never normalizes, so it cannot derive closeness itself. One seeded address expands into one row per level, sharing an identifier; the match endpoint returns the finest level that hits.
       required:
-      - identifier
-      - entry_type
-    ActivityIngestResult:
+      - term
+      - category
+      - severity
+    ActivityExportJob:
       type: object
       properties:
-        spans:
-          type: integer
-          minimum: 0
-        events:
-          type: integer
-          minimum: 0
+        id:
+          type: string
+          format: uuid
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+        dataset:
+          enum:
+          - spans
+          - events
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        data:
+          type:
+          - string
+          - 'null'
+          format: binary
+        error_message:
+          type:
+          - string
+          - 'null'
       required:
-      - spans
-      - events
+      - id
+      - dataset
+    TopSitesResponse:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        sites:
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: string
+              hostname:
+                type: string
+              total_focused_ms:
+                type: integer
+              total_visible_ms:
+                type: integer
+              total_idle_ms:
+                type: integer
+              span_count:
+                type: integer
+              classification:
+                type:
+                - string
+                - 'null'
+            required:
+            - domain
+            - hostname
+            - total_focused_ms
+            - total_visible_ms
+            - total_idle_ms
+            - span_count
+            - classification
+      required:
+      - organization
+      - start
+      - end
+      - sites
     MemberPolicy:
       type: object
       properties:
@@ -1238,63 +1307,14 @@ components:
             - id
             - name
           readOnly: true
-    KnowledgeReferencedResponse:
+    AddressListClearResult:
       type: object
       properties:
-        organization:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        articles:
-          type: array
-          items:
-            type: object
-            properties:
-              source:
-                type:
-                - string
-                - 'null'
-              title:
-                type:
-                - string
-                - 'null'
-              record_id:
-                type:
-                - string
-                - 'null'
-              url:
-                type: string
-              reference_count:
-                type: integer
-              distinct_agents:
-                type: integer
-              last_referenced_at:
-                type: string
-                format: date-time
-              total_focused_ms:
-                type: integer
-              total_visible_ms:
-                type: integer
-            required:
-            - source
-            - title
-            - record_id
-            - url
-            - reference_count
-            - distinct_agents
-            - last_referenced_at
-            - total_focused_ms
-            - total_visible_ms
+        deleted:
+          type: integer
+          minimum: 0
       required:
-      - organization
-      - start
-      - end
-      - articles
+      - deleted
     ActivityIngest:
       type: object
       properties:
@@ -1427,54 +1447,373 @@ components:
             - occurred_at
       required:
       - organization
-    CustomLanguageListEntry:
+    AddressListSummary:
       type: object
       properties:
-        term:
-          type: string
-        category:
-          enum:
-          - profanity
-          - slurs_hate
-          - sexual
-          - threats
-          - custom
-          type: string
-        severity:
-          enum:
-          - low
-          - medium
-          - high
-          type: string
+        count:
+          type: integer
+          minimum: 0
       required:
-      - term
-      - category
-      - severity
-    ActivityPolicy:
+      - count
+    CustomLanguageListUploadResult:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
-          readOnly: true
+        upserted:
+          type: integer
+          minimum: 0
+        deleted:
+          type: integer
+          minimum: 0
+      required:
+      - upserted
+      - deleted
+    HandleTimeResponse:
+      type: object
+      properties:
         organization:
           type: string
-        name:
+          format: uuid
+        start:
           type: string
-          maxLength: 256
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        tasks:
+          type: array
+          items:
+            type: object
+            properties:
+              trace_id:
+                type: string
+                format: uuid
+              span_id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              user_id:
+                type: string
+                format: uuid
+              email:
+                type:
+                - string
+                - 'null'
+              started_at:
+                type: string
+                format: date-time
+              ended_at:
+                type: string
+                format: date-time
+              handle_ms:
+                type: integer
+            required:
+            - trace_id
+            - span_id
+            - name
+            - user_id
+            - email
+            - started_at
+            - ended_at
+            - handle_ms
+        by_agent:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+                format: uuid
+              email:
+                type:
+                - string
+                - 'null'
+              task_count:
+                type: integer
+              total_handle_ms:
+                type: integer
+              avg_handle_ms:
+                type: integer
+            required:
+            - user_id
+            - email
+            - task_count
+            - total_handle_ms
+            - avg_handle_ms
+      required:
+      - organization
+      - start
+      - end
+      - tasks
+      - by_agent
+    ProhibitedLanguageCorpus:
+      type: object
+      properties:
+        version:
+          type: integer
+        terms:
+          type: array
+          items:
+            type: object
+            properties:
+              term:
+                type: string
+              category:
+                enum:
+                - profanity
+                - sexual
+                - slurs_hate
+                type: string
+              severity:
+                enum:
+                - low
+                - medium
+                - high
+                type: string
+            required:
+            - term
+            - category
+            - severity
+      required:
+      - version
+      - terms
+    ActivityIngestResult:
+      type: object
+      properties:
+        spans:
+          type: integer
+          minimum: 0
+        events:
+          type: integer
+          minimum: 0
+      required:
+      - spans
+      - events
+    CustomLanguageListUpload:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        replace:
+          type: boolean
+          default: false
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              term:
+                type: string
+                maxLength: 255
+              category:
+                enum:
+                - profanity
+                - slurs_hate
+                - sexual
+                - threats
+                - custom
+                type: string
+                default: custom
+              severity:
+                enum:
+                - low
+                - medium
+                - high
+                type: string
+                default: medium
+            required:
+            - term
+      required:
+      - organization
+      - entries
+    AddressListUpload:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        replace:
+          type: boolean
+          default: false
+        entries:
+          type: array
+          items:
+            type: object
+            properties:
+              identifier:
+                type: string
+                maxLength: 255
+              entry_type:
+                enum:
+                - fraud
+                - employee
+                type: string
+              level:
+                enum:
+                - exact
+                - building
+                - street
+                type: string
+              hash:
+                type: string
+                pattern: ^[0-9a-fA-F]{64}$
+            required:
+            - identifier
+            - entry_type
+            - level
+            - hash
+      required:
+      - organization
+      - entries
+    ProductivityTrendsResponse:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        tz:
+          type: string
+        granularity:
+          enum:
+          - day
+          - week
+          type: string
+        buckets:
+          type: array
+          items:
+            type: object
+            properties:
+              focused_ms:
+                type: integer
+              active_input_ms:
+                type: integer
+              active_input_samples:
+                type: integer
+              productive_focused_ms:
+                type: integer
+              unproductive_focused_ms:
+                type: integer
+              neutral_focused_ms:
+                type: integer
+              unrated_focused_ms:
+                type: integer
+              mixed_focused_ms:
+                type: integer
+              score:
+                type:
+                - number
+                - 'null'
+              bucket_start:
+                type: string
+                format: date-time
+            required:
+            - focused_ms
+            - active_input_ms
+            - active_input_samples
+            - productive_focused_ms
+            - unproductive_focused_ms
+            - neutral_focused_ms
+            - unrated_focused_ms
+            - mixed_focused_ms
+            - score
+            - bucket_start
+        buckets_truncated:
+          type: boolean
+        summary:
+          type: object
+          properties:
+            focused_ms:
+              type: integer
+            active_input_ms:
+              type: integer
+            active_input_samples:
+              type: integer
+            productive_focused_ms:
+              type: integer
+            unproductive_focused_ms:
+              type: integer
+            neutral_focused_ms:
+              type: integer
+            unrated_focused_ms:
+              type: integer
+            mixed_focused_ms:
+              type: integer
+            score:
+              type:
+              - number
+              - 'null'
+          required:
+          - focused_ms
+          - active_input_ms
+          - active_input_samples
+          - productive_focused_ms
+          - unproductive_focused_ms
+          - neutral_focused_ms
+          - unrated_focused_ms
+          - mixed_focused_ms
+          - score
+        previous_summary:
+          type: object
+          properties:
+            focused_ms:
+              type: integer
+            active_input_ms:
+              type: integer
+            active_input_samples:
+              type: integer
+            productive_focused_ms:
+              type: integer
+            unproductive_focused_ms:
+              type: integer
+            neutral_focused_ms:
+              type: integer
+            unrated_focused_ms:
+              type: integer
+            mixed_focused_ms:
+              type: integer
+            score:
+              type:
+              - number
+              - 'null'
+          required:
+          - focused_ms
+          - active_input_ms
+          - active_input_samples
+          - productive_focused_ms
+          - unproductive_focused_ms
+          - neutral_focused_ms
+          - unrated_focused_ms
+          - mixed_focused_ms
+          - score
+      required:
+      - organization
+      - start
+      - end
+      - tz
+      - granularity
+      - buckets
+      - buckets_truncated
+      - summary
+      - previous_summary
+    EffectivePolicyResponse:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        schemaVersion:
+          type: integer
         config:
           type: object
           additionalProperties: true
-          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
-        version:
-          type: integer
-          readOnly: true
-        groups:
-          type: array
-          items:
-            type: string
-          description: Organization groups this policy applies to.
-        assigned_groups:
+        policies:
           type: array
           items:
             type: object
@@ -1482,37 +1821,287 @@ components:
               id:
                 type: string
                 format: uuid
-              name:
-                type: string
+              version:
+                type: integer
             required:
             - id
-            - name
-          readOnly: true
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
+            - version
       required:
       - organization
-      - name
-    PurgeActivityDataResponse:
+      - schemaVersion
+      - config
+      - policies
+    AddressListUploadResult:
+      type: object
+      properties:
+        upserted:
+          type: integer
+          minimum: 0
+        deleted:
+          type: integer
+          minimum: 0
+      required:
+      - upserted
+      - deleted
+    ShadowAiResponse:
       type: object
       properties:
         organization:
           type: string
           format: uuid
-        spans_deleted:
-          type: integer
-        events_deleted:
-          type: integer
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        by_tool:
+          type: array
+          items:
+            type: object
+            properties:
+              tool:
+                type: string
+              event_count:
+                type: integer
+              intervention_count:
+                type: integer
+              member_count:
+                type: integer
+            required:
+            - tool
+            - event_count
+            - intervention_count
+            - member_count
+        by_member:
+          type: array
+          items:
+            type: object
+            properties:
+              user_id:
+                type: string
+                format: uuid
+              email:
+                type:
+                - string
+                - 'null'
+              event_count:
+                type: integer
+              intervention_count:
+                type: integer
+              tools:
+                type: array
+                items:
+                  type: string
+            required:
+            - user_id
+            - email
+            - event_count
+            - intervention_count
+            - tools
+        truncated:
+          type: boolean
       required:
       - organization
-      - spans_deleted
-      - events_deleted
+      - start
+      - end
+      - by_tool
+      - by_member
+      - truncated
+    ActivityExportRequest:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        dataset:
+          enum:
+          - spans
+          - events
+          type: string
+          default: spans
+        user:
+          type:
+          - string
+          - 'null'
+          format: uuid
+        groups:
+          type: array
+          items:
+            type: string
+            format: uuid
+        start:
+          type:
+          - string
+          - 'null'
+          format: date-time
+        end:
+          type:
+          - string
+          - 'null'
+          format: date-time
+      required:
+      - organization
+    ActivityExportJobStarted:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The export job id to poll for status.
+        status:
+          enum:
+          - UNKNOWN
+          - PENDING
+          - STARTED
+          - SUCCESS
+          - FAILURE
+          type: string
+      required:
+      - id
+      - status
+    TraceResponse:
+      type: object
+      properties:
+        organization:
+          type: string
+          format: uuid
+        trace_id:
+          type: string
+          format: uuid
+        spans:
+          type: array
+          items:
+            type: object
+            properties:
+              trace_id:
+                type: string
+                format: uuid
+              span_id:
+                type: string
+                format: uuid
+              parent_span_id:
+                type:
+                - string
+                - 'null'
+                format: uuid
+              user:
+                type: string
+                format: uuid
+              email:
+                type:
+                - string
+                - 'null'
+              kind:
+                enum:
+                - task
+                - page_session
+                - subtask
+                - custom
+                - interaction
+                type: string
+              name:
+                type: string
+              started_at:
+                type: string
+                format: date-time
+              ended_at:
+                type: string
+                format: date-time
+              focused_ms:
+                type: integer
+              idle_ms:
+                type: integer
+              visible_ms:
+                type: integer
+              background_ms:
+                type: integer
+              active_input_ms:
+                type: integer
+              active_input_samples:
+                type: integer
+              attributes:
+                type: object
+                additionalProperties: true
+              classification:
+                type:
+                - string
+                - 'null'
+            required:
+            - trace_id
+            - span_id
+            - parent_span_id
+            - user
+            - email
+            - kind
+            - name
+            - started_at
+            - ended_at
+            - focused_ms
+            - idle_ms
+            - visible_ms
+            - background_ms
+            - active_input_ms
+            - active_input_samples
+            - attributes
+            - classification
+        events:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              trace_id:
+                type: string
+                format: uuid
+              span_id:
+                type:
+                - string
+                - 'null'
+                format: uuid
+              user:
+                type: string
+                format: uuid
+              email:
+                type:
+                - string
+                - 'null'
+              event_type:
+                type: string
+              occurred_at:
+                type: string
+                format: date-time
+              url:
+                type: string
+              domain:
+                type: string
+              data:
+                type: object
+                additionalProperties: true
+            required:
+            - id
+            - trace_id
+            - span_id
+            - user
+            - email
+            - event_type
+            - occurred_at
+            - url
+            - domain
+            - data
+        spans_truncated:
+          type: boolean
+        events_truncated:
+          type: boolean
+      required:
+      - organization
+      - trace_id
+      - spans
+      - events
+      - spans_truncated
+      - events_truncated
     SecurityEventsResponse:
       type: object
       properties:
@@ -1743,86 +2332,6 @@ components:
       - by_severity
       - by_action
       - by_destination
-    ActivityExportRequest:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        dataset:
-          enum:
-          - spans
-          - events
-          type: string
-          default: spans
-        user:
-          type:
-          - string
-          - 'null'
-          format: uuid
-        groups:
-          type: array
-          items:
-            type: string
-            format: uuid
-        start:
-          type:
-          - string
-          - 'null'
-          format: date-time
-        end:
-          type:
-          - string
-          - 'null'
-          format: date-time
-      required:
-      - organization
-    TopSitesResponse:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        sites:
-          type: array
-          items:
-            type: object
-            properties:
-              domain:
-                type: string
-              hostname:
-                type: string
-              total_focused_ms:
-                type: integer
-              total_visible_ms:
-                type: integer
-              total_idle_ms:
-                type: integer
-              span_count:
-                type: integer
-              classification:
-                type:
-                - string
-                - 'null'
-            required:
-            - domain
-            - hostname
-            - total_focused_ms
-            - total_visible_ms
-            - total_idle_ms
-            - span_count
-            - classification
-      required:
-      - organization
-      - start
-      - end
-      - sites
     SecurityEventContextResponse:
       type: object
       properties:
@@ -2013,509 +2522,63 @@ components:
       - anchor
       - events
       - truncated
-    ActivityExportJobStarted:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-          description: The export job id to poll for status.
-        status:
-          enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
-          type: string
-      required:
-      - id
-      - status
-    CustomLanguageListUploadResult:
-      type: object
-      properties:
-        upserted:
-          type: integer
-          minimum: 0
-        deleted:
-          type: integer
-          minimum: 0
-      required:
-      - upserted
-      - deleted
-    TraceResponse:
+    KnowledgeReferencedResponse:
       type: object
       properties:
         organization:
           type: string
           format: uuid
-        trace_id:
+        start:
           type: string
-          format: uuid
-        spans:
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        articles:
           type: array
           items:
             type: object
             properties:
-              trace_id:
-                type: string
-                format: uuid
-              span_id:
-                type: string
-                format: uuid
-              parent_span_id:
+              source:
                 type:
                 - string
                 - 'null'
-                format: uuid
-              user:
-                type: string
-                format: uuid
-              email:
+              title:
                 type:
                 - string
                 - 'null'
-              kind:
-                enum:
-                - task
-                - page_session
-                - subtask
-                - custom
-                - interaction
-                type: string
-              name:
-                type: string
-              started_at:
-                type: string
-                format: date-time
-              ended_at:
-                type: string
-                format: date-time
-              focused_ms:
-                type: integer
-              idle_ms:
-                type: integer
-              visible_ms:
-                type: integer
-              background_ms:
-                type: integer
-              active_input_ms:
-                type: integer
-              active_input_samples:
-                type: integer
-              attributes:
-                type: object
-                additionalProperties: true
-              classification:
+              record_id:
                 type:
                 - string
                 - 'null'
-            required:
-            - trace_id
-            - span_id
-            - parent_span_id
-            - user
-            - email
-            - kind
-            - name
-            - started_at
-            - ended_at
-            - focused_ms
-            - idle_ms
-            - visible_ms
-            - background_ms
-            - active_input_ms
-            - active_input_samples
-            - attributes
-            - classification
-        events:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              trace_id:
-                type: string
-                format: uuid
-              span_id:
-                type:
-                - string
-                - 'null'
-                format: uuid
-              user:
-                type: string
-                format: uuid
-              email:
-                type:
-                - string
-                - 'null'
-              event_type:
-                type: string
-              occurred_at:
-                type: string
-                format: date-time
               url:
                 type: string
-              domain:
+              reference_count:
+                type: integer
+              distinct_agents:
+                type: integer
+              last_referenced_at:
                 type: string
-              data:
-                type: object
-                additionalProperties: true
+                format: date-time
+              total_focused_ms:
+                type: integer
+              total_visible_ms:
+                type: integer
             required:
-            - id
-            - trace_id
-            - span_id
-            - user
-            - email
-            - event_type
-            - occurred_at
+            - source
+            - title
+            - record_id
             - url
-            - domain
-            - data
-        spans_truncated:
-          type: boolean
-        events_truncated:
-          type: boolean
-      required:
-      - organization
-      - trace_id
-      - spans
-      - events
-      - spans_truncated
-      - events_truncated
-    ProhibitedLanguageCorpus:
-      type: object
-      properties:
-        version:
-          type: integer
-        terms:
-          type: array
-          items:
-            type: object
-            properties:
-              term:
-                type: string
-              category:
-                enum:
-                - profanity
-                - sexual
-                - slurs_hate
-                type: string
-              severity:
-                enum:
-                - low
-                - medium
-                - high
-                type: string
-            required:
-            - term
-            - category
-            - severity
-      required:
-      - version
-      - terms
-    AddressListUploadResult:
-      type: object
-      properties:
-        upserted:
-          type: integer
-          minimum: 0
-        deleted:
-          type: integer
-          minimum: 0
-      required:
-      - upserted
-      - deleted
-    AddressListSummary:
-      type: object
-      properties:
-        count:
-          type: integer
-          minimum: 0
-      required:
-      - count
-    ShadowAiResponse:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        by_tool:
-          type: array
-          items:
-            type: object
-            properties:
-              tool:
-                type: string
-              event_count:
-                type: integer
-              intervention_count:
-                type: integer
-              member_count:
-                type: integer
-            required:
-            - tool
-            - event_count
-            - intervention_count
-            - member_count
-        by_member:
-          type: array
-          items:
-            type: object
-            properties:
-              user_id:
-                type: string
-                format: uuid
-              email:
-                type:
-                - string
-                - 'null'
-              event_count:
-                type: integer
-              intervention_count:
-                type: integer
-              tools:
-                type: array
-                items:
-                  type: string
-            required:
-            - user_id
-            - email
-            - event_count
-            - intervention_count
-            - tools
-        truncated:
-          type: boolean
+            - reference_count
+            - distinct_agents
+            - last_referenced_at
+            - total_focused_ms
+            - total_visible_ms
       required:
       - organization
       - start
       - end
-      - by_tool
-      - by_member
-      - truncated
-    ProductivityTrendsResponse:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        tz:
-          type: string
-        granularity:
-          enum:
-          - day
-          - week
-          type: string
-        buckets:
-          type: array
-          items:
-            type: object
-            properties:
-              focused_ms:
-                type: integer
-              active_input_ms:
-                type: integer
-              active_input_samples:
-                type: integer
-              productive_focused_ms:
-                type: integer
-              unproductive_focused_ms:
-                type: integer
-              neutral_focused_ms:
-                type: integer
-              unrated_focused_ms:
-                type: integer
-              mixed_focused_ms:
-                type: integer
-              score:
-                type:
-                - number
-                - 'null'
-              bucket_start:
-                type: string
-                format: date-time
-            required:
-            - focused_ms
-            - active_input_ms
-            - active_input_samples
-            - productive_focused_ms
-            - unproductive_focused_ms
-            - neutral_focused_ms
-            - unrated_focused_ms
-            - mixed_focused_ms
-            - score
-            - bucket_start
-        buckets_truncated:
-          type: boolean
-        summary:
-          type: object
-          properties:
-            focused_ms:
-              type: integer
-            active_input_ms:
-              type: integer
-            active_input_samples:
-              type: integer
-            productive_focused_ms:
-              type: integer
-            unproductive_focused_ms:
-              type: integer
-            neutral_focused_ms:
-              type: integer
-            unrated_focused_ms:
-              type: integer
-            mixed_focused_ms:
-              type: integer
-            score:
-              type:
-              - number
-              - 'null'
-          required:
-          - focused_ms
-          - active_input_ms
-          - active_input_samples
-          - productive_focused_ms
-          - unproductive_focused_ms
-          - neutral_focused_ms
-          - unrated_focused_ms
-          - mixed_focused_ms
-          - score
-        previous_summary:
-          type: object
-          properties:
-            focused_ms:
-              type: integer
-            active_input_ms:
-              type: integer
-            active_input_samples:
-              type: integer
-            productive_focused_ms:
-              type: integer
-            unproductive_focused_ms:
-              type: integer
-            neutral_focused_ms:
-              type: integer
-            unrated_focused_ms:
-              type: integer
-            mixed_focused_ms:
-              type: integer
-            score:
-              type:
-              - number
-              - 'null'
-          required:
-          - focused_ms
-          - active_input_ms
-          - active_input_samples
-          - productive_focused_ms
-          - unproductive_focused_ms
-          - neutral_focused_ms
-          - unrated_focused_ms
-          - mixed_focused_ms
-          - score
-      required:
-      - organization
-      - start
-      - end
-      - tz
-      - granularity
-      - buckets
-      - buckets_truncated
-      - summary
-      - previous_summary
-    HandleTimeResponse:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        start:
-          type: string
-          format: date-time
-        end:
-          type: string
-          format: date-time
-        tasks:
-          type: array
-          items:
-            type: object
-            properties:
-              trace_id:
-                type: string
-                format: uuid
-              span_id:
-                type: string
-                format: uuid
-              name:
-                type: string
-              user_id:
-                type: string
-                format: uuid
-              email:
-                type:
-                - string
-                - 'null'
-              started_at:
-                type: string
-                format: date-time
-              ended_at:
-                type: string
-                format: date-time
-              handle_ms:
-                type: integer
-            required:
-            - trace_id
-            - span_id
-            - name
-            - user_id
-            - email
-            - started_at
-            - ended_at
-            - handle_ms
-        by_agent:
-          type: array
-          items:
-            type: object
-            properties:
-              user_id:
-                type: string
-                format: uuid
-              email:
-                type:
-                - string
-                - 'null'
-              task_count:
-                type: integer
-              total_handle_ms:
-                type: integer
-              avg_handle_ms:
-                type: integer
-            required:
-            - user_id
-            - email
-            - task_count
-            - total_handle_ms
-            - avg_handle_ms
-      required:
-      - organization
-      - start
-      - end
-      - tasks
-      - by_agent
+      - articles
     MemberTimelineResponse:
       type: object
       properties:
@@ -2669,155 +2732,43 @@ components:
       - events
       - spans_truncated
       - events_truncated
-    EffectivePolicyResponse:
+    AddressListMatch:
       type: object
       properties:
-        organization:
+        identifier:
           type: string
-          format: uuid
-        schemaVersion:
-          type: integer
-        config:
-          type: object
-          additionalProperties: true
-        policies:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: string
-                format: uuid
-              version:
-                type: integer
-            required:
-            - id
-            - version
-      required:
-      - organization
-      - schemaVersion
-      - config
-      - policies
-    AddressListUpload:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        replace:
-          type: boolean
-          default: false
-        entries:
-          type: array
-          items:
-            type: object
-            properties:
-              identifier:
-                type: string
-                maxLength: 255
-              entry_type:
-                enum:
-                - fraud
-                - employee
-                type: string
-              level:
-                enum:
-                - exact
-                - building
-                - street
-                type: string
-              hash:
-                type: string
-                pattern: ^[0-9a-fA-F]{64}$
-            required:
-            - identifier
-            - entry_type
-            - level
-            - hash
-      required:
-      - organization
-      - entries
-    CustomLanguageListUpload:
-      type: object
-      properties:
-        organization:
-          type: string
-          format: uuid
-        replace:
-          type: boolean
-          default: false
-        entries:
-          type: array
-          items:
-            type: object
-            properties:
-              term:
-                type: string
-                maxLength: 255
-              category:
-                enum:
-                - profanity
-                - slurs_hate
-                - sexual
-                - threats
-                - custom
-                type: string
-                default: custom
-              severity:
-                enum:
-                - low
-                - medium
-                - high
-                type: string
-                default: medium
-            required:
-            - term
-      required:
-      - organization
-      - entries
-    ActivityExportJob:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        status:
+          description: Human reference surfaced in the risk report in place of the raw address (e.g. a fraud-case id or an employee id).
+          maxLength: 255
+        entry_type:
           enum:
-          - UNKNOWN
-          - PENDING
-          - STARTED
-          - SUCCESS
-          - FAILURE
+          - fraud
+          - employee
           type: string
-        dataset:
+          description: Whether the address is a known-fraud address or an employee's own.
+        level:
           enum:
-          - spans
-          - events
+          - exact
+          - building
+          - street
           type: string
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        data:
-          type:
-          - string
-          - 'null'
-          format: binary
-        error_message:
-          type:
-          - string
-          - 'null'
+          description: Granularity this hash row represents (exact / building / street). Set on-device at seed/upload time — the server never normalizes, so it cannot derive closeness itself. One seeded address expands into one row per level, sharing an identifier; the match endpoint returns the finest level that hits.
       required:
-      - id
-      - dataset
-    AddressListClearResult:
+      - identifier
+      - entry_type
+    PurgeActivityDataResponse:
       type: object
       properties:
-        deleted:
+        organization:
+          type: string
+          format: uuid
+        spans_deleted:
           type: integer
-          minimum: 0
+        events_deleted:
+          type: integer
       required:
-      - deleted
+      - organization
+      - spans_deleted
+      - events_deleted
     ProductivitySummaryResponse:
       type: object
       properties:
@@ -2857,3 +2808,52 @@ components:
       - neutral_focused_ms
       - unrated_focused_ms
       - mixed_focused_ms
+    ActivityPolicy:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        organization:
+          type: string
+        name:
+          type: string
+          maxLength: 256
+        config:
+          type: object
+          additionalProperties: true
+          description: Policy configuration (signals, PII knobs, task definitions, URL rules); validated against the versioned activity policy JSON Schema.
+        version:
+          type: integer
+          readOnly: true
+        groups:
+          type: array
+          items:
+            type: string
+          description: Organization groups this policy applies to.
+        assigned_groups:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+            required:
+            - id
+            - name
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - organization
+      - name
