@@ -94,3 +94,16 @@
     builder: Pipedream repo (component)
   status: not-a-workflow
   arazzo: null
+- slug: pixiebrix-facebook-lead-ads
+  label: Facebook Lead Ads
+  partner: facebook-lead-ads
+  partner_name: Facebook Lead Ads
+  category: Ads & Conversion
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  evidence: https://zapier.com/apps/pixiebrix/integrations/facebook-lead-ads
+  source: edge
+  relationship: ipaas-bridge
+  status: pending-generation
+  arazzo: null

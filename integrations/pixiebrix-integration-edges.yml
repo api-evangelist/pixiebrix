@@ -1,4 +1,37 @@
-generated: '2026-10-15'
+generated: '2026-10-20'
+method: searched
+source:
+- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://zapier.com/api/v4/apps/
+- https://zapier.com/apps/pixiebrix/integrations
+checked:
+- https://api.nuget.org/v3
+- https://crates.io/api/v1
+- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
+- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
+- https://proxy.golang.org
+- https://pypi.org/pypi
+- https://registry.npmjs.org
+- https://repo1.maven.org/maven2
+- https://rubygems.org/api/v1
+- https://zapier.com/api/v4/apps/
+- https://composio.dev/toolkits/pixiebrix
+- https://monid.ai/tools/pixiebrix
+- https://n8n.io/integrations/pixiebrix/
+- https://zapier.com/apps/pixiebrix/integrations
+summary: null
+marketplace_apps:
+- marketplace: zapier
+  channel: ipaas-listing
+  app: pixiebrix
+  url: https://zapier.com/apps/pixiebrix/integrations
+  external_url: https://www.pixiebrix.com/
+  partner_tier: BRONZE
+  triggers:
+  - key: new_push_fields
+    label: New Push With Data
+  actions: []
+  searches: []
 edges:
 - partner_name: npm registry
   partner: npm
@@ -90,18 +123,42 @@ edges:
     builder: Pipedream repo (component)
   detected_by: sweep-workflow-automation.py
   first_seen: '2026-10-15'
-method: searched
-checked:
-- https://api.nuget.org/v3
-- https://crates.io/api/v1
-- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
-- https://github.com/PipedreamHQ/pipedream/tree/d5872355ef27b4efa769f05352f2820c299a456e/components/
-- https://proxy.golang.org
-- https://pypi.org/pypi
-- https://registry.npmjs.org
-- https://repo1.maven.org/maven2
-- https://rubygems.org/api/v1
-- https://zapier.com/api/v4/apps/
-source:
-- https://github.com/PipedreamHQ/pipedream/tree/94800dd6de6640b942c65ea7ee655f71ac56d438/components/
-- https://zapier.com/api/v4/apps/
+- partner_name: Facebook Lead Ads
+  partner: facebook-lead-ads
+  partner_match: domain+name-among-holders
+  partner_candidate: null
+  type: marketplace
+  marketplace: zapier
+  channel: ipaas-usage
+  relationship: ipaas-bridge
+  evidence: https://zapier.com/apps/pixiebrix/integrations/facebook-lead-ads
+  direction: third-party
+  category: Ads & Conversion
+  partner_url: https://www.facebook.com/business/ads/lead-ads
+templates:
+- title: Add new PixieBrix data pushes to Google Calendar as quick events
+  url: https://zapier.com/apps/google-calendar/integrations/pixiebrix/1631079/add-new-pixiebrix-data-pushes-to-google-calendar-as-quick-events
+  apps:
+  - pixiebrix
+  - google-calendar
+- title: Manage new PixieBrix pushes by adding to Buffer queues instantly
+  url: https://zapier.com/apps/buffer/integrations/pixiebrix/1631667/manage-new-pixiebrix-pushes-by-adding-to-buffer-queues-instantly
+  apps:
+  - pixiebrix
+  - buffer
+- title: Create new Sage Intacct contacts from new PixieBrix data pushes
+  url: https://zapier.com/apps/pixiebrix/integrations/sage-intacct/1777928/create-new-sage-intacct-contacts-from-new-pixiebrix-data-pushes
+  apps:
+  - pixiebrix
+  - sage-intacct
+- title: Update NetSuite records when new data is pushed in PixieBrix
+  url: https://zapier.com/apps/netsuite/integrations/pixiebrix/1811289/update-netsuite-records-when-new-data-is-pushed-in-pixiebrix
+  apps:
+  - pixiebrix
+  - netsuite
+- title: Send emails in Gmail for new data pushes in PixieBrix
+  url: https://zapier.com/apps/gmail/integrations/pixiebrix/255705781/send-emails-in-gmail-for-new-data-pushes-in-pixiebrix
+  apps:
+  - pixiebrix
+  - gmail
+template_total: 5
