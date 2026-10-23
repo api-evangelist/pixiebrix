@@ -35,3 +35,9 @@ paths:
       - Tests
       summary: Destroy delete rainforest account
       x-summary-source: derived
+x-provenance:
+  method: harvested
+  publisher: PixieBrix
+  source: https://app.pixiebrix.com/api/openapi/
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
